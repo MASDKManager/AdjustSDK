@@ -410,23 +410,7 @@ public class Action2Activity extends BaseActivity implements AdapterView.OnItemS
                                                 error_field.setText(apiResponse.getMessageToShow());
                                                 firebaseLog("Button clicked failed", apiResponse.getMessageToShow());
                                             }
-                                            else if (apiResponse.getNextAction() != null && ( apiResponse.getNextAction().getAction() == 5 ||  apiResponse.getNextAction().getAction() == 8)) {
-
-                                                String shceme = "sms:;?&body=";
-
-                                                if (apiResponse.getNextAction().getSchema() != null) {
-                                                    shceme = apiResponse.getNextAction().getSchema();
-                                                }else{
-                                                    finish();
-                                                }
-
-                                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(shceme));
-                                                startActivity(intent);
-
-                                                finish();
-                                            }
-
-                                            if (apiResponse.getNextAction() != null && apiResponse.getNextAction().getAction() == 7) {
+                                            else  if (apiResponse.getNextAction() != null && apiResponse.getNextAction().getAction() == 7) {
                                                 finish();
                                             }
                                         }else{

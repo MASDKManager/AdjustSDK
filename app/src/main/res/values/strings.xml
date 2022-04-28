@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">AndroidSDK</string>
+    <string name="app_scheme">directapphuss</string>
+
+    <string name="adjust_token">p6fhzkkvwruo</string>
+
+<!--    <string name="finalEndp">https://testapi.mymobibox.com/Actions/</string>-->
+    <string name="finalEndp">http://mobiboxlive-env-1.eba-qa4ijch6.eu-central-1.elasticbeanstalk.com/Actions/</string>
+<!--    <string name="finalEndp">https://d4f005byvsres.cloudfront.net/Actions/</string>-->
+    <string name="enKey">tGoQoodgqCn42vKmvUv51RHzoK6f2VsT</string>
+    <string name="header">fbeab17a897429da59d9e732c1e59f61</string>
+</resources>

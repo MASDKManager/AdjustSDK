@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="Theme.SplashBackground" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:statusBarColor">@color/black</item>
+    </style>
+
+    <style name="Theme.SplashBackground2" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/black</item>
+    </style>
+
+</resources>
+

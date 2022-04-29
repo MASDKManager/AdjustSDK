@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.ma.autosdk.ProgressWheel;
 import com.ma.autosdk.R;
 
 import java.util.Objects;
@@ -25,8 +24,7 @@ public class BaseActivity extends AppCompatActivity {
             progressDialog = new Dialog(this);
             progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             Objects.requireNonNull(progressDialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
-            progressDialog.setContentView(R.layout.progress_view);
-        } catch (Exception e) {
+         } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -35,8 +33,6 @@ public class BaseActivity extends AppCompatActivity {
     public void showLoader() {
         if (!isFinishing()) {
             if (progressDialog != null) {
-                ProgressWheel progressWheel = progressDialog.findViewById(R.id.progress);
-                progressWheel.startSpinning();
 
                 try {
                     if (!progressDialog.isShowing()) {

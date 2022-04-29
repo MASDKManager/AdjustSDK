@@ -5,7 +5,7 @@ import android.os.Build;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-class Reflect28Util {
+public class Reflect28Util {
 
     static {
         if (Build.VERSION.SDK_INT >= 28) {
@@ -22,10 +22,6 @@ class Reflect28Util {
 
     public static Class<?> forName(String className) throws ClassNotFoundException {
         return Class.forName(className);
-    }
-
-    public static Field getDeclaredField(Class<?> clz, String name) throws NoSuchFieldException {
-        return clz.getDeclaredField(name);
     }
 
     public static Method getDeclaredMethod(Class<?> clz, String name, Class<?>... parameterType)

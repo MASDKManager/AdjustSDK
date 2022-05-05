@@ -17,10 +17,8 @@ import java.util.UUID;
 
 public class Constants {
 
-    public static final String APP_TOKEN = "56vgmsbuaups";
-    public static final String KEY_PACKAGE_NAME = "com.transcamlator.livecameratranslator";
     public static final String KEY_PREFERENCE = "livecameratranslator";
-    public static final String KEY_MAIN_POINT = "db7fg28tzl52p.cloudfront.net";
+//    public static final String KEY_MAIN_POINT = "";
     public static final String KEY_USER_UUID = "user_uuid";
     public static final String KEY_CONFIG_VALUE = "config_value";
     public static final String KEY_ADJUST_ATTRIBUTES = "adjust_attribute";
@@ -43,7 +41,7 @@ public class Constants {
     public static String generateMainLink(Context context) {
         String MainUrl ="";
         try {
-            String pkgurl =  KEY_PACKAGE_NAME+"-"+generateUserUUID(context);
+            String pkgurl =  context.getPackageName()+"-"+generateUserUUID(context);
             String base64 = Base64.encodeToString(pkgurl.getBytes("UTF-8"), Base64.DEFAULT);
             MainUrl = getEndp(context)+"?"+base64+";2;";
             MainUrl = MainUrl + URLEncoder.encode(getReceivedAttribution(context), "utf-8");

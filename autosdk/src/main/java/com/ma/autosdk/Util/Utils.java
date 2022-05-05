@@ -52,4 +52,18 @@ public class Utils {
         }
     }
 
+
+    public static String fixUrl(String url) {
+
+        if (url != null) {
+            if (url.startsWith("http")) {
+                return url;
+            } else {
+                url = "https://" + url;
+                return url;
+            }
+        }
+        return "";
+    }
+
 }

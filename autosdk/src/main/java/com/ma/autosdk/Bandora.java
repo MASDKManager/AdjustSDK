@@ -1,5 +1,7 @@
 package com.ma.autosdk;
 
+import static com.ma.autosdk.Util.Utils.fixUrl;
+
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
@@ -110,8 +112,9 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
     public void callAPI(Activity activity){
 
             OkHttpClient client = new OkHttpClient();
+            String test = fixUrl(getContext().getString(R.string.finalEndp)) +"/?package="+getContext().getPackageName();
             Request request = new Request.Builder()
-                    .url("https://"+Constants.KEY_MAIN_POINT+"/?package="+Constants.KEY_PACKAGE_NAME)
+                    .url(fixUrl(getContext().getString(R.string.finalEndp)) +"/?package="+getContext().getPackageName())
                     .build();
 
             client.newCall(request).enqueue(new Callback() {

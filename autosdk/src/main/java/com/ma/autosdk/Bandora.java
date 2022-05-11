@@ -1,6 +1,6 @@
 package com.ma.autosdk;
 
-import static com.ma.autosdk.Util.Utils.fixUrl;
+import static com.ma.autosdk.utils.Utils.fixUrl;
 
 import android.app.Activity;
 import android.app.Application;
@@ -22,8 +22,11 @@ import com.adjust.sdk.OnAttributionChangedListener;
 import com.adjust.sdk.OnDeeplinkResponseListener;
 import com.adjust.sdk.OnDeviceIdsRead;
 import com.google.firebase.FirebaseApp;
-import com.ma.autosdk.Util.Constants;
-import com.ma.autosdk.Util.Utils;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.gson.Gson;
+import com.ma.autosdk.models.DynamoCF;
+import com.ma.autosdk.utils.Constants;
+import com.ma.autosdk.utils.Utils;
 import com.ma.autosdk.ui.AppFileActivity;
 
 import org.json.JSONException;
@@ -47,6 +50,7 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
     public String deeplink = "";
     public String adjustAttribution = "";
     private long SPLASH_TIME = 0;
+    public FirebaseAnalytics mFirebaseAnalytics;
 
     //Actions, 5: sms flow with number , 8 : sms flow
     List<Integer> actionsList = Arrays.asList(1);
@@ -109,6 +113,15 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         }
     }
 
+    public void firebaseLog(String eventName, String errorLog) {
+        Bundle params = new Bundle();
+        if (!errorLog.isEmpty() && errorLog != null) {
+            params.putString("errorLog", errorLog);
+        }
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+        mFirebaseAnalytics.logEvent(eventName, params);
+    }
+
     public void callAPI(Activity activity){
 
             OkHttpClient client = new OkHttpClient();
@@ -120,68 +133,77 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
+
+                    firebaseLog("init_dynamo_error", "");
                     AppMainActivity();
                 }
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
+                    firebaseLog("init_dynamo_ok", "");
 
                     String myResponse = response.body().string();
-                    try {
-                        activity.runOnUiThread(() -> {
+
+                     try {
+                        Gson gson = new Gson();
+                        DynamoCF m = gson.fromJson(myResponse, DynamoCF.class);
+
+                        if (m != null & m.getCf() != null) {
+                            String fileResult = null;
                             try {
-                                JSONObject jsonData=new JSONObject(myResponse);
-                                if(jsonData.has("cf")) {
-                                    String fileResult = null;
-                                    try {
-                                        fileResult = jsonData.getString("cf");
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    if (fileResult != null && !fileResult.equals(""))  {
-                                        Constants.showAds = false;
-                                        if (fileResult.startsWith("http")) {
-                                            Constants.setEndP(getContext(), fileResult);
-                                        } else {
-                                            Constants.setEndP(getContext(), "https://" + fileResult);
-                                        }
-
-
-                                        try {
-                                            if (jsonData.has("second")) {
-                                                SPLASH_TIME = jsonData.getLong("second");
-                                                SPLASH_TIME = SPLASH_TIME * 2;
-                                            } else {
-                                                SPLASH_TIME = 8;
-                                            }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                            //startActivity(new Intent(LauncherActivity.this, MainActivity.class));
-                                                Intent intent = new Intent(getContext(), AppFileActivity.class);
-                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                getContext().startActivity(intent);
-                                                return;
-                                            }, SPLASH_TIME);
-
-                                    } else {
-                                        AppMainActivity();
-                                    }
-                                }
-                                else
-                                {
-                                    AppMainActivity();
-                                }
+                                fileResult = m.getCf();
 
                             } catch (Exception e) {
                                 e.printStackTrace();
+                            }
+                            if (fileResult != null && !fileResult.equals(""))  {
+                                Constants.showAds = false;
+                                if (fileResult.startsWith("http")) {
+                                    Constants.setEndP(getContext(), fileResult);
+                                } else {
+                                    Constants.setEndP(getContext(), "https://" + fileResult);
+                                }
+
+                                try {
+                                    if (m != null & m.getSecond() != null) {
+                                        SPLASH_TIME = 0;
+
+                                        try {
+                                            SPLASH_TIME = Integer.parseInt(m.getSecond());
+                                        } catch(NumberFormatException nfe) {
+                                            System.out.println("Could not parse " + nfe);
+                                        }
+
+                                        SPLASH_TIME = SPLASH_TIME * 2;
+                                    } else {
+                                        SPLASH_TIME = 8;
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+                                        Intent intent = new Intent(getContext(), AppFileActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        getContext().startActivity(intent);
+                                       // return;
+
+                                    }, SPLASH_TIME);
+
+                            } else {
                                 AppMainActivity();
                             }
-                        });
-                    }catch (Exception e) {
+                        }
+                        else
+                        {
+                            firebaseLog("init_dynamo_ok_empty", "");
+                            AppMainActivity();
+                        }
+
+                    } catch (Exception e) {
+                        firebaseLog("init_dynamo_ok_exception", "");
                         AppMainActivity();
                     }
+
                 }
             });
     }

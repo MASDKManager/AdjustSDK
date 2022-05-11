@@ -15,10 +15,8 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.ma.autosdk.R;
-import com.ma.autosdk.Util.Constants;
+import com.ma.autosdk.utils.Constants;
 public class AppFileActivity extends Activity {
     private WebView webView;
     LinearLayout linearLayout;

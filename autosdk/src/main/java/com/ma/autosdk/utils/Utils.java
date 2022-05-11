@@ -1,4 +1,4 @@
-package com.ma.autosdk.Util;
+package com.ma.autosdk.utils;
 
 import static android.content.Context.MODE_PRIVATE;
 

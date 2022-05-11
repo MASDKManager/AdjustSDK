@@ -1,9 +1,8 @@
-package com.ma.autosdk.Util;
+package com.ma.autosdk.utils;
 
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;

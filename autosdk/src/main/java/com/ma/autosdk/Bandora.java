@@ -51,6 +51,7 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
     public String adjustAttribution = "";
     private long SPLASH_TIME = 0;
     public FirebaseAnalytics mFirebaseAnalytics;
+    public Long timestamp;
 
     //Actions, 5: sms flow with number , 8 : sms flow
     List<Integer> actionsList = Arrays.asList(1);
@@ -67,6 +68,9 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         config.setOnAttributionChangedListener(new OnAttributionChangedListener() {
             @Override
             public void onAttributionChanged(AdjustAttribution attribution) {
+                long elapsedTimeInSeconds = (System.nanoTime() - timestamp) / 1000000000;
+                firebaseLog("adjust_attr_received_" + elapsedTimeInSeconds, "");
+
                 if (attribution != null) {
                     Constants.setReceivedAttribution(getContext(),attribution.toString());
                     Bandora.this.adjustAttribution = attribution.toString();
@@ -93,6 +97,7 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         });
 
         Adjust.onCreate(config);
+        timestamp = System.nanoTime();
         Adjust.addSessionCallbackParameter("user_uuid", Utils.generateClickId(getContext()));
 
         Application app = (Application) Utils.makeContextSafe((Application) getContext());

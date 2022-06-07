@@ -4,7 +4,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.ma.autosdk.Reflect28Util;
 
 import java.lang.reflect.Method;
@@ -64,6 +66,22 @@ public class Utils {
             }
         }
         return "";
+    }
+
+    public static void logEvent(Context c , String eventName, String errorLog) {
+
+        FirebaseAnalytics mFirebaseAnalytics;
+        Bundle params = new Bundle();
+        if (!errorLog.isEmpty()) {
+            params.putString("errorLog", errorLog);
+        }
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(c);
+        mFirebaseAnalytics.logEvent(eventName, params);
+
+    }
+
+    public static long getElapsedTimeInSeconds(long timestamp) {
+        return (System.nanoTime() - timestamp) / 1000000000;
     }
 
 }

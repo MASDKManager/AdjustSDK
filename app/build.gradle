@@ -9,7 +9,7 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        applicationId "com.transcamlator.livecameratranslator"
+        applicationId "com.mag.dream"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

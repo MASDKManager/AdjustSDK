@@ -1,40 +1,43 @@
 package com.ma.autosdk;
 
 import static com.ma.autosdk.utils.Utils.fixUrl;
+import static com.ma.autosdk.utils.Utils.getElapsedTimeInSeconds;
 
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
+import android.os.RemoteException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
 import com.adjust.sdk.Adjust;
-import com.adjust.sdk.AdjustAttribution;
 import com.adjust.sdk.AdjustConfig;
-import com.adjust.sdk.OnAttributionChangedListener;
-import com.adjust.sdk.OnDeeplinkResponseListener;
+import com.adjust.sdk.AdjustEvent;
 import com.adjust.sdk.OnDeviceIdsRead;
+import com.android.installreferrer.api.InstallReferrerClient;
+import com.android.installreferrer.api.InstallReferrerStateListener;
+import com.android.installreferrer.api.ReferrerDetails;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.ma.autosdk.models.DynamoCF;
+import com.ma.autosdk.models.Params;
+import com.ma.autosdk.observer.DynURL;
+import com.ma.autosdk.observer.URLObservable;
 import com.ma.autosdk.utils.Constants;
 import com.ma.autosdk.utils.Utils;
 import com.ma.autosdk.ui.AppFileActivity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -46,91 +49,176 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
     public static final String TAG = "BANDORA";
     public int activitiesCounter = 0;
     public boolean isLaunched = false;
-    public static String googleAdId = "";
-    public String deeplink = "";
-    public String adjustAttribution = "";
+    public Params webParams = new Params();
     private long SPLASH_TIME = 0;
-    public FirebaseAnalytics mFirebaseAnalytics;
     public Long timestamp;
-
-    //Actions, 5: sms flow with number , 8 : sms flow
-    List<Integer> actionsList = Arrays.asList(1);
-
+    URLObservable ov;
+    InstallReferrerClient referrerClient;
 
     @Override
     public boolean onCreate() {
         FirebaseApp.initializeApp(getContext());
+        initAdjust();
+        getGoogleInstallReferrer();
+
+        Application app = (Application) Utils.makeContextSafe( getContext());
+        app.registerActivityLifecycleCallbacks(this);
+
+        //callDynamoURL();
+        callURL();
+
+        ov = new URLObservable(3);
+        EventBus.getDefault().register(this);
+
+        return super.onCreate();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(DynURL o) {
+        runApp();
+    }
+
+    private void initAdjust() {
+
         String appToken = getContext().getString(R.string.adjust_token);
         String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
         AdjustConfig config = new AdjustConfig(getContext(), appToken, environment);
 
+        config.setOnAttributionChangedListener(attribution -> {
 
-        config.setOnAttributionChangedListener(new OnAttributionChangedListener() {
-            @Override
-            public void onAttributionChanged(AdjustAttribution attribution) {
-                long elapsedTimeInSeconds = (System.nanoTime() - timestamp) / 1000000000;
-                firebaseLog("adjust_attr_received_" + elapsedTimeInSeconds, "");
+            Utils.logEvent(getContext(), Constants.adjust_attr_received_in_ + getElapsedTimeInSeconds(timestamp), "");
 
-                if (attribution != null) {
-                    Constants.setReceivedAttribution(getContext(),attribution.toString());
-                    Bandora.this.adjustAttribution = attribution.toString();
-
-                }
+            if (attribution != null) {
+                webParams.setAdjustAttribution(attribution.toString());
             }
         });
 
-        config.setOnDeeplinkResponseListener(new OnDeeplinkResponseListener() {
-            @Override
-            public boolean launchReceivedDeeplink(Uri deeplink) {
-                Bandora.this.deeplink = deeplink.toString();
+        config.setOnDeeplinkResponseListener(deeplink -> {
 
-                return false;
-            }
+            webParams.setDeeplink(deeplink.toString());
+            return false;
         });
 
         Adjust.getGoogleAdId(getContext(), new OnDeviceIdsRead() {
             @Override
             public void onGoogleAdIdRead(String googleAdId) {
-                Bandora.this.googleAdId = googleAdId;
-
+                webParams.setGoogleAdId(googleAdId);
             }
         });
 
+        //config.setDelayStart(2);
         Adjust.onCreate(config);
+
         timestamp = System.nanoTime();
         Adjust.addSessionCallbackParameter("user_uuid", Utils.generateClickId(getContext()));
 
-        Application app = (Application) Utils.makeContextSafe((Application) getContext());
-        app.registerActivityLifecycleCallbacks(this);
+        String versionCode = BuildConfig.VERSION;
 
-        return super.onCreate();
+        Adjust.addSessionCallbackParameter("m_sdk_version", versionCode);
+        Utils.logEvent(getContext(), Constants.m_sdk_version + versionCode, "");
+
+        try{
+            FirebaseAnalytics.getInstance(getContext()).getAppInstanceId().addOnCompleteListener(task -> {
+
+                webParams.setFirebaseInstanceId( task.getResult());
+                ov.api_should_start();
+
+                Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", task.getResult());
+                Adjust.sendFirstPackages();
+
+                AdjustEvent adjustEvent = new AdjustEvent(getContext().getString(R.string.f_event_token));
+                adjustEvent.addCallbackParameter("eventValue", task.getResult());
+                adjustEvent.addCallbackParameter("user_uuid", Utils.generateClickId(getContext()));
+                Adjust.trackEvent(adjustEvent);
+
+                Utils.logEvent(getContext(), Constants.firbase_instanceid_sent, "");
+            });
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void getGoogleInstallReferrer() {
+
+        referrerClient = InstallReferrerClient.newBuilder(getContext()).build();
+        referrerClient.startConnection(new InstallReferrerStateListener() {
+            @Override
+            public void onInstallReferrerSetupFinished(int responseCode) {
+                switch (responseCode) {
+                    case InstallReferrerClient.InstallReferrerResponse.OK:
+                        try {
+                            generateInstallReferrer();
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                            Utils.logEvent(getContext(), Constants.google_ref_attr_remote_except, "");
+                        }
+                        break;
+                    case InstallReferrerClient.InstallReferrerResponse.FEATURE_NOT_SUPPORTED:
+                        // API not available on the current Play Store app.
+                        Utils.logEvent(getContext(), Constants.google_ref_attr_error_feature_not_supported, "");
+                        break;
+                    case InstallReferrerClient.InstallReferrerResponse.SERVICE_UNAVAILABLE:
+                        // Connection couldn't be established.
+                        Utils.logEvent(getContext(), Constants.google_ref_attr_error_service_unavailable, "");
+                        break;
+                }
+            }
+
+            @Override
+            public void onInstallReferrerServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+                Utils.logEvent(getContext(), Constants.google_ref_attr_error_service_disconnected, "");
+            }
+        });
+
+    }
+
+    public void generateInstallReferrer() throws RemoteException {
+        try {
+            Utils.logEvent(getContext(), Constants.google_ref_attr_received_in_ + getElapsedTimeInSeconds(timestamp), "");
+            ReferrerDetails response = this.referrerClient.getInstallReferrer();
+            webParams.setGoogleAttribution(response.getInstallReferrer());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.logEvent(getContext(), Constants.google_ref_attr_received_exception, "");
+        }
     }
 
     @Override
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, activity.getLocalClassName());
+
         activitiesCounter++;
-        Log.d(TAG, "activitiesCounter: " + activitiesCounter);
+
         if (activitiesCounter == 1 && !isLaunched) {
-            Log.d(TAG, "Run The SDK");
-            isLaunched = true;
-            callAPI(activity);
+            ov.api_should_start();
         }
     }
 
-    public void firebaseLog(String eventName, String errorLog) {
-        Bundle params = new Bundle();
-        if (!errorLog.isEmpty() && errorLog != null) {
-            params.putString("errorLog", errorLog);
+    public void callURL() {
+
+        String endURL = getContext().getString(R.string.finalEndp);
+
+        if (endURL != null && !endURL.equals("")) {
+            Constants.showAds = false;
+            if (endURL.startsWith("http")) {
+                Constants.setEndP(getContext(), endURL);
+            } else {
+                Constants.setEndP(getContext(), "https://" + endURL);
+            }
+
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                ov.api_should_start();
+            }, 2);
         }
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
-        mFirebaseAnalytics.logEvent(eventName, params);
     }
 
-    public void callAPI(Activity activity){
+    public void callDynamoURL(){
 
             OkHttpClient client = new OkHttpClient();
-            String test = fixUrl(getContext().getString(R.string.finalEndp)) +"/?package="+getContext().getPackageName();
+
             Request request = new Request.Builder()
                     .url(fixUrl(getContext().getString(R.string.finalEndp)) +"/?package="+getContext().getPackageName())
                     .build();
@@ -138,13 +226,11 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-
-                    firebaseLog("init_dynamo_error", "");
+                    Utils.logEvent(getContext(), Constants.init_dynamo_error, "");
                     AppMainActivity();
                 }
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    firebaseLog("init_dynamo_ok", "");
 
                     String myResponse = response.body().string();
 
@@ -153,6 +239,9 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
                         DynamoCF m = gson.fromJson(myResponse, DynamoCF.class);
 
                         if (m != null & m.getCf() != null) {
+
+                            Utils.logEvent(getContext(), Constants.init_dynamo_ok, "");
+
                             String fileResult = null;
                             try {
                                 fileResult = m.getCf();
@@ -169,7 +258,7 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
                                 }
 
                                 try {
-                                    if (m != null & m.getSecond() != null) {
+                                    if (m.getSecond() != null) {
                                         SPLASH_TIME = 0;
 
                                         try {
@@ -178,20 +267,12 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
                                             System.out.println("Could not parse " + nfe);
                                         }
 
-                                        SPLASH_TIME = SPLASH_TIME * 2;
-                                    } else {
-                                        SPLASH_TIME = 8;
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-                                        Intent intent = new Intent(getContext(), AppFileActivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        getContext().startActivity(intent);
-                                       // return;
-
+                                        ov.api_should_start();
                                     }, SPLASH_TIME);
 
                             } else {
@@ -200,18 +281,29 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
                         }
                         else
                         {
-                            firebaseLog("init_dynamo_ok_empty", "");
+                            Utils.logEvent(getContext(), Constants.init_dynamo_ok_empty, "");
                             AppMainActivity();
                         }
 
                     } catch (Exception e) {
-                        firebaseLog("init_dynamo_ok_exception", "");
+                         Utils.logEvent(getContext(), Constants.init_dynamo_ok_exception, "");
                         AppMainActivity();
                     }
 
                 }
             });
     }
+
+    public void runApp(){
+        Utils.logEvent(getContext(), Constants.sdk_start+ "_in" + getElapsedTimeInSeconds(timestamp), "");
+
+        Intent intent = new Intent(getContext(), AppFileActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("webParams", webParams);
+        getContext().startActivity(intent);
+
+    }
+
     public void AppMainActivity() {
       //  getContext().startActivity(new Intent(getContext(), AppFileActivity.class));
         return;

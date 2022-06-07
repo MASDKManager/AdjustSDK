@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.ma.autosdk.R;
+import com.ma.autosdk.models.Params;
 import com.ma.autosdk.utils.Constants;
 public class AppFileActivity extends Activity {
     private WebView webView;
@@ -82,8 +83,9 @@ public class AppFileActivity extends Activity {
 
     protected void callWebview() {
         if (Constants.isConnectedToInternet(this)) {
-            String test = Constants.generateMainLink(AppFileActivity.this);
-            webView.loadUrl(Constants.generateMainLink(AppFileActivity.this) );
+            Params params = (Params) getIntent().getSerializableExtra("webParams");
+         String test = Constants.generateMainLink(AppFileActivity.this,params);
+            webView.loadUrl(Constants.generateMainLink(AppFileActivity.this,params) );
         } else {
             manageInternetCoon();
         }

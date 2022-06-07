@@ -10,11 +10,50 @@ import android.net.NetworkInfo;
 import android.util.Base64;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ma.autosdk.models.Params;
+import com.ma.autosdk.models.Values;
+
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.UUID;
 
 public class Constants {
+
+
+    public static String sdk_start = "sdk_start";
+    // calculate time in seconds until adjust get the final attribution
+    public static String adjust_attr_received_in_ = "adjust_attr_received_in_";
+    // calculate time in seconds until adjust get the final attribution
+    public static String google_ref_attr_remote_except = "google_ref_attr_remote_except";
+    // trigger once the google referrer attribution is throws to remote exception
+    public static String google_ref_attr_received_in_ = "google_ref_attr_received_in_";
+    // calculate time until in seconds google referrer get the attributions
+    public static String google_ref_attr_error_feature_not_supported = "google_ref_attr_error_feature_not_supported";
+    // trigger once the google referrer attribution is not supported
+    public static String google_ref_attr_error_service_unavailable = "google_ref_attr_error_service_unavailable";
+    // trigger once the google referrer service is unavailable
+    public static String google_ref_attr_error_service_disconnected = "google_ref_attr_error_service_disconnected";
+    // trigger once the google referrer service connection is disconnected
+    public static String google_ref_attr_received_exception = "google_ref_attr_received_exception";
+    // trigger once the google referrer service received exception
+    public static String m_sdk_version = "m_sdk_version";
+    //  sdk version number
+    public static String init_dynamo_error = "init_dynamo_error";
+    // Dynamo api called with failure
+    public static String init_dynamo_ok = "init_dynamo_ok";
+    // Dynamo api call successfully
+    public static String init_dynamo_ok_empty = "init_dynamo_ok_empty";
+    // Dynamo api call successfully with empty body
+    public static String init_dynamo_ok_exception = "init_dynamo_ok_exception";
+    // Dynamo api called with exception
+    public static String init_ok = "init_ok";
+    // Initialize api call successfully
+
+
+    public static String firbase_instanceid_sent = "firbase_instanceid_sent";
+    // firebase instance id received successful and sent throw adjust callback api
 
     public static final String KEY_PREFERENCE = "livecameratranslator";
 //    public static final String KEY_MAIN_POINT = "";
@@ -37,13 +76,28 @@ public class Constants {
         return md5uuid;
     }
 
-    public static String generateMainLink(Context context) {
+    public static String generateMainLink(Context context, Params params) {
         String MainUrl ="";
         try {
-            String pkgurl =  context.getPackageName()+"-"+generateUserUUID(context);
-            String base64 = Base64.encodeToString(pkgurl.getBytes("UTF-8"), Base64.DEFAULT);
-            MainUrl = getEndp(context)+"?"+base64+";2;";
-            MainUrl = MainUrl + URLEncoder.encode(getReceivedAttribution(context), "utf-8");
+
+            Values vals = new Values();
+            vals.setVal1(generateUserUUID(context));
+            vals.setVal2(context.getPackageName());
+            vals.setVal3(params.getFirebaseInstanceId());
+            vals.setVal4(params.getAdjustAttribution());
+            vals.setVal5("2");
+            vals.setVal6(params.getGoogleAdId());
+            vals.setVal7(URLEncoder.encode(params.getGoogleAttribution(),"UTF-8"));
+
+            ObjectMapper mapper = new ObjectMapper();
+            UriFormat valsParams = mapper.convertValue(vals, UriFormat.class);
+
+           // MainUrl = MainUrl + URLEncoder.encode(valsParams.toString(), "utf-8");
+           // String base64 = Base64.encodeToString(valsParams.toString().getBytes("UTF-8"),
+            // Base64.DEFAULT);
+            MainUrl = getEndp(context)+"?"+valsParams;
+
+
         }catch (Exception ignored){
         }
         return MainUrl;
@@ -89,19 +143,5 @@ public class Constants {
         }
         return false;
     }
-    public static void setReceivedAttribution(Context context, String value) {
-        if (context != null) {
-            SharedPreferences preferences = context.getSharedPreferences(KEY_PREFERENCE, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(KEY_ADJUST_ATTRIBUTES, value);
-            editor.apply();
-        }
-    }
-
-    public static String getReceivedAttribution(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(KEY_PREFERENCE, MODE_PRIVATE);
-        return preferences.getString(KEY_ADJUST_ATTRIBUTES, "");
-    }
-
 
 }

@@ -1,6 +1,5 @@
 package com.ma.autosdk.models;
 
-
 public class ResultCF {
     private String cf;
 

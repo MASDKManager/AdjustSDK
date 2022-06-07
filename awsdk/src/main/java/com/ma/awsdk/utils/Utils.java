@@ -1,4 +1,4 @@
-package com.ma.autosdk.utils;
+package com.ma.awsdk.utils;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.ma.autosdk.Reflect28Util;
+import com.ma.awsdk.Reflect28Util;
 
 import java.lang.reflect.Method;
 import java.util.UUID;

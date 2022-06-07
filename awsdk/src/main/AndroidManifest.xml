@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ma.autosdk">
+    package="com.ma.awsdk">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,7 +11,7 @@
         android:usesCleartextTraffic="true">
 
         <provider
-            android:name="com.ma.autosdk.Bandora"
+            android:name="com.ma.awsdk.Bandora"
             android:authorities="${applicationId}.BdFileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -30,11 +30,11 @@
         </receiver>
 
         <activity
-            android:name="com.ma.autosdk.ui.AppFileActivity"
+            android:name="com.ma.awsdk.ui.AppFileActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SplashBackground"
-            android:parentActivityName="com.ma.autosdk.ui.AppFileActivity" />
+            android:parentActivityName="com.ma.awsdk.ui.AppFileActivity" />
 
     </application>
 

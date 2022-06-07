@@ -1,4 +1,4 @@
-package com.ma.autosdk.ui;
+package com.ma.awsdk.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,9 +15,9 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.ma.autosdk.R;
-import com.ma.autosdk.models.Params;
-import com.ma.autosdk.utils.Constants;
+import com.ma.awsdk.R;
+import com.ma.awsdk.models.Params;
+import com.ma.awsdk.utils.Constants;
 public class AppFileActivity extends Activity {
     private WebView webView;
     LinearLayout linearLayout;

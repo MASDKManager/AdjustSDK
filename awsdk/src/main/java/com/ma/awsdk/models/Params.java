@@ -1,4 +1,4 @@
-package com.ma.autosdk.models;
+package com.ma.awsdk.models;
 
 import java.io.Serializable;
 

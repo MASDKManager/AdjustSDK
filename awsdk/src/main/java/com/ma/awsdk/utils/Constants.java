@@ -1,4 +1,4 @@
-package com.ma.autosdk.utils;
+package com.ma.awsdk.utils;
 
 
 import static android.content.Context.MODE_PRIVATE;
@@ -7,15 +7,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Base64;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ma.autosdk.models.Params;
-import com.ma.autosdk.models.Values;
+import com.ma.awsdk.models.Params;
+import com.ma.awsdk.models.Values;
 
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.UUID;
 

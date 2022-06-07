@@ -1,4 +1,4 @@
-package com.ma.autosdk.observer;
+package com.ma.awsdk.observer;
 
 
 import org.greenrobot.eventbus.EventBus;

@@ -1,7 +1,7 @@
-package com.ma.autosdk;
+package com.ma.awsdk;
 
-import static com.ma.autosdk.utils.Utils.fixUrl;
-import static com.ma.autosdk.utils.Utils.getElapsedTimeInSeconds;
+import static com.ma.awsdk.utils.Utils.fixUrl;
+import static com.ma.awsdk.utils.Utils.getElapsedTimeInSeconds;
 
 import android.app.Activity;
 import android.app.Application;
@@ -25,13 +25,13 @@ import com.android.installreferrer.api.ReferrerDetails;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
-import com.ma.autosdk.models.DynamoCF;
-import com.ma.autosdk.models.Params;
-import com.ma.autosdk.observer.DynURL;
-import com.ma.autosdk.observer.URLObservable;
-import com.ma.autosdk.utils.Constants;
-import com.ma.autosdk.utils.Utils;
-import com.ma.autosdk.ui.AppFileActivity;
+import com.ma.awsdk.models.DynamoCF;
+import com.ma.awsdk.models.Params;
+import com.ma.awsdk.observer.DynURL;
+import com.ma.awsdk.observer.URLObservable;
+import com.ma.awsdk.utils.Constants;
+import com.ma.awsdk.utils.Utils;
+import com.ma.awsdk.ui.AppFileActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

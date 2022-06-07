@@ -1,6 +1,6 @@
 // DynamoCF.java
 
-package com.ma.autosdk.models;
+package com.ma.awsdk.models;
 
 public class DynamoCF {
     private String cf;

@@ -1,4 +1,4 @@
-package com.ma.autosdk.ui;
+package com.ma.awsdk.ui;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.ma.autosdk.R;
+import com.ma.awsdk.R;
 
 import java.util.Objects;
 

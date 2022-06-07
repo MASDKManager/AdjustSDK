@@ -5,8 +5,8 @@ plugins {
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
-group = 'com.ma'
-version = '0.1.9'
+group = 'com.wma'
+version = '1.0.0'
 
 android {
     compileSdkVersion 30
@@ -69,8 +69,6 @@ dependencies {
 
 }
 
-group = 'com.ma'
-version = '0.1.9'
 
 // Add sources as an artifact
 task sourceJar(type: Jar) {
@@ -132,7 +130,7 @@ tasks.all { task ->
 publishing {
     repositories {
         maven {
-            url "s3://libraryartifacts/Android/autosdk/"
+            url "s3://libraryartifacts/Android/awsdk/"
             credentials(AwsCredentials) {
                 accessKey "AKIAQ3S7UPEDEPML3TWI"
                 secretKey "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"

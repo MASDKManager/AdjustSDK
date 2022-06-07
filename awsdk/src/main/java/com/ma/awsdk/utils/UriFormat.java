@@ -1,4 +1,4 @@
-package com.ma.autosdk.utils;
+package com.ma.awsdk.utils;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 

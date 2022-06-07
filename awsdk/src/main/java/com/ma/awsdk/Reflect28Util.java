@@ -1,4 +1,4 @@
-package com.ma.autosdk;
+package com.ma.awsdk;
 
 import android.os.Build;
 

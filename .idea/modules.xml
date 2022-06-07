@@ -7,10 +7,10 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.unitTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.autosdk.iml" filepath="$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.autosdk.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/autosdk/AndroidSDK.autosdk.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/autosdk/AndroidSDK.autosdk.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/autosdk/AndroidSDK.autosdk.main.iml" filepath="$PROJECT_DIR$/.idea/modules/autosdk/AndroidSDK.autosdk.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/autosdk/AndroidSDK.autosdk.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/autosdk/AndroidSDK.autosdk.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.awsdk.iml" filepath="$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.awsdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/awsdk/AndroidSDK.awsdk.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/awsdk/AndroidSDK.awsdk.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/awsdk/AndroidSDK.awsdk.main.iml" filepath="$PROJECT_DIR$/.idea/modules/awsdk/AndroidSDK.awsdk.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/awsdk/AndroidSDK.awsdk.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/awsdk/AndroidSDK.awsdk.unitTest.iml" />
     </modules>
   </component>
 </project>

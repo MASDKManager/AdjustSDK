@@ -2,9 +2,6 @@
 <resources>
     <string name="adjust_token" />
     <string name="finalEndp" />
-    <string name="enKey" />
-    <string name="header"/>
     <string name="f_event_token" />
-
     <string name="close">close</string>
 </resources>

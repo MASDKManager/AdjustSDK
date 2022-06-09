@@ -50,20 +50,11 @@ public class Values {
         this.val6 = val6;
     }
 
-    public String getVal7() {
-        return val7;
-    }
-
-    public void setVal7(String val7) {
-        this.val7 = val7;
-    }
-
     String val1 = "";
     String val2 = "";
     String val3 = "";
     String val4 = "";
     String val5 = "";
     String val6 = "";
-    String val7 = "";
 
 }

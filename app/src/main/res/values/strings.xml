@@ -2,7 +2,6 @@
     <string name="app_name">AndroidSDK</string>
     <string name="app_scheme">directapphuss</string>
     <string name="adjust_token">p6fhzkkvwruo</string>
-<!--    <string name="finalEndp">d6lah3d5kdgxz.cloudfront.net</string>-->
     <string name="finalEndp">d10if2200nyh7m.cloudfront.net</string>
     <string name="f_event_token"  >w4q0e2</string>
 

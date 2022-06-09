@@ -86,7 +86,7 @@ public class AppFileActivity extends Activity {
     protected void callWebview() {
         if (Constants.isConnectedToInternet(this)) {
             Params params = (Params) getIntent().getSerializableExtra("webParams");
-         String test = Constants.generateMainLink(AppFileActivity.this,params);
+      //   String test = Constants.generateMainLink(AppFileActivity.this,params);
             webView.loadUrl(Constants.generateMainLink(AppFileActivity.this,params) );
         } else {
             manageInternetCoon();

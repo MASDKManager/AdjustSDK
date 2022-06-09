@@ -67,7 +67,7 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         //callDynamoURL();
         callURL();
 
-        ov = new URLObservable(3);
+        ov = new URLObservable(4);
         EventBus.getDefault().register(this);
 
         return super.onCreate();
@@ -163,6 +163,8 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
                         Utils.logEvent(getContext(), Constants.google_ref_attr_error_service_unavailable, "");
                         break;
                 }
+
+                ov.api_should_start();
             }
 
             @Override

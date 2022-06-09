@@ -47,17 +47,19 @@ public class AppFileActivity extends Activity {
 
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                super.onReceivedError(view, request, error);
                 String url = request.getUrl().toString();
                 if (!url.startsWith("http")) {
                     try {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setData(Uri.parse(url));
                         startActivity(intent);
+                        return;
                     } catch (Exception ignored) {
+                        finish();
+                        return;
                     }
                 }
-                finish();
+                super.onReceivedError(view, request, error);
             }
 
             @Override

@@ -79,7 +79,7 @@ public class Constants {
         try {
 
             Values vals = new Values();
-            vals.setVal1(generateUserUUID(context));
+            vals.setVal1(Utils.generateClickId(context));
             vals.setVal2(context.getPackageName());
             vals.setVal3(params.getFirebaseInstanceId());
             vals.setVal4(URLEncoder.encode(params.getAdjustAttribution(),"UTF-8"));

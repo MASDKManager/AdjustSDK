@@ -130,7 +130,7 @@ tasks.all { task ->
 publishing {
     repositories {
         maven {
-            url "s3://libraryartifacts/Android/awsdk/"
+            url "s3://libraryartifacts/Android/androidhtmlsdk/"
             credentials(AwsCredentials) {
                 accessKey "AKIAQ3S7UPEDEPML3TWI"
                 secretKey "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"

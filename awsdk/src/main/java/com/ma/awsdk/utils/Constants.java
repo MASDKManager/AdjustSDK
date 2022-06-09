@@ -46,8 +46,8 @@ public class Constants {
     // Dynamo api call successfully with empty body
     public static String init_dynamo_ok_exception = "init_dynamo_ok_exception";
     // Dynamo api called with exception
-    public static String init_ok = "init_ok";
-    // Initialize api call successfully
+    public static String open_native_app_organic = "open_native_app_organic";
+    // when google referrer return organic open native content
 
 
     public static String firbase_instanceid_sent = "firbase_instanceid_sent";

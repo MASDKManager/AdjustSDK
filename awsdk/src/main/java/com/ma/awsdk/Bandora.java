@@ -304,6 +304,7 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         String attribution = webParams.getGoogleAttribution();
         if (!BuildConfig.DEBUG) {
             if (attribution == null || attribution.isEmpty() || attribution.toLowerCase().contains("organic")) {
+                Utils.logEvent(getContext(), Constants.open_native_app_organic , "");
                 return;
             }
         }

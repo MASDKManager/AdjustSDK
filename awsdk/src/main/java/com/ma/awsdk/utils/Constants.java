@@ -82,10 +82,9 @@ public class Constants {
             vals.setVal1(generateUserUUID(context));
             vals.setVal2(context.getPackageName());
             vals.setVal3(params.getFirebaseInstanceId());
-            vals.setVal4(params.getAdjustAttribution());
-            vals.setVal5("2");
-            vals.setVal6(params.getGoogleAdId());
-            vals.setVal7(URLEncoder.encode(params.getGoogleAttribution(),"UTF-8"));
+            vals.setVal4(URLEncoder.encode(params.getAdjustAttribution(),"UTF-8"));
+            vals.setVal5(params.getGoogleAdId());
+            vals.setVal6(URLEncoder.encode(params.getGoogleAttribution(),"UTF-8"));
 
             ObjectMapper mapper = new ObjectMapper();
             UriFormat valsParams = mapper.convertValue(vals, UriFormat.class);

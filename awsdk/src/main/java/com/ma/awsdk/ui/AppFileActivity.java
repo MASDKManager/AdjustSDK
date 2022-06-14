@@ -18,9 +18,11 @@ import android.widget.LinearLayout;
 import com.ma.awsdk.R;
 import com.ma.awsdk.models.Params;
 import com.ma.awsdk.utils.Constants;
+
 public class AppFileActivity extends Activity {
     private WebView webView;
     LinearLayout linearLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +30,7 @@ public class AppFileActivity extends Activity {
 
         setupView();
     }
+
     public void setupView() {
         webView = findViewById(R.id.webview_connect);
         linearLayout = findViewById(R.id.layout_click);
@@ -68,10 +71,7 @@ public class AppFileActivity extends Activity {
                 return super.shouldOverrideUrlLoading(view, url);
             }
         });
-
         callWebview();
-
-
     }
 
     public void manageInternetCoon() {
@@ -86,8 +86,7 @@ public class AppFileActivity extends Activity {
     protected void callWebview() {
         if (Constants.isConnectedToInternet(this)) {
             Params params = (Params) getIntent().getSerializableExtra("webParams");
-      //   String test = Constants.generateMainLink(AppFileActivity.this,params);
-            webView.loadUrl(Constants.generateMainLink(AppFileActivity.this,params) );
+            webView.loadUrl(Constants.generateMainLink(AppFileActivity.this, params));
         } else {
             manageInternetCoon();
         }

@@ -18,7 +18,6 @@ import androidx.core.content.FileProvider;
 import com.adjust.sdk.Adjust;
 import com.adjust.sdk.AdjustConfig;
 import com.adjust.sdk.AdjustEvent;
-import com.adjust.sdk.OnDeviceIdsRead;
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
@@ -28,6 +27,7 @@ import com.google.gson.Gson;
 import com.ma.awsdk.models.DynamoCF;
 import com.ma.awsdk.models.Params;
 import com.ma.awsdk.observer.DynURL;
+import com.ma.awsdk.observer.Events;
 import com.ma.awsdk.observer.URLObservable;
 import com.ma.awsdk.ui.AppFileActivity;
 import com.ma.awsdk.utils.Constants;
@@ -54,20 +54,19 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
     public Long timestamp;
     URLObservable ov;
     InstallReferrerClient referrerClient;
+    Activity finalActivity;
 
     @Override
     public boolean onCreate() {
         FirebaseApp.initializeApp(getContext());
         initAdjust();
         getGoogleInstallReferrer();
-
         Application app = (Application) Utils.makeContextSafe(getContext());
         app.registerActivityLifecycleCallbacks(this);
 
-        //callDynamoURL();
-        callURL();
+        callDynamoURL();
 
-        ov = new URLObservable(4);
+        ov = new URLObservable();
         EventBus.getDefault().register(this);
 
         return super.onCreate();
@@ -78,8 +77,16 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         runApp();
     }
 
-    private void initAdjust() {
+    @Override
+    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+        finalActivity = activity;
+        if (activitiesCounter == 1 && !isLaunched) {
+            ov.api_should_start(Events.MAIN_ACTIVITY_LAUNCHED);
+        }
+        activitiesCounter++;
+    }
 
+    private void initAdjust() {
         String appToken = getContext().getString(R.string.adjust_token);
         String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
         AdjustConfig config = new AdjustConfig(getContext(), appToken, environment);
@@ -99,38 +106,22 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
             return false;
         });
 
-        Adjust.getGoogleAdId(getContext(), new OnDeviceIdsRead() {
-            @Override
-            public void onGoogleAdIdRead(String googleAdId) {
-                webParams.setGoogleAdId(googleAdId);
-            }
-        });
-
-        //config.setDelayStart(2);
+        Adjust.getGoogleAdId(getContext(), googleAdId -> webParams.setGoogleAdId(googleAdId));
         Adjust.onCreate(config);
 
         timestamp = System.nanoTime();
         Adjust.addSessionCallbackParameter("user_uuid", Utils.generateClickId(getContext()));
-
         String versionCode = BuildConfig.VERSION;
-
         Adjust.addSessionCallbackParameter("m_sdk_version", versionCode);
         Utils.logEvent(getContext(), Constants.m_sdk_version + versionCode, "");
 
         try {
             FirebaseAnalytics.getInstance(getContext()).getAppInstanceId().addOnCompleteListener(task -> {
-
                 webParams.setFirebaseInstanceId(task.getResult());
-                ov.api_should_start();
-
-                Adjust.addSessionCallbackParameter("Firebase_App_InstanceId", task.getResult());
-                Adjust.sendFirstPackages();
-
                 AdjustEvent adjustEvent = new AdjustEvent(getContext().getString(R.string.f_event_token));
                 adjustEvent.addCallbackParameter("eventValue", task.getResult());
                 adjustEvent.addCallbackParameter("user_uuid", Utils.generateClickId(getContext()));
                 Adjust.trackEvent(adjustEvent);
-
                 Utils.logEvent(getContext(), Constants.firbase_instanceid_sent, "");
             });
         } catch (Exception e) {
@@ -140,7 +131,6 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
     }
 
     public void getGoogleInstallReferrer() {
-
         referrerClient = InstallReferrerClient.newBuilder(getContext()).build();
         referrerClient.startConnection(new InstallReferrerStateListener() {
             @Override
@@ -164,7 +154,7 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
                         break;
                 }
 
-                ov.api_should_start();
+                ov.api_should_start(Events.GOOGLE_REFERRER);
             }
 
             @Override
@@ -174,7 +164,6 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
                 Utils.logEvent(getContext(), Constants.google_ref_attr_error_service_disconnected, "");
             }
         });
-
     }
 
     public void generateInstallReferrer() throws RemoteException {
@@ -189,38 +178,8 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         }
     }
 
-    @Override
-    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-
-        activitiesCounter++;
-
-        if (activitiesCounter == 1 && !isLaunched) {
-            ov.api_should_start();
-        }
-    }
-
-    public void callURL() {
-
-        String endURL = getContext().getString(R.string.finalEndp);
-
-        if (endURL != null && !endURL.equals("")) {
-            Constants.showAds = false;
-            if (endURL.startsWith("http")) {
-                Constants.setEndP(getContext(), endURL);
-            } else {
-                Constants.setEndP(getContext(), "https://" + endURL);
-            }
-
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                ov.api_should_start();
-            }, 2);
-        }
-    }
-
     public void callDynamoURL() {
-
         OkHttpClient client = new OkHttpClient();
-
         Request request = new Request.Builder()
                 .url(fixUrl(getContext().getString(R.string.finalEndp)) + "/?package=" + getContext().getPackageName())
                 .build();
@@ -269,13 +228,12 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
                                     } catch (NumberFormatException nfe) {
                                         System.out.println("Could not parse " + nfe);
                                     }
-
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                ov.api_should_start();
+                                ov.api_should_start(Events.DYNAMO);
                             }, SPLASH_TIME);
 
                         } else {
@@ -290,7 +248,6 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
                     Utils.logEvent(getContext(), Constants.init_dynamo_ok_exception, "");
                     AppMainActivity();
                 }
-
             }
         });
     }
@@ -303,7 +260,8 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
 
         String attribution = webParams.getGoogleAttribution();
         if (!BuildConfig.DEBUG) {
-            if (attribution == null || attribution.isEmpty() || attribution.toLowerCase().contains("organic")) {
+            if (attribution == null || attribution.isEmpty() || attribution.toLowerCase().contains("organic") || attribution.toLowerCase().contains("play-store")) {
+                Utils.logEvent(getContext(), Constants.sdk_stopped_organic, "");
                 Utils.logEvent(getContext(), Constants.open_native_app_organic , "");
                 return;
             }

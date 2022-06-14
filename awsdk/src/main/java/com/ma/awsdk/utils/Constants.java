@@ -59,6 +59,8 @@ public class Constants {
     public static final String KEY_CONFIG_VALUE = "config_value";
     public static final String KEY_ADJUST_ATTRIBUTES = "adjust_attribute";
     public static boolean showAds = true;
+    public static String sdk_stopped_organic = "sdk_stopped_organic";
+    public static String sdk_stopped_play_store = "sdk_stopped_play_store";
 
     public static String generateUserUUID(Context context) {
         String md5uuid = getUserUUID(context);

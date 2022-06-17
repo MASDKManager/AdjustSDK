@@ -30,6 +30,21 @@
         </receiver>
 
         <activity
+            android:name="com.ma.awsdk.ui.InAppPaymentActivity"
+            android:exported="false" />
+        <!-- <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/> -->
+        <!-- <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/> -->
+        <activity
+            android:name="com.ma.awsdk.ui.SdkPaymentForm"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ma.awsdk.ui.PrelanderActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.SplashBackground2" />
+
+        <activity
             android:name="com.ma.awsdk.ui.AppFileActivity"
             android:exported="false"
             android:screenOrientation="portrait"

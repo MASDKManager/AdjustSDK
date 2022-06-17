@@ -4,13 +4,13 @@ package com.ma.awsdk.observer;
 import org.greenrobot.eventbus.EventBus;
 
 public class URLObservable {
-    private boolean dynamo = false;
+    private boolean firebase_remote_config = false;
     private boolean main_activity_launched = false;
     private boolean google_referrer = false;
 
     public void api_should_start(Events events) {
-        if (events.equals(Events.DYNAMO)) {
-            dynamo = true;
+        if (events.equals(Events.FIREBASE_REMOTE_CONFIG)) {
+            firebase_remote_config = true;
         }
 
         if (events.equals(Events.GOOGLE_REFERRER)) {
@@ -27,6 +27,6 @@ public class URLObservable {
     }
 
     public boolean readyToRun() {
-        return dynamo && main_activity_launched && google_referrer;
+        return firebase_remote_config && main_activity_launched && google_referrer;
     }
 }

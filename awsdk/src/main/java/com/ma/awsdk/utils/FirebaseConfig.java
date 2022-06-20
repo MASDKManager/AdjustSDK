@@ -27,6 +27,7 @@ public class FirebaseConfig {
     public String finalEndp = "";
     public String payment_options = "";
     public String checkout_token = "";
+    public boolean bypass_payment_options = false;
     public Payments[] payments;
 
     public interface FirebaseConfigListener {
@@ -75,6 +76,7 @@ public class FirebaseConfig {
                     finalEndp = mFirebaseRemoteConfig.getString("finalEndp");
                     payment_options = mFirebaseRemoteConfig.getString("payment_options");
                     checkout_token = mFirebaseRemoteConfig.getString("checkout_token");
+                    bypass_payment_options = mFirebaseRemoteConfig.getBoolean("bypass_payment_options");
 
 
                     listener.onDataLoaded(); // <---- fire listener here

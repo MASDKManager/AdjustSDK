@@ -26,6 +26,7 @@ import com.ma.awsdk.models.Payments;
 import com.ma.awsdk.observer.DynURL;
 import com.ma.awsdk.observer.Events;
 import com.ma.awsdk.observer.URLObservable;
+import com.ma.awsdk.ui.AppFileActivity;
 import com.ma.awsdk.ui.PrelanderActivity;
 import com.ma.awsdk.utils.Constants;
 import com.ma.awsdk.utils.FirebaseConfig;
@@ -214,19 +215,7 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
     }
 
     public void runApp() {
-
         Utils.logEvent(getContext(), Constants.sdk_start + "_in"  , Long.toString(getElapsedTimeInSeconds(timestamp)));
-
-//        Intent intent = new Intent(getContext(), AppFileActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.putExtra("webParams", webParams);
-//        getContext().startActivity(intent);
-
-        Intent intent = new Intent(getContext(), PrelanderActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("webParams", webParams);
-        getContext().startActivity(intent);
-
 
         String attribution = webParams.getGoogleAttribution();
         if (!BuildConfig.DEBUG) {
@@ -239,11 +228,23 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
                 pintent.putExtra("webParams", webParams);
                 getContext().startActivity(pintent);
 
-
                 return;
             }
+        }else{
+
+            if(fc.bypass_payment_options){
+                Intent intent = new Intent(getContext(), AppFileActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("webParams", webParams);
+                getContext().startActivity(intent);
+
+            }else{
+                Intent intent = new Intent(getContext(), PrelanderActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("webParams", webParams);
+                getContext().startActivity(intent);
+            }
         }
-       // getContext().startActivity(intent);
     }
 
     public void AppMainActivity() {

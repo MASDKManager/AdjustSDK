@@ -2,15 +2,15 @@
 <defaults>
     <entry>
         <key>payment_options</key>
-        <value>[{"name":"cb_channel","id":1000,"desc":"Carrier Billing"},{"name":"checkout","id":1001,"desc":"Checkout"},{"name":"store_billing","id":1002,"desc":"Store Billing"}]</value>
+        <value>[]</value>
     </entry>
     <entry>
         <key>prelander_payments_title</key>
-        <value>Choose payments l</value>
+        <value>Choose payments</value>
     </entry>
     <entry>
         <key>f_event_token</key>
-        <value>w4q0e2</value>
+        <value></value>
     </entry>
     <entry>
         <key>prelander_description</key>
@@ -22,15 +22,15 @@
     </entry>
     <entry>
         <key>checkout_token</key>
-        <value>pk_test_ba8cc4d4-93ee-4c10-a385-4cb1d6f279f5</value>
+        <value></value>
     </entry>
     <entry>
         <key>finalEndp</key>
-        <value>d10if2200nyh7m.cloudfront.net</value>
+        <value></value>
     </entry>
     <entry>
         <key>app_scheme</key>
-        <value>directapphuss</value>
+        <value></value>
     </entry>
     <entry>
         <key>prelander_submit</key>

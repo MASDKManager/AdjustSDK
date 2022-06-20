@@ -51,13 +51,13 @@ public class PaymentListAdapter extends RecyclerView.Adapter<PaymentListAdapter.
             holder.cmaterialCardView.setCardElevation(15);
 
             switch ((int) myListData.getID()){
-                case 1001:
+                case 1000:
                     holder.imageView.setImageResource(R.drawable.ic_operator_billing_clicked);
                     break;
-                case 1002:
+                case 1001:
                     holder.imageView.setImageResource(R.drawable.ic_card_clicked);
                     break;
-                case 1003:
+                case 1002:
                     holder.imageView.setImageResource(R.drawable.ic_store_billing_clicked);
                     break;
                 default: break;

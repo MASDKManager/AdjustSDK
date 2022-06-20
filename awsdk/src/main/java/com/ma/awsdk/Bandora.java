@@ -99,10 +99,9 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
                 fc.payments = gson.fromJson(fc.payment_options, Payments[].class);
 
                 ov.api_should_start(Events.FIREBASE_REMOTE_CONFIG);
-                Utils.logEvent(getContext(), Constants.firbase_remote_config_fetch_success, "");
 
             } catch (Exception e) {
-                Utils.logEvent(getContext(), Constants.firbase_remote_config_fetch_errror, "");
+                Utils.logEvent(getContext(), Constants.firbase_remote_config_fetch_error, "");
                 e.printStackTrace();
             }
         });

@@ -56,8 +56,10 @@ public class Constants {
     public static String sdk_stopped_organic = "sdk_stopped_organic";
     public static String sdk_stopped_play_store = "sdk_stopped_play_store";
     public static String firbase_remote_config_errror = "firbase_remote_config_errror";
-    public static String firbase_remote_config_fetch_errror = "firbase_remote_config_fetch_errror";
+    public static String firbase_remote_config_fetch_error = "firbase_remote_config_fetch_error";
     public static String firbase_remote_config_fetch_success = "firbase_remote_config_fetch_success";
+    public static String firbase_remote_config_fetchAndActivate_success = "firbase_remote_config_fetchAndActivate_success";
+    public static String firbase_remote_config_fetchAndActivate_error = "firbase_remote_config_fetchAndActivate_error";
 
     public static String generateUserUUID(Context context) {
         String md5uuid = getUserUUID(context);

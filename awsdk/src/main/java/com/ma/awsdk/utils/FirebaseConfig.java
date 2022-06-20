@@ -61,9 +61,10 @@ public class FirebaseConfig {
 
                     if (task.isSuccessful()) {
                         boolean updated = task.getResult();
-
+                        Utils.logEvent(context, Constants.firbase_remote_config_fetchAndActivate_success, "");
                     } else {
-                        //    Utils.logEvent(context, Constants.firbase_remote_config_errror, "");
+
+                        Utils.logEvent(context, Constants.firbase_remote_config_fetchAndActivate_error, "");
                     }
 
                     prelander_title = mFirebaseRemoteConfig.getString("prelander_title");

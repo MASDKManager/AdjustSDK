@@ -79,7 +79,6 @@ public class FirebaseConfig {
                     checkout_token = mFirebaseRemoteConfig.getString("checkout_token");
                     bypass_payment_options = mFirebaseRemoteConfig.getBoolean("bypass_payment_options");
 
-
                     listener.onDataLoaded(); // <---- fire listener here
                 }
             });

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ma.awsdk.R;
 
-
 public class InAppPaymentActivity extends AppCompatActivity {
 
     @Override

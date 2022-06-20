@@ -29,5 +29,4 @@ public class Reflect28Util {
         return clz.getDeclaredMethod(name, parameterType);
     }
 
-
 }

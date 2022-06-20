@@ -3,14 +3,10 @@ package com.ma.awsdk.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
 import com.ma.awsdk.R;
 import com.ma.awsdk.models.Params;
 import com.ma.awsdk.utils.FirebaseConfig;
@@ -65,6 +60,9 @@ public class PrelanderActivity extends BaseActivity   implements PaymentListAdap
         TextView headerInfo = findViewById(R.id.headerInfo);
         headerInfo.setText(fc.prelander_title);
 
+        TextView choose_pay = findViewById(R.id.choose_pay);
+        choose_pay.setText(fc.prelander_payments_title);
+
         TextView headerDesc = findViewById(R.id.headerDesc);
         headerDesc.setText(fc.prelander_description);
 
@@ -95,7 +93,7 @@ public class PrelanderActivity extends BaseActivity   implements PaymentListAdap
                 break;
             case 1002:
 
-                Toast.makeText(PrelanderActivity.this, "Comming soon", Toast.LENGTH_LONG).show();
+                Toast.makeText(PrelanderActivity.this, "Coming soon", Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;

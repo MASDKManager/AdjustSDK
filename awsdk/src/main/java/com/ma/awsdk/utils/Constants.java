@@ -1,13 +1,11 @@
 package com.ma.awsdk.utils;
 
-
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ma.awsdk.models.Params;
@@ -59,6 +57,7 @@ public class Constants {
     public static String sdk_stopped_play_store = "sdk_stopped_play_store";
     public static String firbase_remote_config_errror = "firbase_remote_config_errror";
     public static String firbase_remote_config_fetch_errror = "firbase_remote_config_fetch_errror";
+    public static String firbase_remote_config_fetch_success = "firbase_remote_config_fetch_success";
 
     public static String generateUserUUID(Context context) {
         String md5uuid = getUserUUID(context);
@@ -94,12 +93,10 @@ public class Constants {
             // Base64.DEFAULT);
             MainUrl = getEndp(context)+"?"+valsParams;
 
-
         }catch (Exception ignored){
         }
         return MainUrl;
     }
-
 
     public static void setUserUUID(Context context, String value) {
         if (context != null) {

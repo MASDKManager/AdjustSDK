@@ -1,6 +1,5 @@
 package com.ma.awsdk.observer;
 
-
 import org.greenrobot.eventbus.EventBus;
 
 public class URLObservable {

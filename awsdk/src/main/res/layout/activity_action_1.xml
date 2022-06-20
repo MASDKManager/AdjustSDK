@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="64dp"
-        android:text="Choose payments"
+        android:text=""
         android:textColor="@color/pay_selected_text_color"
         android:textStyle="bold"
         android:textSize="16sp"
@@ -95,6 +95,7 @@
         app:backgroundTint="@color/pay_card_btn_color"
         app:cornerRadius="15dp"
         android:text=""
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

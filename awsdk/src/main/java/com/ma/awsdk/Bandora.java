@@ -26,7 +26,6 @@ import com.ma.awsdk.models.Payments;
 import com.ma.awsdk.observer.DynURL;
 import com.ma.awsdk.observer.Events;
 import com.ma.awsdk.observer.URLObservable;
-import com.ma.awsdk.ui.AppFileActivity;
 import com.ma.awsdk.ui.PrelanderActivity;
 import com.ma.awsdk.utils.Constants;
 import com.ma.awsdk.utils.FirebaseConfig;
@@ -56,10 +55,11 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
 
         FirebaseApp.initializeApp(getContext());
 
+        initAdjust();
+        getGoogleInstallReferrer();
+
         Application app = (Application) Utils.makeContextSafe(getContext());
         app.registerActivityLifecycleCallbacks(this);
-
-        getGoogleInstallReferrer();
 
         ov = new URLObservable();
         EventBus.getDefault().register(this);
@@ -93,12 +93,12 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
 
             try {
                 callURL();
-                initAdjust();
 
                 Gson gson = new Gson();
                 fc.payments = gson.fromJson(fc.payment_options, Payments[].class);
 
                 ov.api_should_start(Events.FIREBASE_REMOTE_CONFIG);
+                Utils.logEvent(getContext(), Constants.firbase_remote_config_fetch_success, "");
 
             } catch (Exception e) {
                 Utils.logEvent(getContext(), Constants.firbase_remote_config_fetch_errror, "");
@@ -109,13 +109,13 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
     }
 
     private void initAdjust() {
-        String appToken = fc.adjust_token;
+        String appToken = getContext().getString(R.string.adjust_token);
         String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
         AdjustConfig config = new AdjustConfig(getContext(), appToken, environment);
 
         config.setOnAttributionChangedListener(attribution -> {
 
-            Utils.logEvent(getContext(), Constants.adjust_attr_received_in_ + getElapsedTimeInSeconds(timestamp), "");
+            Utils.logEvent(getContext(), Constants.adjust_attr_received_in_  , "" + getElapsedTimeInSeconds(timestamp));
 
             if (attribution != null) {
                 webParams.setAdjustAttribution(attribution.toString());

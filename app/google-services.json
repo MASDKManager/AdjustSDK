@@ -92,6 +92,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1090116972682:android:47e4af5f5f8c267b16bd73",
+        "android_client_info": {
+          "package_name": "com.mag.dream"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1090116972682-7ann5l3qvchl8i5aqooj6qof82lvrdo4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgO1l_cJ1FSX3f2Q0Sa234SYcQRcvkVvk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1090116972682-7ann5l3qvchl8i5aqooj6qof82lvrdo4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

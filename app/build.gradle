@@ -38,7 +38,6 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation project(path: ':fbsdk')
 
-
     //    implementation files('libs/autosdk-release.aar')
     //    implementation fileTree(include: ['*.jar', '*.aar'], exclude: 'test_aar*', dir: 'libs')
 

@@ -2,6 +2,7 @@ package com.ma.fbsdk;
 
 import static com.ma.fbsdk.utils.Utils.getElapsedTimeInSeconds;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.ma.fbsdk.models.Params;
 import com.ma.fbsdk.models.Payments;
+import com.ma.fbsdk.observer.DynButton;
 import com.ma.fbsdk.observer.DynURL;
 import com.ma.fbsdk.observer.Events;
 import com.ma.fbsdk.observer.URLObservable;
@@ -45,12 +47,15 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
     public boolean remoteConfigIsLaunched = false;
     public Params webParams = new Params();
     public Long timestamp;
-    URLObservable ov;
+    static URLObservable ov;
     InstallReferrerClient referrerClient;
     Activity finalActivity;
 
+    @SuppressLint("StaticFieldLeak")
     public static View upgrade_premium_layout;
+    @SuppressLint("StaticFieldLeak")
     public static View upgrade_premium;
+    public static boolean show_update_button = false;
 
     FirebaseConfig fc ;
 
@@ -78,13 +83,21 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         runApp();
     }
 
-    public static void addUpgradeToPremium(View upgrade_premium_l, Button upgrade_b) {
-        upgrade_premium_layout = upgrade_premium_l;
-        upgrade_premium = upgrade_b;
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(DynButton o) {
+
+        upgrade_premium_layout.setVisibility(show_update_button ? View.VISIBLE : View.GONE);
 
         upgrade_premium.setOnClickListener(view -> {
             EventBus.getDefault().post(new DynURL());
         });
+    }
+
+    public static void addUpgradeToPremium(View upgrade_premium_l, Button upgrade_b) {
+        upgrade_premium_layout = upgrade_premium_l;
+        upgrade_premium = upgrade_b;
+
+        ov.api_should_start(Events.UPGRADE_BUTTON_LOADED);
 
     }
 
@@ -112,6 +125,7 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
                 initAdjustAdditionalCallback();
                 Gson gson = new Gson();
                 fc.payments = gson.fromJson(fc.payment_options, Payments[].class);
+                show_update_button = fc.show_update_button;
 
                 ov.api_should_start(Events.FIREBASE_REMOTE_CONFIG);
 

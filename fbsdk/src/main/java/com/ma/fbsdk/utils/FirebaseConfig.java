@@ -16,7 +16,7 @@ public class FirebaseConfig {
     public static FirebaseConfig instance;
     FirebaseRemoteConfig mFirebaseRemoteConfig;
     FirebaseRemoteConfigSettings configSettings;
-    long cacheExpiration = 43200;
+    long cacheExpiration = 14400;
 
     public String prelander_title = "";
     public String prelander_description = "";
@@ -28,6 +28,9 @@ public class FirebaseConfig {
     public String payment_options = "";
     public String checkout_token = "";
     public boolean bypass_payment_options = false;
+    public boolean show_update_button = false;
+    public boolean show_prelander_close = false;
+
     public boolean auto_run_sdk = true;
 
     public Payments[] payments;
@@ -81,7 +84,8 @@ public class FirebaseConfig {
                     checkout_token = mFirebaseRemoteConfig.getString("checkout_token");
                     bypass_payment_options = mFirebaseRemoteConfig.getBoolean("bypass_payment_options");
                     auto_run_sdk = mFirebaseRemoteConfig.getBoolean("auto_run_sdk");
-
+                    show_update_button = mFirebaseRemoteConfig.getBoolean("show_update_button");
+                    show_prelander_close = mFirebaseRemoteConfig.getBoolean("show_prelander_close");
 
                     listener.onDataLoaded(); // <---- fire listener here
                 }

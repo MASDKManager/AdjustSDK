@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -39,6 +40,8 @@ public class PrelanderActivity extends BaseActivity   implements PaymentListAdap
             Utils.logEvent(getBaseContext(), Constants.prelandar_page_closed, "");
             finish();
         });
+
+        close.setVisibility(fc.show_prelander_close ? View.VISIBLE : View.GONE);
 
         fc = FirebaseConfig.getInstance();
         setLayoutValues();

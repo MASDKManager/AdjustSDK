@@ -80,7 +80,9 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(DynURL o) {
+
         runApp();
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

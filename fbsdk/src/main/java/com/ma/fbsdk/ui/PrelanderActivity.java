@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ma.fbsdk.Bandora;
 import com.ma.fbsdk.R;
 import com.ma.fbsdk.models.Params;
 import com.ma.fbsdk.utils.Constants;
@@ -34,23 +33,24 @@ public class PrelanderActivity extends BaseActivity   implements PaymentListAdap
 
         ImageView close = findViewById(R.id.close);
         close.setOnClickListener(view -> {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+//            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//            inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
             Utils.logEvent(getBaseContext(), Constants.prelandar_page_closed, "");
             finish();
         });
 
+        fc = FirebaseConfig.getInstance();
+
         close.setVisibility(fc.show_prelander_close ? View.VISIBLE : View.GONE);
 
-        fc = FirebaseConfig.getInstance();
         setLayoutValues();
 
         Utils.logEvent(getBaseContext(), Constants.prelandar_page_opened, "");
     }
 
     @SuppressLint({"SetTextI18n", "ResourceType"})
-    private void setLayoutValues(){
+    private void setLayoutValues() {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         PaymentListAdapter adapter = new PaymentListAdapter(fc.payments);

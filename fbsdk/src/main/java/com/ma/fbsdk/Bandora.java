@@ -7,6 +7,8 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +49,9 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
     InstallReferrerClient referrerClient;
     Activity finalActivity;
 
+    public static View upgrade_premium_layout;
+    public static View upgrade_premium;
+
     FirebaseConfig fc ;
 
     @Override
@@ -73,12 +78,22 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         runApp();
     }
 
+    public static void addUpgradeToPremium(View upgrade_premium_l, Button upgrade_b) {
+        upgrade_premium_layout = upgrade_premium_l;
+        upgrade_premium = upgrade_b;
+
+        upgrade_premium.setOnClickListener(view -> {
+            EventBus.getDefault().post(new DynURL());
+        });
+
+    }
+
     @Override
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
         finalActivity = activity;
 
         if(!remoteConfigIsLaunched){
-            remoteConfigIsLaunched = !remoteConfigIsLaunched;
+            remoteConfigIsLaunched = true;
             getRemoteConfig();
         }
 
@@ -135,8 +150,6 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
         String versionCode = BuildConfig.VERSION;
         Adjust.addSessionCallbackParameter("m_sdk_version", versionCode);
         Utils.logEvent(getContext(), Constants.m_sdk_version + versionCode, "");
-
-
 
     }
 
@@ -218,9 +231,9 @@ public class Bandora extends FileProvider implements Application.ActivityLifecyc
     }
 
     public void runApp() {
-        Utils.logEvent(getContext(), Constants.sdk_start + "_in"  , Long.toString(getElapsedTimeInSeconds(timestamp)));
 
         String attribution = webParams.getGoogleAttribution();
+
         if (!BuildConfig.DEBUG) {
             if (attribution == null || attribution.isEmpty() || attribution.toLowerCase().contains("organic") || attribution.toLowerCase().contains("play-store")) {
                 Utils.logEvent(getContext(), Constants.sdk_stopped_organic, "");

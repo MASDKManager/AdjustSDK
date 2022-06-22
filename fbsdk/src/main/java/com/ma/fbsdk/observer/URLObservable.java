@@ -1,5 +1,7 @@
 package com.ma.fbsdk.observer;
 
+import com.ma.fbsdk.utils.FirebaseConfig;
+
 import org.greenrobot.eventbus.EventBus;
 
 public class URLObservable {
@@ -20,7 +22,7 @@ public class URLObservable {
             main_activity_launched = true;
         }
 
-        if (readyToRun()) {
+        if (readyToRun() && FirebaseConfig.getInstance().auto_run_sdk){
             EventBus.getDefault().post(new DynURL());
         }
     }

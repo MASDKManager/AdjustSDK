@@ -14,9 +14,12 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ma.fbsdk.Bandora;
 import com.ma.fbsdk.R;
 import com.ma.fbsdk.models.Params;
+import com.ma.fbsdk.utils.Constants;
 import com.ma.fbsdk.utils.FirebaseConfig;
+import com.ma.fbsdk.utils.Utils;
 
 public class PrelanderActivity extends BaseActivity   implements PaymentListAdapter.ItemClickListener {
 
@@ -33,14 +36,14 @@ public class PrelanderActivity extends BaseActivity   implements PaymentListAdap
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
-           // Utils.logEvent(getBaseContext(), Constants.pn_entry_close, "");
+            Utils.logEvent(getBaseContext(), Constants.prelandar_page_closed, "");
             finish();
         });
 
         fc = FirebaseConfig.getInstance();
         setLayoutValues();
 
-       // Utils.logEvent(getBaseContext(), Constants.pn_entry_opened, "");
+        Utils.logEvent(getBaseContext(), Constants.prelandar_page_opened, "");
     }
 
     @SuppressLint({"SetTextI18n", "ResourceType"})
@@ -78,6 +81,8 @@ public class PrelanderActivity extends BaseActivity   implements PaymentListAdap
 
             case 1000:
 
+                Utils.logEvent(getBaseContext(), Constants.web_payment_clicked, "");
+
                 Intent intent = new Intent(PrelanderActivity.this, AppFileActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Params params = (Params) getIntent().getSerializableExtra("webParams");
@@ -86,6 +91,8 @@ public class PrelanderActivity extends BaseActivity   implements PaymentListAdap
                 finish();
                 break;
             case 1001:
+
+                Utils.logEvent(getBaseContext(), Constants.checkout_payment_clicked, "");
                 Intent intent1 = new Intent(PrelanderActivity.this, SdkPaymentForm.class);
                 //   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent1);
@@ -93,6 +100,7 @@ public class PrelanderActivity extends BaseActivity   implements PaymentListAdap
                 break;
             case 1002:
 
+                Utils.logEvent(getBaseContext(), Constants.inApp_payment_clicked, "");
                 Toast.makeText(PrelanderActivity.this, "Coming soon", Toast.LENGTH_LONG).show();
                 break;
             default:

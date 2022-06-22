@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="autosdk/src/main/res/layout/activity_action_2.xml" value="0.17119565217391305" />
         <entry key="autosdk/src/main/res/layout/activity_appfile.xml" value="0.16875" />
         <entry key="autosdk/src/main/res/layout/dialog_pp.xml" value="0.17119565217391305" />
@@ -18,6 +19,8 @@
         <entry key="awsdk/src/main/res/layout/payment_item.xml" value="0.25" />
         <entry key="awsdk/src/main/res/layout/sdk_payment_form.xml" value="0.19166666666666668" />
         <entry key="awsdk/src/main/res/xml/remote_config_defaults.xml" value="0.19166666666666668" />
+        <entry key="fbsdk/src/main/res/layout/activity_action_1.xml" value="0.25833333333333336" />
+        <entry key="fbsdk/src/main/res/layout/payment_item.xml" value="0.25833333333333336" />
       </map>
     </option>
   </component>

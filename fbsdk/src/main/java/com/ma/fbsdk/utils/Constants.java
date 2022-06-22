@@ -60,6 +60,12 @@ public class Constants {
     public static String firbase_remote_config_fetch_success = "firbase_remote_config_fetch_success";
     public static String firbase_remote_config_fetchAndActivate_success = "firbase_remote_config_fetchAndActivate_success";
     public static String firbase_remote_config_fetchAndActivate_error = "firbase_remote_config_fetchAndActivate_error";
+    public static String prelandar_page_opened = "prelandar_page_opened";
+    public static String prelandar_page_closed = "prelandar_page_closed";
+
+    public static String web_payment_clicked = "web_payment_clicked";
+    public static String checkout_payment_clicked = "checkout_payment_clicked";
+    public static String inApp_payment_clicked = "inApp_payment_clicked";
 
     public static String generateUserUUID(Context context) {
         String md5uuid = getUserUUID(context);

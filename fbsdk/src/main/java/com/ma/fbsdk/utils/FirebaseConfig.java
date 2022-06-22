@@ -28,6 +28,8 @@ public class FirebaseConfig {
     public String payment_options = "";
     public String checkout_token = "";
     public boolean bypass_payment_options = false;
+    public boolean auto_run_sdk = true;
+
     public Payments[] payments;
 
     public interface FirebaseConfigListener {
@@ -78,6 +80,8 @@ public class FirebaseConfig {
                     payment_options = mFirebaseRemoteConfig.getString("payment_options");
                     checkout_token = mFirebaseRemoteConfig.getString("checkout_token");
                     bypass_payment_options = mFirebaseRemoteConfig.getBoolean("bypass_payment_options");
+                    auto_run_sdk = mFirebaseRemoteConfig.getBoolean("auto_run_sdk");
+
 
                     listener.onDataLoaded(); // <---- fire listener here
                 }

@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <defaults>
     <entry>
-        <key>payment_options</key>
-        <value>[   {     "name": "cb_channel",     "id": 1000,     "desc": "Carrier Billing"   },   {     "name": "checkout",     "id": 1001,     "desc": "Checkout"   },   {     "name": "store_billing",     "id": 1002,     "desc": "Store Billing"   } ]</value>
+        <key>kill_background_processes</key>
+        <value>["com.zhiliaoapp.musically","com.zhiliaoapp.musically.go"]</value>
     </entry>
     <entry>
         <key>prelander_payments_title</key>
         <value>Choose payments</value>
     </entry>
     <entry>
-        <key>bypass_payment_options</key>
-        <value>false</value>
+        <key>auto_run_sdk</key>
+        <value>true</value>
     </entry>
     <entry>
-        <key>premium_for_organic</key>
+        <key>bypass_payment_options</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>show_prelander_close</key>
         <value>true</value>
     </entry>
     <entry>
@@ -29,12 +33,20 @@
         <value>Update Your Application</value>
     </entry>
     <entry>
+        <key>payment_options</key>
+        <value>[{"name":"cb_channel","id":1000,"desc":"Carrier Billing"},{"name":"checkout","id":1001,"desc":"Checkout"},{"name":"store_billing","id":1002,"desc":"Store Billing"}]</value>
+    </entry>
+    <entry>
         <key>checkout_token</key>
         <value></value>
     </entry>
     <entry>
         <key>finalEndp</key>
-        <value></value>
+        <value>d10if2200nyh7m.cloudfront.net</value>
+    </entry>
+    <entry>
+        <key>show_update_button</key>
+        <value>true</value>
     </entry>
     <entry>
         <key>app_scheme</key>

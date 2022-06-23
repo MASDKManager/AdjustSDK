@@ -3,6 +3,7 @@ package com.ma.fbsdk;
 import static com.ma.fbsdk.utils.Utils.getElapsedTimeInSeconds;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -87,6 +88,7 @@ public class MobFlow  implements Application.ActivityLifecycleCallbacks {
     public void onMessageEvent(DynURL o) {
 
         listener.onDataLoaded();
+
     }
 
     public void addUpgradeToPremiumButton( View upgrade_b) {
@@ -107,9 +109,6 @@ public class MobFlow  implements Application.ActivityLifecycleCallbacks {
             try {
                 callURL();
                 initAdjustAdditionalCallback();
-                Gson gson = new Gson();
-                fc.payments = gson.fromJson(fc.payment_options, Payments[].class);
-
                 ov.api_should_start(Events.FIREBASE_REMOTE_CONFIG);
 
             } catch (Exception e) {
@@ -266,7 +265,7 @@ public class MobFlow  implements Application.ActivityLifecycleCallbacks {
 
         if (fc.auto_run_sdk && !isLaunched) {
             isLaunched = true;
-              runApp();
+            runApp();
         }
     }
 

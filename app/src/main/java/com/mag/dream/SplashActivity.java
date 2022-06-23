@@ -8,17 +8,23 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ma.fbsdk.MobFlow;
+
 public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Handler handler = new Handler();
         Log.d("MagDream", "start");
-        handler.postDelayed(() -> {
+
+        MobFlow mobFlow = MobFlow.getInstance();
+        mobFlow.init(SplashActivity.this,() -> {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
             Log.d("MagDream", "finish");
             finish();
-        }, 3000);
+
+        });
+
     }
 }

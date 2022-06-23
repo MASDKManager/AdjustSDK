@@ -15,7 +15,7 @@ import com.checkout.android_sdk.network.NetworkError;
 import com.ma.fbsdk.R;
 import com.ma.fbsdk.utils.FirebaseConfig;
 
-public class SdkPaymentForm extends AppCompatActivity {
+public class SdkPaymentForm extends BaseActivity {
     private  PaymentForm mPaymentForm;
     FirebaseConfig fc;
 

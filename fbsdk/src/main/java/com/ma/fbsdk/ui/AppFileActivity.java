@@ -20,7 +20,7 @@ import com.ma.fbsdk.R;
 import com.ma.fbsdk.models.Params;
 import com.ma.fbsdk.utils.Constants;
 
-public class AppFileActivity extends Activity {
+public class AppFileActivity extends BaseActivity {
     private WebView webView;
     LinearLayout linearLayout;
 

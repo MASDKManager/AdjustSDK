@@ -4,7 +4,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.ma.fbsdk.R;
 
-public class InAppPaymentActivity extends AppCompatActivity {
+public class InAppPaymentActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

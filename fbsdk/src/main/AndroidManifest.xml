@@ -11,16 +11,6 @@
     <application
         android:usesCleartextTraffic="true">
 
-        <provider
-            android:name="com.ma.fbsdk.Bandora"
-            android:authorities="${applicationId}.BdFileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_path" />
-        </provider>
-
         <receiver
             android:name="com.adjust.sdk.AdjustReferrerReceiver"
             android:exported="true"

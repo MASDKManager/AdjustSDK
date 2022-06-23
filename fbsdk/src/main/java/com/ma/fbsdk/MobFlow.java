@@ -76,7 +76,7 @@ public class MobFlow  implements Application.ActivityLifecycleCallbacks {
 
         initAdjust();
         getGoogleInstallReferrer();
-        getRemoteConfig(activity);
+        getRemoteConfig();
 
         ov = new URLObservable();
         EventBus.getDefault().register(this);
@@ -99,10 +99,10 @@ public class MobFlow  implements Application.ActivityLifecycleCallbacks {
         });
     }
 
-    private void getRemoteConfig(Activity activity){
+    private void getRemoteConfig(){
 
         fc = FirebaseConfig.getInstance();
-        fc.fetchVaues(activity, () -> {
+        fc.fetchVaues((Activity) this.context, () -> {
 
             try {
                 callURL();

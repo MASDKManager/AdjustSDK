@@ -1,22 +1,22 @@
 package com.ma.fbsdk.ui;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ma.fbsdk.R;
 import com.ma.fbsdk.models.Params;
+import com.ma.fbsdk.models.checkout.CheckoutResponse;
 import com.ma.fbsdk.utils.Constants;
 import com.ma.fbsdk.utils.FirebaseConfig;
 import com.ma.fbsdk.utils.Utils;
@@ -24,7 +24,7 @@ import com.ma.fbsdk.utils.Utils;
 public class PrelanderActivity extends BaseActivity   implements PaymentListAdapter.ItemClickListener {
 
     FirebaseConfig fc;
-    private int RB1_ID = 1000;
+    ActivityResultLauncher<Intent> mStartForResult;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,8 +33,6 @@ public class PrelanderActivity extends BaseActivity   implements PaymentListAdap
 
         ImageView close = findViewById(R.id.close);
         close.setOnClickListener(view -> {
-//            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//            inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
             Utils.logEvent(getBaseContext(), Constants.prelandar_page_closed, "");
             finish();
@@ -45,6 +43,24 @@ public class PrelanderActivity extends BaseActivity   implements PaymentListAdap
         close.setVisibility(fc.show_prelander_close ? View.VISIBLE : View.GONE);
 
         setLayoutValues();
+
+        mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                Intent data = result.getData();
+                boolean dataIsNotNull = data.hasExtra("status");
+
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Toast.makeText(getBaseContext(), "Payment has been made successfully!",Toast.LENGTH_LONG).show();
+                    finish();
+
+                }else if (dataIsNotNull && result.getResultCode() == Activity.RESULT_FIRST_USER) {
+                    String msg = data.getStringExtra("status");
+                    Toast.makeText(getBaseContext(), msg,Toast.LENGTH_LONG).show();
+
+                }else{
+                    Toast.makeText(getBaseContext(), "An error has occurred!",Toast.LENGTH_LONG).show();
+                }
+            });
 
         Utils.logEvent(getBaseContext(), Constants.prelandar_page_opened, "");
     }
@@ -72,10 +88,6 @@ public class PrelanderActivity extends BaseActivity   implements PaymentListAdap
         TextView headerDesc = findViewById(R.id.headerDesc);
         headerDesc.setText(fc.prelander_description);
 
-        Button button = findViewById(R.id.button);
-        button.setText(fc.prelander_submit);
-        button.setBackgroundColor(pay_card_btn_color);
-
     }
 
     @Override
@@ -95,10 +107,7 @@ public class PrelanderActivity extends BaseActivity   implements PaymentListAdap
                 break;
             case 1001:
 
-                Utils.logEvent(getBaseContext(), Constants.checkout_payment_clicked, "");
-                Intent intent1 = new Intent(PrelanderActivity.this, SdkPaymentForm.class);
-                //   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent1);
+                mStartForResult.launch(new Intent(this, SdkPaymentForm.class));
 
                 break;
             case 1002:

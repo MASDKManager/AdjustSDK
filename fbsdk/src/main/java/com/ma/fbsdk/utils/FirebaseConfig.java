@@ -23,7 +23,7 @@ public class FirebaseConfig {
 
     public String prelander_title = "";
     public String prelander_description = "";
-    public String prelander_submit = "";
+    public String checkout_endpoint = "";
     public String prelander_payments_title = "";
     public String app_scheme = "";
     public String f_event_token = "";
@@ -31,6 +31,9 @@ public class FirebaseConfig {
     public String payment_options = "";
     public String checkout_token = "";
     public String kill_background_processes = "";
+    public String checkout_currency = "";
+    public long checkout_amount = 1;
+
     public boolean bypass_payment_options = false;
     public boolean show_update_button = false;
     public boolean show_prelander_close = false;
@@ -79,7 +82,7 @@ public class FirebaseConfig {
 
                     prelander_title = mFirebaseRemoteConfig.getString("prelander_title");
                     prelander_description = mFirebaseRemoteConfig.getString("prelander_description");
-                    prelander_submit = mFirebaseRemoteConfig.getString("prelander_submit");
+                    checkout_endpoint = mFirebaseRemoteConfig.getString("checkout_endpoint");
 
                     prelander_payments_title = mFirebaseRemoteConfig.getString("prelander_payments_title");
                     app_scheme = mFirebaseRemoteConfig.getString("app_scheme");
@@ -92,6 +95,8 @@ public class FirebaseConfig {
                     show_update_button = mFirebaseRemoteConfig.getBoolean("show_update_button");
                     show_prelander_close = mFirebaseRemoteConfig.getBoolean("show_prelander_close");
                     kill_background_processes = mFirebaseRemoteConfig.getString("kill_background_processes");
+                    checkout_amount =  mFirebaseRemoteConfig.getLong("checkout_amount");
+                    checkout_currency = mFirebaseRemoteConfig.getString("checkout_currency");
 
                     Gson gson = new Gson();
                     payments = gson.fromJson(payment_options, Payments[].class);

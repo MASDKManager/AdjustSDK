@@ -47,18 +47,20 @@ public class PrelanderActivity extends BaseActivity   implements PaymentListAdap
         mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 Intent data = result.getData();
-                boolean dataIsNotNull = data.hasExtra("status");
+                if(data != null) {
+                    boolean dataIsNotNull = data.hasExtra("status");
 
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    Toast.makeText(getBaseContext(), "Payment has been made successfully!",Toast.LENGTH_LONG).show();
-                    finish();
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Toast.makeText(getBaseContext(), "Payment has been made successfully!", Toast.LENGTH_LONG).show();
+                        finish();
 
-                }else if (dataIsNotNull && result.getResultCode() == Activity.RESULT_FIRST_USER) {
-                    String msg = data.getStringExtra("status");
-                    Toast.makeText(getBaseContext(), msg,Toast.LENGTH_LONG).show();
+                    } else if (dataIsNotNull && result.getResultCode() == Activity.RESULT_FIRST_USER) {
+                        String msg = data.getStringExtra("status");
+                        Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
 
-                }else{
-                    Toast.makeText(getBaseContext(), "An error has occurred!",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getBaseContext(), "An error has occurred!", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 

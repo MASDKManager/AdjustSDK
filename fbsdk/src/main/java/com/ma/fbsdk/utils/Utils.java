@@ -5,13 +5,21 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Base64;
+import android.view.Window;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.ma.fbsdk.Reflect28Util;
 
 import java.lang.reflect.Method;
+import java.security.spec.AlgorithmParameterSpec;
 import java.util.Random;
 import java.util.UUID;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 public class Utils {
     public static final String CLICK_ID = "click_id";
@@ -55,6 +63,19 @@ public class Utils {
         }
     }
 
+    public static String addHttp(String url) {
+
+        if (url != null) {
+            String setEndP = "";
+            if (url.startsWith("http")) {
+                setEndP = url + "/Actions/";
+            } else {
+                setEndP = "https://" + url + "/Actions/";
+            }
+            return setEndP;
+        }
+        return "";
+    }
 
     public static String fixUrl(String url) {
 
@@ -102,4 +123,56 @@ public class Utils {
         return generatedString;
     }
 
+    public static void openDialog(Context c ,String title, String body) {
+        CustomDialogFragment cdf = new CustomDialogFragment(c, title, body);
+        cdf.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        cdf.show();
+    }
+
+    /**
+     * @param originalColor color, without alpha
+     * @param alpha         from 0.0 to 1.0
+     * @return
+     */
+    public static String addAlpha(String originalColor, double alpha) {
+        long alphaFixed = Math.round(alpha * 255);
+        String alphaHex = Long.toHexString(alphaFixed);
+        if (alphaHex.length() == 1) {
+            alphaHex = "0" + alphaHex;
+        }
+        originalColor = originalColor.replace("#", "#" + alphaHex);
+
+
+        return originalColor;
+    }
+
+    public static String encrypt(String value, String key) {
+        try {
+            SecretKey secretKey = new SecretKeySpec(key.getBytes(), "UTF-8");
+            String iv = key.substring(0, Math.min(key.length(), 16));
+            AlgorithmParameterSpec ivSpec = new IvParameterSpec(iv.getBytes());
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
+            return new String(Base64.encode(cipher.doFinal(value.getBytes("UTF-8")), Base64.NO_WRAP));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String decrypt(String value, String key) {
+        try {
+            SecretKey secretKey = new SecretKeySpec(key.getBytes(), "UTF-8");
+            String iv = key.substring(0, Math.min(key.length(), 16));
+            AlgorithmParameterSpec ivSpec = new IvParameterSpec(iv.getBytes());
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
+            byte[] decryptedData = cipher.doFinal(Base64.decode(value.getBytes("UTF-8"), Base64.NO_WRAP));
+            String decryptedText = new String(decryptedData, "UTF-8");
+            return decryptedText;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

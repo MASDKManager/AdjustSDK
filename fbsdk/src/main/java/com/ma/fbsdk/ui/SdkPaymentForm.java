@@ -91,7 +91,7 @@ public class SdkPaymentForm extends BaseActivity {
 
             showLoader();
 
-            String random = generatingRandomString();
+            String random = Utils.generateClickId(context);
 
             CheckoutLoad cl = new CheckoutLoad();
             cl.setToken(token);

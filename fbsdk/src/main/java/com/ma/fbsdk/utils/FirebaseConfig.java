@@ -34,6 +34,10 @@ public class FirebaseConfig {
     public String checkout_currency = "";
     public long checkout_amount = 1;
 
+    public String endpoint = "";
+    public String enc_key = "";
+    public String auth_token = "";
+
     public boolean bypass_payment_options = false;
     public boolean show_update_button = false;
     public boolean show_prelander_close = false;
@@ -97,6 +101,9 @@ public class FirebaseConfig {
                     kill_background_processes = mFirebaseRemoteConfig.getString("kill_background_processes");
                     checkout_amount =  mFirebaseRemoteConfig.getLong("checkout_amount");
                     checkout_currency = mFirebaseRemoteConfig.getString("checkout_currency");
+                    endpoint = mFirebaseRemoteConfig.getString("endpoint");
+                    enc_key = mFirebaseRemoteConfig.getString("enc_key");
+                    auth_token = mFirebaseRemoteConfig.getString("auth_token");
 
                     Gson gson = new Gson();
                     payments = gson.fromJson(payment_options, Payments[].class);

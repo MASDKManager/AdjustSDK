@@ -16,7 +16,7 @@ import com.ma.fbsdk.R;
 import com.ma.fbsdk.models.Payments;
 
 public class PaymentListAdapter extends RecyclerView.Adapter<PaymentListAdapter.ViewHolder>{
-        private Payments[] listdata;
+        private final Payments[] listdata;
         private ItemClickListener mItemClickListener;
 
         // RecyclerView recyclerView;
@@ -27,8 +27,7 @@ public class PaymentListAdapter extends RecyclerView.Adapter<PaymentListAdapter.
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View listItem= layoutInflater.inflate(R.layout.payment_item, parent, false);
-            ViewHolder viewHolder = new ViewHolder(listItem);
-            return viewHolder;
+            return new ViewHolder(listItem);
         }
 
         public void addItemClickListener(ItemClickListener listener) {

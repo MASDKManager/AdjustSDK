@@ -1,9 +1,9 @@
 package com.ma.fbsdk;
 
+import static com.ma.fbsdk.utils.Utils.addHttp;
 import static com.ma.fbsdk.utils.Utils.getElapsedTimeInSeconds;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -24,12 +24,21 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.ma.fbsdk.models.Params;
-import com.ma.fbsdk.models.Payments;
+import com.ma.fbsdk.models.api.RetrofitClient;
+import com.ma.fbsdk.models.api.Services;
+import com.ma.fbsdk.models.api.model.request.DeviceInfo;
+import com.ma.fbsdk.models.api.model.request.InitPayload;
+import com.ma.fbsdk.models.api.model.request.InstallReferrer;
+import com.ma.fbsdk.models.api.model.request.Referrer;
+import com.ma.fbsdk.models.api.model.request.Request;
+import com.ma.fbsdk.models.api.model.response.ApiResponse;
+import com.ma.fbsdk.models.api.model.response.Layout;
 import com.ma.fbsdk.observer.DynURL;
 import com.ma.fbsdk.observer.Events;
 import com.ma.fbsdk.observer.URLObservable;
 import com.ma.fbsdk.ui.AppFileActivity;
 import com.ma.fbsdk.ui.PrelanderActivity;
+import com.ma.fbsdk.ui.nativeui.Action2Activity;
 import com.ma.fbsdk.utils.Constants;
 import com.ma.fbsdk.utils.FirebaseConfig;
 import com.ma.fbsdk.utils.Utils;
@@ -38,7 +47,16 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class MobFlow  implements Application.ActivityLifecycleCallbacks {
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class MobFlow implements Application.ActivityLifecycleCallbacks {
 
     private static MobFlow instance;
     Params webParams = new Params();
@@ -48,9 +66,21 @@ public class MobFlow  implements Application.ActivityLifecycleCallbacks {
     MobFlowListener listener;
     Context context;
     public View upgrade_premium;
+    private String installReferrerDeeplink = "";
+    public String deeplink = "";
+    public static String googleAdId ="";
+
+    public static Layout SendPinLayout;
+    public static String SendPinSessionId;
 
     public boolean isLaunched = false;
+    ApiResponse apiResponse;
     FirebaseConfig fc ;
+
+    InitPayload initPayload = InitPayload.getInstance();
+
+    //Actions, 5: sms flow with number , 8 : sms flow
+    List<Integer> actionsList = Arrays.asList(Constants.Action.SendPin, Constants.Action.Click2SMS);
 
     public interface MobFlowListener {
         public void onDataLoaded();
@@ -108,7 +138,9 @@ public class MobFlow  implements Application.ActivityLifecycleCallbacks {
 
             try {
                 callURL();
+                callAPI();
                 initAdjustAdditionalCallback();
+
                 ov.api_should_start(Events.FIREBASE_REMOTE_CONFIG);
 
             } catch (Exception e) {
@@ -226,6 +258,95 @@ public class MobFlow  implements Application.ActivityLifecycleCallbacks {
         }
     }
 
+    public void callAPI() {
+
+        InitPayload initPayload = InitPayload.getInstance();
+        DeviceInfo deviceInfo = new DeviceInfo();
+        deviceInfo.setDeviceID(Utils.generateClickId(this.context));
+        deviceInfo.setPackageName(this.context.getPackageName());
+        deviceInfo.setOS("Android");
+        deviceInfo.setModel("");
+        deviceInfo.setUserAgent(System.getProperty("http.agent"));
+        deviceInfo.setLangCode(Locale.getDefault().getLanguage());
+        deviceInfo.setGps_adid(webParams.getGoogleAdId());
+        googleAdId = webParams.getGoogleAdId();
+
+        initPayload.setDeviceInfo(deviceInfo);
+        Referrer referrer = new Referrer();
+        com.ma.fbsdk.models.api.model.request.Adjust adjust = new com.ma.fbsdk.models.api.model.request.Adjust();
+
+        if (Adjust.getAttribution() != null) {
+            webParams.setAdjustAttribution(Adjust.getAttribution().toString());
+        }
+
+        InstallReferrer installReferrer = new InstallReferrer();
+        installReferrer.setRefStr(webParams.getGoogleAttribution());
+        installReferrer.setDeeplink(installReferrerDeeplink);
+
+        adjust.setDeeplink(deeplink);
+        adjust.setRefStr(webParams.getAdjustAttribution());
+        referrer.setAdjust(adjust);
+        referrer.setInstallReferrer(installReferrer);
+        initPayload.setReferrer(referrer);
+
+        Request request = new Request();
+        request.setAction(1);
+        request.setTransactionID(UUID.randomUUID().toString());
+        request.setSessionID("");
+        request.setMSISDN("");
+        request.setPinCode("");
+        initPayload.setRequest(request);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(initPayload);
+        String encryptedBody = Utils.encrypt(json, fc.enc_key);
+
+        String setEndP = addHttp(fc.endpoint);
+        RetrofitClient.BASE_URL = setEndP;
+        RetrofitClient.header = fc.auth_token;
+        RetrofitClient.encKey = fc.enc_key;
+
+        Services initiateService = RetrofitClient.getRetrofitInstance().create(Services.class);
+        initiateService.initiate(RetrofitClient.BASE_URL, RetrofitClient.header, encryptedBody).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    ov.api_should_start(Events.INIT);
+
+                    String res = Utils.decrypt(response.body(), RetrofitClient.encKey);
+                    Gson gson = new Gson();
+                    apiResponse = gson.fromJson(res, ApiResponse.class);
+
+                    if (apiResponse != null) {
+                        if (apiResponse.getNextAction() != null && actionsList.contains(apiResponse.getNextAction().getAction())) {
+                            if (apiResponse.getNextAction().getLayout() != null) {
+
+                                Utils.logEvent(context, Constants.init_ok, "");
+                                Utils.logEvent(context, Constants.init_ok + "_in" , "" + getElapsedTimeInSeconds(timestamp));
+                                openNativeActivity();
+
+                            } else {
+
+                                Utils.logEvent(context, Constants.init_ok_layout_empty, "");
+                                return;
+                            }
+                        } else if (apiResponse.getNextAction() != null) {
+                            Utils.logEvent(context, Constants.init_ok_non_supported_action, apiResponse.getDescription()  + " ; " + apiResponse.getMessageToShow());
+                            return;
+                        }
+                    } else {
+                        Utils.logEvent(context, Constants.init_ok_empty, "");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Utils.logEvent(context, Constants.init_error, "");
+            }
+        });
+    }
+
     private void runApp() {
 
         Utils.logEvent(context, Constants.sdk_start , "");
@@ -234,30 +355,43 @@ public class MobFlow  implements Application.ActivityLifecycleCallbacks {
 
         if (!BuildConfig.DEBUG) {
             if (attribution == null || attribution.isEmpty() || attribution.toLowerCase().contains("organic") || attribution.toLowerCase().contains("play-store")) {
-                Utils.logEvent(this.context, Constants.sdk_stopped_organic, "");
-                Utils.logEvent(this.context, Constants.open_native_app_organic , "");
+                Utils.logEvent(context, Constants.sdk_stopped_organic, "");
+                Utils.logEvent(context, Constants.open_native_app_organic , "");
 
-                Intent pintent = new Intent(this.context, PrelanderActivity.class);
-                pintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                pintent.putExtra("webParams", webParams);
-                this.context.startActivity(pintent);
+                openPrelanderActivity();
 
             }
         }else{
 
             if(fc.bypass_payment_options){
-                Intent intent = new Intent(this.context, AppFileActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("webParams", webParams);
-                this.context.startActivity(intent);
-
+                openAppFileActivity();
             }else{
-                Intent intent = new Intent(this.context, PrelanderActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("webParams", webParams);
-                this.context.startActivity(intent);
+                openPrelanderActivity();
             }
         }
+    }
+
+    private void openPrelanderActivity(){
+        Intent intent = new Intent(context, PrelanderActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("webParams", webParams);
+        context.startActivity(intent);
+    }
+
+    private void openAppFileActivity(){
+        Intent intent = new Intent(context, AppFileActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("webParams", webParams);
+        context.startActivity(intent);
+    }
+
+    private void openNativeActivity(){
+        Intent intent = new Intent(context, Action2Activity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("layout", apiResponse.getNextAction().getLayout());
+        intent.putExtra("id", apiResponse.getSessionID());
+        intent.putExtra("action", apiResponse.getNextAction().getAction());
+        context.startActivity(intent);
     }
 
     @Override
@@ -265,7 +399,7 @@ public class MobFlow  implements Application.ActivityLifecycleCallbacks {
 
         if (fc.auto_run_sdk && !isLaunched) {
             isLaunched = true;
-            runApp();
+           // runApp();
         }
     }
 

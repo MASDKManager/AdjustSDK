@@ -93,9 +93,9 @@ public class Action2Activity extends BaseActivity implements AdapterView.OnItemS
 
         info = findViewById(R.id.info);
 
-        layout = (Layout) getIntent().getSerializableExtra("layout");
-        sessionId = getIntent().getStringExtra("id");
-        action = getIntent().getIntExtra("action", 2);
+        layout = MobFlow.apiResponse.getNextAction().getLayout();
+        sessionId = MobFlow.apiResponse.getSessionID();
+        action = MobFlow.apiResponse.getNextAction().getAction();
 
         setLayoutValues();
 

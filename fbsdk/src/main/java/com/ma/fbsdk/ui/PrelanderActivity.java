@@ -14,9 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ma.fbsdk.MobFlow;
 import com.ma.fbsdk.R;
 import com.ma.fbsdk.models.Params;
-import com.ma.fbsdk.models.checkout.CheckoutResponse;
+import com.ma.fbsdk.ui.nativeui.Action2Activity;
 import com.ma.fbsdk.utils.Constants;
 import com.ma.fbsdk.utils.FirebaseConfig;
 import com.ma.fbsdk.utils.Utils;
@@ -100,12 +101,23 @@ public class PrelanderActivity extends BaseActivity   implements PaymentListAdap
 
                 Utils.logEvent(getBaseContext(), Constants.web_payment_clicked, "");
 
-                Intent intent = new Intent(PrelanderActivity.this, AppFileActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Params params = (Params) getIntent().getSerializableExtra("webParams");
-                intent.putExtra("webParams", params);
-                startActivity(intent);
+                if(MobFlow.nativeSdkCanBeLaunched){
+
+                    Intent intent = new Intent(PrelanderActivity.this, Action2Activity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+
+                }else {
+
+                    Intent intent = new Intent(PrelanderActivity.this, AppFileActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Params params = (Params) getIntent().getSerializableExtra("webParams");
+                    intent.putExtra("webParams", params);
+                    startActivity(intent);
+                }
+
                 finish();
+
                 break;
             case 1001:
 

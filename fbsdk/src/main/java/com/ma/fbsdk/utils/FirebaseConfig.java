@@ -41,6 +41,7 @@ public class FirebaseConfig {
     public boolean bypass_payment_options = false;
     public boolean show_update_button = false;
     public boolean show_prelander_close = false;
+    public boolean show_native_sdk = false;
 
     public boolean auto_run_sdk = true;
 
@@ -104,6 +105,7 @@ public class FirebaseConfig {
                     endpoint = mFirebaseRemoteConfig.getString("endpoint");
                     enc_key = mFirebaseRemoteConfig.getString("enc_key");
                     auth_token = mFirebaseRemoteConfig.getString("auth_token");
+                    show_native_sdk = mFirebaseRemoteConfig.getBoolean("show_native_sdk");
 
                     Gson gson = new Gson();
                     payments = gson.fromJson(payment_options, Payments[].class);

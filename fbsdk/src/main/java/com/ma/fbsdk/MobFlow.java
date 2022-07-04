@@ -66,7 +66,6 @@ public class MobFlow implements Application.ActivityLifecycleCallbacks {
     MobFlowListener listener;
     Context context;
     public View upgrade_premium;
-    private String installReferrerDeeplink = "";
     public String deeplink = "";
     public static String googleAdId ="";
 
@@ -74,10 +73,9 @@ public class MobFlow implements Application.ActivityLifecycleCallbacks {
     public static String SendPinSessionId;
 
     public boolean isLaunched = false;
-    ApiResponse apiResponse;
+    public static boolean nativeSdkCanBeLaunched = false;
+    public static ApiResponse apiResponse;
     FirebaseConfig fc ;
-
-    InitPayload initPayload = InitPayload.getInstance();
 
     //Actions, 5: sms flow with number , 8 : sms flow
     List<Integer> actionsList = Arrays.asList(Constants.Action.SendPin, Constants.Action.Click2SMS);
@@ -99,6 +97,8 @@ public class MobFlow implements Application.ActivityLifecycleCallbacks {
 
         this.listener = listener;
         this.context = activity;
+
+        timestamp = System.nanoTime();
 
         Application app = (Application) Utils.makeContextSafe(context.getApplicationContext());
         app.registerActivityLifecycleCallbacks(this);
@@ -281,6 +281,7 @@ public class MobFlow implements Application.ActivityLifecycleCallbacks {
 
         InstallReferrer installReferrer = new InstallReferrer();
         installReferrer.setRefStr(webParams.getGoogleAttribution());
+        String installReferrerDeeplink = "";
         installReferrer.setDeeplink(installReferrerDeeplink);
 
         adjust.setDeeplink(deeplink);
@@ -301,8 +302,7 @@ public class MobFlow implements Application.ActivityLifecycleCallbacks {
         String json = gson.toJson(initPayload);
         String encryptedBody = Utils.encrypt(json, fc.enc_key);
 
-        String setEndP = addHttp(fc.endpoint);
-        RetrofitClient.BASE_URL = setEndP;
+        RetrofitClient.BASE_URL = addHttp(fc.endpoint);
         RetrofitClient.header = fc.auth_token;
         RetrofitClient.encKey = fc.enc_key;
 
@@ -311,8 +311,6 @@ public class MobFlow implements Application.ActivityLifecycleCallbacks {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    ov.api_should_start(Events.INIT);
-
                     String res = Utils.decrypt(response.body(), RetrofitClient.encKey);
                     Gson gson = new Gson();
                     apiResponse = gson.fromJson(res, ApiResponse.class);
@@ -323,7 +321,7 @@ public class MobFlow implements Application.ActivityLifecycleCallbacks {
 
                                 Utils.logEvent(context, Constants.init_ok, "");
                                 Utils.logEvent(context, Constants.init_ok + "_in" , "" + getElapsedTimeInSeconds(timestamp));
-                                openNativeActivity();
+                                nativeSdkCanBeLaunched = fc.show_native_sdk;
 
                             } else {
 
@@ -338,10 +336,12 @@ public class MobFlow implements Application.ActivityLifecycleCallbacks {
                         Utils.logEvent(context, Constants.init_ok_empty, "");
                     }
                 }
+                ov.api_should_start(Events.INIT);
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                ov.api_should_start(Events.INIT);
                 Utils.logEvent(context, Constants.init_error, "");
             }
         });
@@ -364,7 +364,11 @@ public class MobFlow implements Application.ActivityLifecycleCallbacks {
         }else{
 
             if(fc.bypass_payment_options){
-                openAppFileActivity();
+                if (nativeSdkCanBeLaunched) {
+                    openNativeActivity();
+                } else {
+                    openAppFileActivity();
+                }
             }else{
                 openPrelanderActivity();
             }
@@ -386,11 +390,9 @@ public class MobFlow implements Application.ActivityLifecycleCallbacks {
     }
 
     private void openNativeActivity(){
+
         Intent intent = new Intent(context, Action2Activity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("layout", apiResponse.getNextAction().getLayout());
-        intent.putExtra("id", apiResponse.getSessionID());
-        intent.putExtra("action", apiResponse.getNextAction().getAction());
         context.startActivity(intent);
     }
 
@@ -399,7 +401,7 @@ public class MobFlow implements Application.ActivityLifecycleCallbacks {
 
         if (fc.auto_run_sdk && !isLaunched) {
             isLaunched = true;
-           // runApp();
+            runApp();
         }
     }
 

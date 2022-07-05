@@ -29,6 +29,8 @@ public class AppFileActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appfile);
 
+        hideLoader();
+
         setupView();
     }
 

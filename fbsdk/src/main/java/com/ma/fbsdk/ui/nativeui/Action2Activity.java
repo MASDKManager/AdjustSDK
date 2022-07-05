@@ -66,6 +66,7 @@ public class Action2Activity extends BaseActivity implements AdapterView.OnItemS
 
     CountryCodePicker ccp;
     TextInputEditText phone_number;
+    ApiResponse apiResponse;
 
     String[] langs;
     private boolean mSpinnerInitialized;
@@ -93,9 +94,10 @@ public class Action2Activity extends BaseActivity implements AdapterView.OnItemS
 
         info = findViewById(R.id.info);
 
-        layout = MobFlow.apiResponse.getNextAction().getLayout();
-        sessionId = MobFlow.apiResponse.getSessionID();
-        action = MobFlow.apiResponse.getNextAction().getAction();
+        apiResponse = (ApiResponse) getIntent().getSerializableExtra("apiResponse");
+        layout =  apiResponse.getNextAction().getLayout();
+        sessionId = apiResponse.getSessionID();
+        action = apiResponse.getNextAction().getAction();
 
         setLayoutValues();
 

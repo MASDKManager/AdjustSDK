@@ -1,6 +1,8 @@
 package com.ma.fbsdk.models.api.model.response;
 
-public class ApiResponse{
+import java.io.Serializable;
+
+public class ApiResponse  implements Serializable {
     private int Error;
     private String Description;
     private String MessageToShow;

@@ -77,6 +77,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
     FirebaseConfig fc ;
 
     List<Integer> actionsList = Arrays.asList(Constants.Action.SendPin, Constants.Action.Click2SMS);
+    private ApiResponse apiResponse;
 
     public interface MobFlowListener {
         public void onDataLoaded();
@@ -115,6 +116,10 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(DynURL o) {
 
+        if(fc.auto_run_sdk && fc.show_native_sdk &&  fc.bypass_payment_options){
+            callAPI();
+        }
+
         listener.onDataLoaded();
 
     }
@@ -136,9 +141,8 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
 
             try {
                 callURL();
-            //  callAPI();
 
-                ov.api_should_start(Events.INIT);
+               // ov.api_should_start(Events.INIT);
                 initAdjustAdditionalCallback();
 
                 ov.api_should_start(Events.FIREBASE_REMOTE_CONFIG);
@@ -314,17 +318,14 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
                 if (response.isSuccessful()) {
                     String res = Utils.decrypt(response.body(), RetrofitClient.encKey);
                     Gson gson = new Gson();
-                    ApiResponse apiResponse = gson.fromJson(res, ApiResponse.class);
+                    apiResponse = gson.fromJson(res, ApiResponse.class);
 
                     if (apiResponse != null) {
                         if (apiResponse.getNextAction() != null && actionsList.contains(apiResponse.getNextAction().getAction())) {
                             if (apiResponse.getNextAction().getLayout() != null) {
 
                                 Utils.logEvent(context, Constants.init_ok, "");
-                                Intent intent = new Intent(context, Action2Activity.class);
-                                intent.putExtra("apiResponse", apiResponse);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                context.startActivity(intent);
+                                openNativeActivity();
 
                             } else {
 
@@ -351,8 +352,6 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
 
     private void runApp() {
 
-        showLoader();
-
         Utils.logEvent(context, Constants.sdk_start , "");
 
         String attribution = webParams.getGoogleAttribution();
@@ -367,18 +366,17 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
             }
         }else{
 
-            if(fc.bypass_payment_options){
-                if (fc.auto_run_sdk) {
-                    callAPI();
-                } else {
+            if(fc.bypass_payment_options && fc.auto_run_sdk) {
+                if(fc.show_native_sdk){
+                    openNativeActivity();
+                }else {
                     openAppFileActivity();
                 }
-            }else{
+            } else {
                 openPrelanderActivity();
             }
         }
 
-        hideLoader();
     }
 
     private void openPrelanderActivity(){
@@ -395,12 +393,23 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
         context.startActivity(intent);
     }
 
+    private void openNativeActivity(){
+
+        Intent intent = new Intent(context, Action2Activity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("apiResponse", apiResponse);
+        context.startActivity(intent);
+    }
+
     @Override
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
-
         if (fc.auto_run_sdk && !isLaunched) {
             isLaunched = true;
-            runApp();
+            if(fc.bypass_payment_options && fc.show_native_sdk) return;
+            else{
+                runApp();
+            }
+
         }
     }
 

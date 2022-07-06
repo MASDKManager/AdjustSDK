@@ -28,6 +28,6 @@ public class URLObservable {
     }
 
     public boolean readyToRun() {
-        return firebase_remote_config && google_referrer && init;
+        return firebase_remote_config && google_referrer ;
     }
 }

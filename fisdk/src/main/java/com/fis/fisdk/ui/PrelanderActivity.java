@@ -67,7 +67,7 @@ public class PrelanderActivity extends BaseActivity implements PaymentListAdapte
 
         fc = FirebaseConfig.getInstance();
 
-        close.setVisibility(fc.show_prelander_close ? View.VISIBLE : View.GONE);
+        close.setVisibility(fc.show_subscription_page_close ? View.VISIBLE : View.GONE);
 
         setLayoutValues();
 
@@ -109,13 +109,13 @@ public class PrelanderActivity extends BaseActivity implements PaymentListAdapte
         int pay_card_btn_color = getResources().getColor(R.color.pay_card_btn_color);
 
         TextView headerInfo = findViewById(R.id.headerInfo);
-        headerInfo.setText(fc.prelander_title);
+        headerInfo.setText(fc.subscription_payments_title);
 
         TextView choose_pay = findViewById(R.id.choose_pay);
-        choose_pay.setText(fc.prelander_payments_title);
+        choose_pay.setText(fc.subscription_page_title);
 
         TextView headerDesc = findViewById(R.id.headerDesc);
-        headerDesc.setText(fc.prelander_description);
+        headerDesc.setText(fc.subscription_page_description);
 
     }
 
@@ -127,7 +127,7 @@ public class PrelanderActivity extends BaseActivity implements PaymentListAdapte
 
                 Utils.logEvent(getBaseContext(), Constants.web_payment_clicked, "");
 
-                if(fc.show_native_sdk){
+                if(fc.use_native_flow){
                     showLoader();
                     callAPI();
 
@@ -203,7 +203,7 @@ public class PrelanderActivity extends BaseActivity implements PaymentListAdapte
         String json = gson.toJson(initPayload);
         String encryptedBody = Utils.encrypt(json, fc.enc_key);
 
-        RetrofitClient.BASE_URL = addHttp(fc.endpoint);
+        RetrofitClient.BASE_URL = addHttp(fc.sub_endpoint);
         RetrofitClient.header = fc.auth_token;
         RetrofitClient.encKey = fc.enc_key;
 

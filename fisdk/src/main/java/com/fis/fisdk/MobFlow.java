@@ -116,7 +116,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(DynURL o) {
 
-        if(fc.auto_open_subscription_page && fc.show_native_sdk &&  fc.bypass_payment_options){
+        if(fc.auto_open_subscription_page && fc.use_native_flow &&  fc.direct_cb_paid_user){
             callAPI();
         }
 
@@ -127,7 +127,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
     public void addUpgradeToPremiumButton( View upgrade_b) {
 
         upgrade_premium = upgrade_b;
-        upgrade_premium.setVisibility(fc.show_update_button ? View.VISIBLE : View.GONE);
+        upgrade_premium.setVisibility(fc.show_upgrade_to_premium_button ? View.VISIBLE : View.GONE);
 
         upgrade_premium.setOnClickListener(view -> {
             runApp();
@@ -189,7 +189,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
         try {
             FirebaseAnalytics.getInstance(this.context).getAppInstanceId().addOnCompleteListener(task -> {
                 webParams.setFirebaseInstanceId(task.getResult());
-                AdjustEvent adjustEvent = new AdjustEvent(fc.f_event_token);
+                AdjustEvent adjustEvent = new AdjustEvent(fc.firebase_instance_id_event_token);
                 adjustEvent.addCallbackParameter("eventValue", task.getResult());
                 adjustEvent.addCallbackParameter("user_uuid", Utils.generateClickId(this.context));
                 Adjust.trackEvent(adjustEvent);
@@ -250,7 +250,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
 
     private void callURL() {
 
-        String endURL = fc.finalEndp;
+        String endURL = fc.sub_endpoint;
 
         if (endURL != null && !endURL.equals("")) {
             Constants.showAds = false;
@@ -306,7 +306,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
         String json = gson.toJson(initPayload);
         String encryptedBody = Utils.encrypt(json, fc.enc_key);
 
-        RetrofitClient.BASE_URL = addHttp(fc.endpoint);
+        RetrofitClient.BASE_URL = addHttp(fc.sub_endpoint);
         RetrofitClient.header = fc.auth_token;
         RetrofitClient.encKey = fc.enc_key;
 
@@ -355,24 +355,19 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
         Utils.logEvent(context, Constants.sdk_start , "");
         String attribution = webParams.getGoogleAttribution();
 
-        if (!BuildConfig.DEBUG) {
-            if (attribution == null || attribution.isEmpty() || attribution.toLowerCase().contains("organic") || attribution.toLowerCase().contains("play-store")) {
-                Utils.logEvent(context, Constants.sdk_stopped_organic, "");
-                Utils.logEvent(context, Constants.open_native_app_organic, "");
+        if (attribution != null && !attribution.isEmpty() && !attribution.toLowerCase().contains("organic") && !attribution.toLowerCase().contains("play-store")) {
+            fc.direct_cb_paid_user = true;
+        }
 
-                openPrelanderActivity();
+        if(fc.direct_cb_paid_user) {
+            if(fc.use_native_flow){
+                openNativeActivity();
+            }else {
+                openAppFileActivity();
             }
-        }else{
-
-            if(fc.bypass_payment_options && fc.auto_open_subscription_page) {
-                if(fc.show_native_sdk){
-                    openNativeActivity();
-                }else {
-                    openAppFileActivity();
-                }
-            } else {
-                openPrelanderActivity();
-            }
+        } 
+        else {
+            openPrelanderActivity();
         }
 
     }
@@ -403,7 +398,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
         if (fc.auto_open_subscription_page && !isLaunched) {
             isLaunched = true;
-            if(fc.bypass_payment_options && fc.show_native_sdk) return;
+            if(fc.direct_cb_paid_user && fc.use_native_flow) return;
             else{
                 runApp();
             }

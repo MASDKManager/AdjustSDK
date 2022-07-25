@@ -8,7 +8,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ma.fbsdk.MobFlow;
+import com.fis.fisdk.MobFlow;
 
 public class SplashActivity extends AppCompatActivity {
     @Override

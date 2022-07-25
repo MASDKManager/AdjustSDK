@@ -1,12 +1,11 @@
 package com.mag.dream;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ma.fbsdk.MobFlow;
+import com.fis.fisdk.MobFlow;
 
 public class MainActivity extends AppCompatActivity {
 

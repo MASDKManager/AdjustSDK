@@ -30,7 +30,7 @@
     <content url="file://$MODULE_DIR$/../../../app/src/androidTestDebug" />
     <orderEntry type="jdk" jdkName="Android API 31 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="AndroidSDK.fbsdk.main" scope="TEST" />
+    <orderEntry type="module" module-name="AndroidSDK.fisdk.main" scope="TEST" />
     <orderEntry type="module" module-name="AndroidSDK.app.main" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.firebase:firebase-encoders-proto:16.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.firebase:firebase-encoders:17.0.0" level="project" />

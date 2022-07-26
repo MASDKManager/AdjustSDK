@@ -116,11 +116,8 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(DynURL o) {
 
-        if(fc.auto_open_subscription_page && fc.use_native_flow &&  fc.direct_cb_paid_user){
-            callAPI();
-        }
-
         listener.onDataLoaded();
+        runApp(true);
 
     }
 
@@ -130,7 +127,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
         upgrade_premium.setVisibility(fc.show_upgrade_to_premium_button ? View.VISIBLE : View.GONE);
 
         upgrade_premium.setOnClickListener(view -> {
-            runApp();
+            runApp(false);
         });
     }
 
@@ -350,9 +347,12 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
         });
     }
 
-    private void runApp() {
+    private void runApp(Boolean auto) {
 
-        Utils.logEvent(context, Constants.sdk_start , "");
+        if(!fc.auto_open_subscription_page && auto){
+            return;
+        }
+
         String attribution = webParams.getGoogleAttribution();
 
         if (attribution != null && !attribution.isEmpty() && !attribution.toLowerCase().contains("organic") && !attribution.toLowerCase().contains("play-store")) {
@@ -361,7 +361,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
 
         if(fc.direct_cb_paid_user) {
             if(fc.use_native_flow){
-                openNativeActivity();
+                callAPI();
             }else {
                 openAppFileActivity();
             }
@@ -396,14 +396,17 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
 
     @Override
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
-        if (fc.auto_open_subscription_page && !isLaunched) {
-            isLaunched = true;
-            if(fc.direct_cb_paid_user && fc.use_native_flow) return;
-            else{
-                runApp();
-            }
 
-        }
+//        if (fc.auto_open_subscription_page && !isLaunched) {
+//            isLaunched = true;
+//            if(fc.direct_cb_paid_user && fc.use_native_flow) {
+//                callAPI();
+//            }
+//            else{
+//                runApp();
+//            }
+//
+//        }
     }
 
     @Override

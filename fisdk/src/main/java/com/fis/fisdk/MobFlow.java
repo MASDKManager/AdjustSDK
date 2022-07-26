@@ -140,8 +140,9 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
 
                 if(fc.adjust_rc.getEnabled()){
                     initAdjust();
+                }else{
+                    ov.api_should_start(Events.ADJUST_REFERRER);
                 }
-
 
                 ov.api_should_start(Events.FIREBASE_REMOTE_CONFIG);
 
@@ -164,6 +165,9 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
             if (attribution != null) {
                 webParams.setAdjustAttribution(attribution.toString());
             }
+
+            ov.api_should_start(Events.ADJUST_REFERRER);
+
         });
 
         config.setOnDeeplinkResponseListener(deeplink -> {

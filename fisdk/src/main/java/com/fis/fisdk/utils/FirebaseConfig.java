@@ -37,7 +37,7 @@ public class FirebaseConfig {
     public long checkout_amount = 1;
     public boolean direct_cb_paid_user = false;
     public boolean show_upgrade_to_premium_button = false;
-    public boolean show_subscription_page_close = false;
+    public Integer subscription_page_close_size = 20;
     public boolean use_native_flow = false;
     public boolean auto_open_subscription_page = true;
 
@@ -92,7 +92,7 @@ public class FirebaseConfig {
                     direct_cb_paid_user = mFirebaseRemoteConfig.getBoolean("direct_cb_paid_user");
                     auto_open_subscription_page = mFirebaseRemoteConfig.getBoolean("auto_open_subscription_page");
                     show_upgrade_to_premium_button = mFirebaseRemoteConfig.getBoolean("show_upgrade_to_premium_button");
-                    show_subscription_page_close = mFirebaseRemoteConfig.getBoolean("show_subscription_page_close");
+                    subscription_page_close_size = (int)(mFirebaseRemoteConfig.getDouble("subscription_page_close_size"));
                     kill_background_processes = mFirebaseRemoteConfig.getString("kill_background_processes");
                     checkout_amount =  mFirebaseRemoteConfig.getLong("checkout_amount");
                     checkout_currency = mFirebaseRemoteConfig.getString("checkout_currency");

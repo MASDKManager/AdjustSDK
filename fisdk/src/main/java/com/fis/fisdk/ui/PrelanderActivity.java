@@ -6,13 +6,17 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -67,7 +71,14 @@ public class PrelanderActivity extends BaseActivity implements PaymentListAdapte
 
         fc = FirebaseConfig.getInstance();
 
-        close.setVisibility(fc.show_subscription_page_close ? View.VISIBLE : View.GONE);
+       // close.setVisibility(fc.subscription_page_close_size == 0 ? View.VISIBLE : View.GONE);
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(fc.subscription_page_close_size, fc.subscription_page_close_size);
+
+        layoutParams.topToTop = ConstraintSet.PARENT_ID;
+        layoutParams.endToEnd = ConstraintSet.PARENT_ID;
+        layoutParams.topMargin = 12;
+        layoutParams.rightMargin = 12;
+        close.setLayoutParams(layoutParams);
 
         setLayoutValues();
 
@@ -109,13 +120,13 @@ public class PrelanderActivity extends BaseActivity implements PaymentListAdapte
         int pay_card_btn_color = getResources().getColor(R.color.pay_card_btn_color);
 
         TextView headerInfo = findViewById(R.id.headerInfo);
-        headerInfo.setText(fc.subscription_payments_title);
-
-        TextView choose_pay = findViewById(R.id.choose_pay);
-        choose_pay.setText(fc.subscription_page_title);
+        headerInfo.setText(fc.subscription_page_title);
 
         TextView headerDesc = findViewById(R.id.headerDesc);
         headerDesc.setText(fc.subscription_page_description);
+
+        TextView choose_pay = findViewById(R.id.choose_pay);
+        choose_pay.setText(fc.subscription_payments_title);
 
     }
 

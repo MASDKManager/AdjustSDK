@@ -6,7 +6,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
 group = 'com.fis'
-version = '1.0.2'
+version = '1.0.3'
 
 android {
     compileSdkVersion 30

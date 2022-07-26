@@ -104,7 +104,6 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
 
         FirebaseApp.initializeApp(this.context);
 
-        initAdjust();
         getGoogleInstallReferrer();
         getRemoteConfig();
 
@@ -139,8 +138,10 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
             try {
                 callURL();
 
-               // ov.api_should_start(Events.INIT);
-                initAdjustAdditionalCallback();
+                if(fc.adjust_rc.getEnabled()){
+                    initAdjust();
+                }
+
 
                 ov.api_should_start(Events.FIREBASE_REMOTE_CONFIG);
 
@@ -152,7 +153,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
     }
 
     private void initAdjust() {
-        String appToken = this.context.getString(R.string.adjust_token);
+        String appToken = fc.adjust_rc.getAppToken();
         String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
         AdjustConfig config = new AdjustConfig(this.context, appToken, environment);
 
@@ -180,13 +181,10 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
         Adjust.addSessionCallbackParameter("m_sdk_version", versionCode);
         Utils.logEvent(this.context, Constants.m_sdk_version + versionCode, "");
 
-    }
-
-    private void initAdjustAdditionalCallback() {
         try {
             FirebaseAnalytics.getInstance(this.context).getAppInstanceId().addOnCompleteListener(task -> {
                 webParams.setFirebaseInstanceId(task.getResult());
-                AdjustEvent adjustEvent = new AdjustEvent(fc.firebase_instance_id_event_token);
+                AdjustEvent adjustEvent = new AdjustEvent(fc.adjust_rc.getAppInstanceIDEventToken());
                 adjustEvent.addCallbackParameter("eventValue", task.getResult());
                 adjustEvent.addCallbackParameter("user_uuid", Utils.generateClickId(this.context));
                 Adjust.trackEvent(adjustEvent);
@@ -396,17 +394,6 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
 
     @Override
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
-
-//        if (fc.auto_open_subscription_page && !isLaunched) {
-//            isLaunched = true;
-//            if(fc.direct_cb_paid_user && fc.use_native_flow) {
-//                callAPI();
-//            }
-//            else{
-//                runApp();
-//            }
-//
-//        }
     }
 
     @Override

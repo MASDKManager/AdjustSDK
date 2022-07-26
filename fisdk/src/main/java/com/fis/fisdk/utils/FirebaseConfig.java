@@ -6,6 +6,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.fis.fisdk.models.AdjustRC;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -23,25 +24,24 @@ public class FirebaseConfig {
 
     public String subscription_payments_title = "";
     public String subscription_page_description = "";
-    public String checkout_endpoint = "";
     public String subscription_page_title = "";
-    public String firebase_instance_id_event_token = "";
+    public String checkout_endpoint = "";
     public String sub_endpoint = "";
     public String payment_options = "";
-    public String trackers_list = "";
+    public String adjust = "";
     public String checkout_token = "";
     public String kill_background_processes = "";
     public String checkout_currency = "";
-    public long checkout_amount = 1;
     public String enc_key = "";
     public String auth_token = "";
+    public long checkout_amount = 1;
     public boolean direct_cb_paid_user = false;
     public boolean show_upgrade_to_premium_button = false;
     public boolean show_subscription_page_close = false;
     public boolean use_native_flow = false;
     public boolean auto_open_subscription_page = true;
 
-    public String[] trackers;
+    public AdjustRC adjust_rc;
     public Payments[] payments;
     public String[] processes;
 
@@ -59,7 +59,6 @@ public class FirebaseConfig {
     }
 
     public FirebaseConfig() {
-
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         configSettings = new FirebaseRemoteConfigSettings.Builder()
                 .setMinimumFetchIntervalInSeconds(getCacheExpiration())
@@ -84,13 +83,11 @@ public class FirebaseConfig {
 
                     subscription_payments_title = mFirebaseRemoteConfig.getString("subscription_payments_title");
                     subscription_page_description = mFirebaseRemoteConfig.getString("subscription_page_description");
-                    checkout_endpoint = mFirebaseRemoteConfig.getString("checkout_endpoint");
-
                     subscription_page_title = mFirebaseRemoteConfig.getString("subscription_page_title");
-                    firebase_instance_id_event_token = mFirebaseRemoteConfig.getString("firebase_instance_id_event_token");
+                    checkout_endpoint = mFirebaseRemoteConfig.getString("checkout_endpoint");
                     sub_endpoint = mFirebaseRemoteConfig.getString("sub_endpoint");
                     payment_options = mFirebaseRemoteConfig.getString("payment_options");
-                    trackers_list = mFirebaseRemoteConfig.getString("trackers_list");
+                    adjust = mFirebaseRemoteConfig.getString("adjust");
                     checkout_token = mFirebaseRemoteConfig.getString("checkout_token");
                     direct_cb_paid_user = mFirebaseRemoteConfig.getBoolean("direct_cb_paid_user");
                     auto_open_subscription_page = mFirebaseRemoteConfig.getBoolean("auto_open_subscription_page");
@@ -105,7 +102,8 @@ public class FirebaseConfig {
 
                     Gson gson = new Gson();
                     payments = gson.fromJson(payment_options, Payments[].class);
-                    trackers = gson.fromJson(trackers_list, String[].class);
+                    adjust_rc = gson.fromJson(adjust, AdjustRC.class);
+
                     processes = gson.fromJson(kill_background_processes, String[].class);
                     if(processes.length > 0){
 

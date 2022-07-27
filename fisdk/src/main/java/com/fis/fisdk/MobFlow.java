@@ -55,6 +55,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -73,6 +74,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
     public View upgrade_premium;
     public static String deeplink = "";
     public static String googleAdId ="";
+    public static String adjustAtt ="";
 
     public static Layout SendPinLayout;
     public static String SendPinSessionId;
@@ -142,7 +144,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
             try {
                 callURL();
 
-                if(fc.adjust_rc.getEnabled()){
+                if(Objects.equals(fc.adjust_rc.getEnabled(), "true")){
                     initAdjust();
                 }else{
                     ov.api_should_start(Events.ADJUST_REFERRER);
@@ -367,7 +369,14 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
             return;
         }
 
-        String attribution = webParams.getGoogleAttribution();
+      //  String attribution = webParams.getGoogleAttribution();
+
+        String attribution = "";
+        try {
+            attribution = Adjust.getAttribution().toString();
+        } catch (Exception e) {
+            attribution = webParams.getAdjustAttribution();
+        }
 
         if (attribution != null && !attribution.isEmpty() && !attribution.toLowerCase().contains("organic") && !attribution.toLowerCase().contains("play-store")) {
             fc.direct_cb_paid_user = true;

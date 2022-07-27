@@ -1,43 +1,21 @@
 package com.fis.fisdk.models;
 
 public class AdjustRC {
-    private Boolean enabled;
+    private String enabled;
     private String appToken;
     private String appInstanceIDEventToken;
-    Integer delay;
+    private long delay;
 
-    public Boolean getEnabled() {
-        return enabled;
-    }
+    public String getEnabled() { return enabled; }
+    public void setEnabled(String value) { this.enabled = value; }
 
-    public void setEnabled(Boolean value) {
-        this.enabled = value;
-    }
+    public String getAppToken() { return appToken; }
+    public void setAppToken(String value) { this.appToken = value; }
 
-    public String getAppToken() {
-        return appToken;
-    }
+    public String getAppInstanceIDEventToken() { return appInstanceIDEventToken; }
+    public void setAppInstanceIDEventToken(String value) { this.appInstanceIDEventToken = value; }
 
-    public void setAppToken(String value) {
-        this.appToken = value;
-    }
-
-    public String getAppInstanceIDEventToken() {
-        return appInstanceIDEventToken;
-    }
-
-    public void setAppInstanceIDEventToken(String value) {
-        this.appInstanceIDEventToken = value;
-    }
-
-    public Integer getDelay() {
-        return delay;
-    }
-
-    public void setDelay(Integer delay) {
-        this.delay = delay;
-    }
-
+    public long getDelay() { return delay; }
+    public void setDelay(long value) { this.delay = value; }
 }
-
 

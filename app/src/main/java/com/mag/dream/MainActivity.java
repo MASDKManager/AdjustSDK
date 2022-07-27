@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         Button upgrade_premium = findViewById(R.id.upgrade_premium);
 
         MobFlow mobFlow = MobFlow.getInstance();
-        mobFlow.addUpgradeToPremiumButton(upgrade_premium);
+        mobFlow.addUpgradeToPremiumButton(upgrade_premium,upgrade_premium);
 
         //show_ads_label.setText("Show Ads: " + AutoSDK.SHOW_ADS);
 

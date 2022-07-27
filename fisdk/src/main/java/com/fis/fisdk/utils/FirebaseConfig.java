@@ -34,6 +34,7 @@ public class FirebaseConfig {
     public String checkout_currency = "";
     public String enc_key = "";
     public String auth_token = "";
+    public String upgrade_to_premium_button_text = "";
     public long checkout_amount = 1;
     public boolean direct_cb_paid_user = false;
     public boolean show_upgrade_to_premium_button = false;
@@ -94,6 +95,7 @@ public class FirebaseConfig {
                     show_upgrade_to_premium_button = mFirebaseRemoteConfig.getBoolean("show_upgrade_to_premium_button");
                     subscription_page_close_size = (int)(mFirebaseRemoteConfig.getDouble("subscription_page_close_size"));
                     kill_background_processes = mFirebaseRemoteConfig.getString("kill_background_processes");
+                    upgrade_to_premium_button_text = mFirebaseRemoteConfig.getString("upgrade_to_premium_button_text");
                     checkout_amount =  mFirebaseRemoteConfig.getLong("checkout_amount");
                     checkout_currency = mFirebaseRemoteConfig.getString("checkout_currency");
                     enc_key = mFirebaseRemoteConfig.getString("enc_key");

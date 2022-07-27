@@ -31,7 +31,6 @@
           <stringArguments>
             <stringArg name="classpath">
               <args>
-                <arg>$MODULE_DIR$/../../../fisdk/build/intermediates/compile_library_classes_jar/debug/classes.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/2c2c664a1824e91e694e52f5424778c8/transformed/jetified-firebase-perf-20.0.5-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/6a470345a0ac8ee62e20c6a39d1ae767/transformed/jetified-phonemoji-1.3.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/613a6a764bcca191944b3ab50b3f053e/transformed/material-1.4.0-api.jar</arg>

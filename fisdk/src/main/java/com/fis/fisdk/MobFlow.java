@@ -383,7 +383,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
             if (attribution != null && !attribution.isEmpty() ){
                 for (String preventAttribution : fc.preventAttributionList.getAttBlackList()) {
                     if (attribution.contains(preventAttribution)) {
-                        fc.direct_cb_paid_user = true;
+                        fc.direct_cb_paid_user = false;
                         break;
                     }
                 }

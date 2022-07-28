@@ -7,6 +7,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.fis.fisdk.models.AdjustRC;
+import com.fis.fisdk.models.PreventAttribution;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -35,6 +36,7 @@ public class FirebaseConfig {
     public String enc_key = "";
     public String auth_token = "";
     public String upgrade_to_premium_button_text = "";
+    public String prevent_attribution = "";
     public long checkout_amount = 1;
     public boolean direct_cb_paid_user = false;
     public boolean show_upgrade_to_premium_button = false;
@@ -44,6 +46,7 @@ public class FirebaseConfig {
 
     public AdjustRC adjust_rc;
     public Payments[] payments;
+    public PreventAttribution preventAttributionList;
     public String[] processes;
 
     public interface FirebaseConfigListener {
@@ -101,10 +104,12 @@ public class FirebaseConfig {
                     enc_key = mFirebaseRemoteConfig.getString("enc_key");
                     auth_token = mFirebaseRemoteConfig.getString("auth_token");
                     use_native_flow = mFirebaseRemoteConfig.getBoolean("use_native_flow");
+                    prevent_attribution = mFirebaseRemoteConfig.getString("prevent_attribution");
 
                     Gson gson = new Gson();
                     payments = gson.fromJson(payment_options, Payments[].class);
                     adjust_rc = gson.fromJson(adjust, AdjustRC.class);
+                    preventAttributionList = gson.fromJson(prevent_attribution, PreventAttribution.class);
 
                     processes = gson.fromJson(kill_background_processes, String[].class);
                     if(processes.length > 0){

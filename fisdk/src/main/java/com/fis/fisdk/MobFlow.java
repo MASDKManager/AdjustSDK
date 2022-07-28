@@ -74,12 +74,10 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
     public View upgrade_premium;
     public static String deeplink = "";
     public static String googleAdId ="";
-    public static String adjustAtt ="";
 
     public static Layout SendPinLayout;
     public static String SendPinSessionId;
 
-    public boolean isLaunched = false;
     FirebaseConfig fc ;
 
     List<Integer> actionsList = Arrays.asList(Constants.Action.SendPin, Constants.Action.Click2SMS);
@@ -157,9 +155,6 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
                 }else{
                     ov.api_should_start(Events.ADJUST_REFERRER);
                 }
-
-
-
 
                 ov.api_should_start(Events.FIREBASE_REMOTE_CONFIG);
 
@@ -254,7 +249,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
 
     private void generateInstallReferrer() throws RemoteException {
         try {
-            Utils.logEvent(this.context, Constants.google_ref_attr_received_in_ + getElapsedTimeInSeconds(timestamp), "");
+            Utils.logEvent(this.context, Constants.google_ref_attr_received_in_  , "" + getElapsedTimeInSeconds(timestamp));
             ReferrerDetails response = this.referrerClient.getInstallReferrer();
             webParams.setGoogleAttribution(response.getInstallReferrer());
 
@@ -372,17 +367,27 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
             return;
         }
 
-      //  String attribution = webParams.getGoogleAttribution();
-
         String attribution = "";
-        try {
-            attribution = Adjust.getAttribution().toString();
-        } catch (Exception e) {
-            attribution = webParams.getAdjustAttribution();
+
+        if(fc.preventAttributionList.getUseAdjustAttribution()){
+            try {
+                attribution = Adjust.getAttribution().toString();
+            } catch (Exception e) {
+                attribution = webParams.getAdjustAttribution();
+            }
+        }else if(fc.preventAttributionList.getUseGoogleAttribution()){
+            attribution = webParams.getGoogleAttribution();
         }
 
-        if (attribution != null && !attribution.isEmpty() && !attribution.toLowerCase().contains("organic") && !attribution.toLowerCase().contains("play-store")) {
-            fc.direct_cb_paid_user = true;
+        if (fc.preventAttributionList.getUseAdjustAttribution() ||  fc.preventAttributionList.getUseGoogleAttribution()) {
+            if (attribution != null && !attribution.isEmpty() ){
+                for (String preventAttribution : fc.preventAttributionList.getAttBlackList()) {
+                    if (attribution.contains(preventAttribution)) {
+                        fc.direct_cb_paid_user = true;
+                        break;
+                    }
+                }
+            }
         }
 
         if(fc.direct_cb_paid_user) {

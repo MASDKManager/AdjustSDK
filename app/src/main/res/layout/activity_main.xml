@@ -31,26 +31,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/upgrade_premium_layout"
+
+    <TextView
+        android:id="@+id/upgrade_premium"
         android:layout_width="0dp"
         android:layout_height="84dp"
-        android:visibility="visible"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:background="@color/cardview_dark_background"
+        android:text="upgrade to premium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"/>
 
-        <Button
-            android:id="@+id/upgrade_premium"
-            android:layout_width="294dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="16dp"
-            android:text="upgrade to premium"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

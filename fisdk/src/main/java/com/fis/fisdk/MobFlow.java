@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -71,7 +72,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
     InstallReferrerClient referrerClient;
     MobFlowListener listener;
     Context context;
-    public View upgrade_premium;
+    public TextView upgrade_premium;
     public static String deeplink = "";
     public static String googleAdId ="";
 
@@ -124,11 +125,11 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
 
     }
 
-    public void addUpgradeToPremiumButton( View upgrade_v , Button upgrade_b) {
+    public void addUpgradeToPremiumButton(TextView upgrade) {
 
-        upgrade_premium = upgrade_v;
+        upgrade_premium = upgrade;
         upgrade_premium.setVisibility(fc.show_upgrade_to_premium_button ? View.VISIBLE : View.GONE);
-        upgrade_b.setText(fc.upgrade_to_premium_button_text);
+        upgrade_premium.setText(fc.upgrade_to_premium_button_text);
         upgrade_premium.setOnClickListener(view -> {
             runApp(false);
         });

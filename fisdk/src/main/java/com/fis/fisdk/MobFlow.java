@@ -74,12 +74,12 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
     Context context;
     public TextView upgrade_premium;
     public static String deeplink = "";
-    public static String googleAdId ="";
+    public static String googleAdId = "";
 
     public static Layout SendPinLayout;
     public static String SendPinSessionId;
 
-    FirebaseConfig fc ;
+    FirebaseConfig fc;
 
     List<Integer> actionsList = Arrays.asList(Constants.Action.SendPin, Constants.Action.Click2SMS);
     private ApiResponse apiResponse;
@@ -97,7 +97,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
         return instance;
     }
 
-    public void init( Activity activity, MobFlowListener listener){
+    public void init(Activity activity, MobFlowListener listener) {
 
         this.listener = listener;
         this.context = activity;
@@ -113,16 +113,22 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
         getRemoteConfig();
 
         ov = new URLObservable();
-        EventBus.getDefault().register(this);
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(DynURL o) {
 
-        listener.onDataLoaded();
-        runApp(true);
+        Activity activity = (Activity) context;
 
+        if (!activity.isFinishing() && !activity.isDestroyed()) {
+            listener.onDataLoaded();
+            runApp(true);
+        }
     }
 
     public void addUpgradeToPremiumButton(TextView upgrade) {
@@ -135,7 +141,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
         });
     }
 
-    private void getRemoteConfig(){
+    private void getRemoteConfig() {
 
         fc = FirebaseConfig.getInstance();
         fc.fetchVaues((Activity) this.context, () -> {
@@ -143,8 +149,8 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
             try {
                 callURL();
 
-                if(fc.adjust_rc != null){
-                    if(Objects.equals(fc.adjust_rc.getEnabled(), "true")){
+                if (fc.adjust_rc != null) {
+                    if (Objects.equals(fc.adjust_rc.getEnabled(), "true")) {
                         initAdjust();
 
                         new Handler().postDelayed(new Runnable() {
@@ -154,10 +160,10 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
                             }
                         }, fc.adjust_rc.getDelay());
 
-                    }else{
+                    } else {
                         ov.api_should_start(Events.ADJUST_REFERRER);
                     }
-                }else{
+                } else {
                     ov.api_should_start(Events.ADJUST_REFERRER);
                 }
 
@@ -178,7 +184,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
 
         config.setOnAttributionChangedListener(attribution -> {
 
-            Utils.logEvent(this.context, Constants.adjust_attr_received_in_  , "" + getElapsedTimeInSeconds(timestamp));
+            Utils.logEvent(this.context, Constants.adjust_attr_received_in_, "" + getElapsedTimeInSeconds(timestamp));
 
             if (attribution != null) {
                 webParams.setAdjustAttribution(attribution.toString());
@@ -228,7 +234,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
                             generateInstallReferrer();
                         } catch (RemoteException e) {
                             e.printStackTrace();
-                            Utils.logEvent( context, Constants.google_ref_attr_remote_except, "");
+                            Utils.logEvent(context, Constants.google_ref_attr_remote_except, "");
                         }
                         break;
                     case InstallReferrerClient.InstallReferrerResponse.FEATURE_NOT_SUPPORTED:
@@ -255,7 +261,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
 
     private void generateInstallReferrer() throws RemoteException {
         try {
-            Utils.logEvent(this.context, Constants.google_ref_attr_received_in_  , "" + getElapsedTimeInSeconds(timestamp));
+            Utils.logEvent(this.context, Constants.google_ref_attr_received_in_, "" + getElapsedTimeInSeconds(timestamp));
             ReferrerDetails response = this.referrerClient.getInstallReferrer();
             webParams.setGoogleAttribution(response.getInstallReferrer());
 
@@ -350,7 +356,7 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
                                 return;
                             }
                         } else if (apiResponse.getNextAction() != null) {
-                            Utils.logEvent(context, Constants.init_ok_non_supported_action, apiResponse.getDescription()  + " ; " + apiResponse.getMessageToShow());
+                            Utils.logEvent(context, Constants.init_ok_non_supported_action, apiResponse.getDescription() + " ; " + apiResponse.getMessageToShow());
                             return;
                         }
                     } else {
@@ -369,24 +375,24 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
 
     private void runApp(Boolean auto) {
 
-        if(!fc.auto_open_subscription_page && auto){
+        if (!fc.auto_open_subscription_page && auto) {
             return;
         }
 
         String attribution = "";
 
-        if(fc.preventAttributionList.getUseAdjustAttribution()){
+        if (fc.preventAttributionList.getUseAdjustAttribution()) {
             try {
                 attribution = Adjust.getAttribution().toString();
             } catch (Exception e) {
                 attribution = webParams.getAdjustAttribution();
             }
-        }else if(fc.preventAttributionList.getUseGoogleAttribution()){
+        } else if (fc.preventAttributionList.getUseGoogleAttribution()) {
             attribution = webParams.getGoogleAttribution();
         }
 
-        if (fc.preventAttributionList.getUseAdjustAttribution() ||  fc.preventAttributionList.getUseGoogleAttribution()) {
-            if (attribution != null && !attribution.isEmpty() ){
+        if (fc.preventAttributionList.getUseAdjustAttribution() || fc.preventAttributionList.getUseGoogleAttribution()) {
+            if (attribution != null && !attribution.isEmpty()) {
                 for (String preventAttribution : fc.preventAttributionList.getAttBlackList()) {
                     if (attribution.contains(preventAttribution)) {
                         fc.direct_cb_paid_user = false;
@@ -396,34 +402,33 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
             }
         }
 
-        if(fc.direct_cb_paid_user) {
-            if(fc.use_native_flow){
+        if (fc.direct_cb_paid_user) {
+            if (fc.use_native_flow) {
                 callAPI();
-            }else {
+            } else {
                 openAppFileActivity();
             }
-        } 
-        else {
+        } else {
             openPrelanderActivity();
         }
 
     }
 
-    private void openPrelanderActivity(){
+    private void openPrelanderActivity() {
         Intent intent = new Intent(context, PrelanderActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("webParams", webParams);
         context.startActivity(intent);
     }
 
-    private void openAppFileActivity(){
+    private void openAppFileActivity() {
         Intent intent = new Intent(context, AppFileActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("webParams", webParams);
         context.startActivity(intent);
     }
 
-    private void openNativeActivity(){
+    private void openNativeActivity() {
 
         Intent intent = new Intent(context, Action2Activity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -442,6 +447,10 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
     @Override
     public void onActivityResumed(@NonNull Activity activity) {
         Adjust.onResume();
+
+        getGoogleInstallReferrer();
+        getRemoteConfig();
+
     }
 
     @Override

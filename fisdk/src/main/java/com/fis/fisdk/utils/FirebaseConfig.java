@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.fis.fisdk.models.AdjustRC;
 import com.fis.fisdk.models.PreventAttribution;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
@@ -68,10 +69,18 @@ public class FirebaseConfig {
                 .setMinimumFetchIntervalInSeconds(getCacheExpiration())
                 .build();
         mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
-        mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
+       // mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
     }
 
     public void fetchVaues(Activity context, FirebaseConfigListener listener){
+        mFirebaseRemoteConfig.fetchAndActivate().addOnFailureListener( context, new OnFailureListener()
+        {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onDataLoaded(); // <---- fire listener here
+            }
+        });
+
         mFirebaseRemoteConfig.fetchAndActivate()
             .addOnCompleteListener(context, new OnCompleteListener<Boolean>() {
                 @Override
@@ -81,7 +90,6 @@ public class FirebaseConfig {
                         boolean updated = task.getResult();
                         Utils.logEvent(context, Constants.firbase_remote_config_fetchAndActivate_success, "");
                     } else {
-
                         Utils.logEvent(context, Constants.firbase_remote_config_fetchAndActivate_error, "");
                     }
 
@@ -111,15 +119,19 @@ public class FirebaseConfig {
                     adjust_rc = gson.fromJson(adjust, AdjustRC.class);
                     preventAttributionList = gson.fromJson(prevent_attribution, PreventAttribution.class);
 
+
                     processes = gson.fromJson(kill_background_processes, String[].class);
-                    if(processes.length > 0){
+                    if(processes!= null){
+                        if(processes.length > 0){
 
-                        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+                            ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 
-                        for (String item:  processes) {
-                            activityManager.killBackgroundProcesses(item);
+                            for (String item:  processes) {
+                                activityManager.killBackgroundProcesses(item);
+                            }
                         }
                     }
+
 
                     listener.onDataLoaded(); // <---- fire listener here
                 }

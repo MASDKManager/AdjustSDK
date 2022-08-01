@@ -142,19 +142,24 @@ public class MobFlow extends BaseActivity implements Application.ActivityLifecyc
             try {
                 callURL();
 
-                if(Objects.equals(fc.adjust_rc.getEnabled(), "true")){
-                    initAdjust();
+                if(fc.adjust_rc != null){
+                    if(Objects.equals(fc.adjust_rc.getEnabled(), "true")){
+                        initAdjust();
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            ov.api_should_start(Events.ADJUST_REFERRER);
-                        }
-                    }, fc.adjust_rc.getDelay());
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                ov.api_should_start(Events.ADJUST_REFERRER);
+                            }
+                        }, fc.adjust_rc.getDelay());
 
+                    }else{
+                        ov.api_should_start(Events.ADJUST_REFERRER);
+                    }
                 }else{
                     ov.api_should_start(Events.ADJUST_REFERRER);
                 }
+
 
                 ov.api_should_start(Events.FIREBASE_REMOTE_CONFIG);
 

@@ -129,6 +129,7 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/371990d9cabdcfb9cca0f0d3cf656874/transformed/jetified-eventbus-3.3.1-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/22f25d836379950cfc4251d3160334e0/transformed/jetified-eventbus-java-3.3.1.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/41519c5252e855c5b98e26fd6f62cc10/transformed/jetified-frames-android-3.1.2-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/6a1d308d055066321f5fa00f384dda7c/transformed/jetified-billing-5.0.0-api.jar</arg>
                 <arg>$MODULE_DIR$/../../../../../sdk/platforms/android-30/android.jar</arg>
                 <arg>$MODULE_DIR$/../../../../../sdk/build-tools/30.0.3/core-lambda-stubs.jar</arg>
               </args>
@@ -272,6 +273,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.hbb20:ccp:2.4.7@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.greenrobot:eventbus:3.3.1@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.github.checkout:frames-android:3.1.2@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.android.billingclient:billing:5.0.0@aar" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="AndroidSDK.fisdk.main" />
 </module>

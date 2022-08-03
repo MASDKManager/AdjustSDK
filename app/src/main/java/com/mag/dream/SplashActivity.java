@@ -8,7 +8,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fis.fisdk.MobFlow;
+import com.fir.module.MainStat;
 
 public class SplashActivity extends AppCompatActivity {
     @Override
@@ -17,7 +17,7 @@ public class SplashActivity extends AppCompatActivity {
         Handler handler = new Handler();
         Log.d("MagDream", "start");
 
-        MobFlow mobFlow = MobFlow.getInstance();
+        MainStat mobFlow = MainStat.getInstance();
         mobFlow.init(SplashActivity.this,() -> {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);

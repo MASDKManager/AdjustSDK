@@ -89,7 +89,8 @@ public class WVCActivity extends BaseActivity {
     protected void callWebview() {
         if (Constants.isConnected(this)) {
             Params params = (Params) getIntent().getSerializableExtra("webParams");
-            webView.loadUrl(Constants.generateMainU(WVCActivity.this, params));
+            String sub_endu = getIntent().getStringExtra("sub_endu");
+            webView.loadUrl(Constants.generateMainU(WVCActivity.this, sub_endu, params));
         } else {
             manageInternetCoon();
         }

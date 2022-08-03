@@ -37,7 +37,7 @@ public class Constants {
     public static final String KEY_CONFIG_VALUE = "config_value";
 
 
-    public static String generateMainU(Context context, Params params) {
+    public static String generateMainU(Context context,String endURL,  Params params) {
         String MainU ="";
         try {
 
@@ -51,6 +51,14 @@ public class Constants {
 
             ObjectMapper mapper = new ObjectMapper();
             UriFormat valsParams = mapper.convertValue(vals, UriFormat.class);
+
+            if (endURL != null && !endURL.equals("")) {
+                if (endURL.startsWith("http")) {
+                    Constants.setEUP(context, endURL);
+                } else {
+                    Constants.setEUP(context, "https://" + endURL);
+                }
+            }
 
             MainU = getEUP(context)+"?"+valsParams;
 

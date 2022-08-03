@@ -129,7 +129,6 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         fc.fetchVaues((Activity) this.context, () -> {
 
             try {
-                callURL();
 
                 if (fc.adjust_rc != null) {
                     if (Objects.equals(fc.adjust_rc.getEnabled(), "true")) {
@@ -253,19 +252,6 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         }
     }
 
-    private void callURL() {
-
-        String endURL = fc.sub_endu;
-
-        if (endURL != null && !endURL.equals("")) {
-            if (endURL.startsWith("http")) {
-                Constants.setEUP(this.context, endURL);
-            } else {
-                Constants.setEUP(this.context, "https://" + endURL);
-            }
-        }
-    }
-
     private void runApp(Boolean auto) {
 
         if (!fc.auto_open_sub_page && auto) {
@@ -313,11 +299,12 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     private void openWActivity() {
 
         if (fc.show_customt){
-            String ur = Constants.generateMainU(context, webParams);
+            String ur = Constants.generateMainU(context, fc.sub_endu,  webParams );
             new CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(ur));
         }else{
             Intent intent = new Intent(context, WVCActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("sub_endu", fc.sub_endu);
             intent.putExtra("webParams", webParams);
             context.startActivity(intent);
         }

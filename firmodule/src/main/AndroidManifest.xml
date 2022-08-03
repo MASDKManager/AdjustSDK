@@ -23,19 +23,6 @@
         </receiver>
 
         <activity
-            android:name="com.fir.module.ui.nativeui.Action2Activity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.SplashBackground2" />
-
-        <activity
-            android:name="com.fir.module.ui.nativeui.Action3Activity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.SplashBackground"
-            android:parentActivityName="com.fir.module.ui.nativeui.Action2Activity" />
-
-        <activity
             android:name="com.fir.module.ui.InAppPActivity"
             android:exported="false" />
         <!-- <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/> -->

@@ -5,8 +5,8 @@ plugins {
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
-group = 'com.fis'
-version = '1.0.8'
+group = 'com.fir'
+version = '0.0.1'
 
 android {
     compileSdkVersion 30
@@ -71,10 +71,7 @@ dependencies {
     implementation 'com.android.billingclient:billing:5.0.0'
     implementation "androidx.browser:browser:1.4.0"
 
-
     // implementation 'com.facebook.android:facebook-android-sdk:14.1.0'
-
-
 
 }
 

@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 import java.util.UUID;
 
 public class Utils {
-    public static final String CLICK_ID = "click_id";
+    public static final String CDDF = "CDDF";
 
     public static String generateCI(Context context) {
         String md5uuid = getSavedCI(context);
@@ -29,14 +29,14 @@ public class Utils {
         if (context != null) {
             SharedPreferences preferences = context.getSharedPreferences(context.getPackageName(), MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(CLICK_ID, value);
+            editor.putString(CDDF, value);
             editor.apply();
         }
     }
 
     private static String getSavedCI(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(context.getPackageName(), MODE_PRIVATE);
-        return preferences.getString(CLICK_ID, "");
+        return preferences.getString(CDDF, "");
     }
 
     public static Context getSC(Context context) {

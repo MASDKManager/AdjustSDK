@@ -1,9 +1,6 @@
 package com.fir.module.utils;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -38,7 +35,6 @@ public class Constants {
 
 
     public static String generateMainU(Context context,String endURL,  Params params) {
-        String MainU ="";
         try {
 
             Values vals = new Values();
@@ -52,33 +48,15 @@ public class Constants {
             ObjectMapper mapper = new ObjectMapper();
             UriFormat valsParams = mapper.convertValue(vals, UriFormat.class);
 
-            if (endURL != null && !endURL.equals("")) {
-                if (endURL.startsWith("http")) {
-                    Constants.setEUP(context, endURL);
-                } else {
-                    Constants.setEUP(context, "https://" + endURL);
-                }
+            if (endURL != null && !endURL.equals("") && !endURL.startsWith("http")) {
+                endURL =  "https://" + endURL;
             }
 
-            MainU = getEUP(context)+"?"+valsParams;
+            endURL = endURL+"?"+valsParams;
 
         }catch (Exception ignored){
         }
-        return MainU;
-    }
-
-    public static void setEUP(Context context, String value) {
-        if (context != null) {
-            SharedPreferences preferences = context.getSharedPreferences(context.getPackageName(), MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(KEY_CONFIG_VALUE, value);
-            editor.apply();
-        }
-    }
-
-    public static String getEUP(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(context.getPackageName(), MODE_PRIVATE);
-        return preferences.getString(KEY_CONFIG_VALUE, "");
+        return endURL;
     }
 
     public static boolean isConnected(Context context) {

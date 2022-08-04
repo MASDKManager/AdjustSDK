@@ -51,7 +51,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 
-public class MainStat extends BaseActivity {
+public class MainStat extends BaseActivity implements Application.ActivityLifecycleCallbacks {
 
     private static MainStat instance;
     Params webParams = new Params();
@@ -85,6 +85,9 @@ public class MainStat extends BaseActivity {
         this.context = activity;
 
         timestamp = System.nanoTime();
+
+        Application app = (Application) context.getApplicationContext();
+        app.registerActivityLifecycleCallbacks(this);
 
         FirebaseApp.initializeApp(this.context);
 
@@ -326,4 +329,34 @@ public class MainStat extends BaseActivity {
 
     }
 
+    @Override
+    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
+    }
+
+    @Override
+    public void onActivityStarted(@NonNull Activity activity) {
+    }
+
+    @Override
+    public void onActivityResumed(@NonNull Activity activity) {
+        Adjust.onResume();
+
+    }
+
+    @Override
+    public void onActivityPaused(@NonNull Activity activity) {
+        Adjust.onPause();
+    }
+
+    @Override
+    public void onActivityStopped(@NonNull Activity activity) {
+    }
+
+    @Override
+    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
+    }
+
+    @Override
+    public void onActivityDestroyed(@NonNull Activity activity) {
+    }
 }

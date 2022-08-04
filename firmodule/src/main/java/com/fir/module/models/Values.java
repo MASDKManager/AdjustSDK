@@ -2,59 +2,59 @@ package com.fir.module.models;
 
 public class Values {
 
-    public String getVal1() {
-        return val1;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setVal1(String val1) {
-        this.val1 = val1;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
-    public String getVal2() {
-        return val2;
+    public String getPackage_id() {
+        return package_id;
     }
 
-    public void setVal2(String val2) {
-        this.val2 = val2;
+    public void setPackage_id(String package_id) {
+        this.package_id = package_id;
     }
 
-    public String getVal3() {
-        return val3;
+    public String getFirebase_instance_id() {
+        return firebase_instance_id;
     }
 
-    public void setVal3(String val3) {
-        this.val3 = val3;
+    public void setFirebase_instance_id(String firebase_instance_id) {
+        this.firebase_instance_id = firebase_instance_id;
     }
 
-    public String getVal4() {
-        return val4;
+    public String getAdjust_attribution() {
+        return adjust_attribution;
     }
 
-    public void setVal4(String val4) {
-        this.val4 = val4;
+    public void setAdjust_attribution(String adjust_attribution) {
+        this.adjust_attribution = adjust_attribution;
     }
 
-    public String getVal5() {
-        return val5;
+    public String getGps_adid() {
+        return gps_adid;
     }
 
-    public void setVal5(String val5) {
-        this.val5 = val5;
+    public void setGps_adid(String gps_adid) {
+        this.gps_adid = gps_adid;
     }
 
-    public String getVal6() {
-        return val6;
+    public String getGoogle_attribution() {
+        return google_attribution;
     }
 
-    public void setVal6(String val6) {
-        this.val6 = val6;
+    public void setGoogle_attribution(String google_attribution) {
+        this.google_attribution = google_attribution;
     }
 
-    String val1 = "";
-    String val2 = "";
-    String val3 = "";
-    String val4 = "";
-    String val5 = "";
-    String val6 = "";
+    String uuid = "";
+    String package_id = "";
+    String firebase_instance_id = "";
+    String adjust_attribution = "";
+    String gps_adid = "";
+    String google_attribution = "";
 
 }

@@ -9,7 +9,7 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        applicationId "com.mag.dream"
+        applicationId "com.mag.dream1"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -45,6 +45,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-perf'
+
+    implementation 'com.yandex.android:mobmetricalib:5.0.0'
+    implementation 'com.google.android.gms:play-services-appset:16.0.2'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.6.0'
+
+
 
 //    implementation (group: 'com.wma', name: 'awsdk', version: '1.0.0', ext: 'aar', classifier: 'release'){
 //        transitive true

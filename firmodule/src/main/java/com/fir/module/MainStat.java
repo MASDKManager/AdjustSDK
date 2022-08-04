@@ -1,10 +1,9 @@
 package com.fir.module;
 
 import static com.fir.module.utils.Constants.eventValue;
-import static com.fir.module.utils.Constants.firebaseinstanceId;
+import static com.fir.module.utils.Constants.firebase_instance_id;
 import static com.fir.module.utils.Constants.m_sdk_ver;
 import static com.fir.module.utils.Constants.sub_endu;
-import static com.fir.module.utils.Constants.user_uuid;
 import static com.fir.module.utils.Constants.wParams;
 import static com.fir.module.utils.Utils.getElapsedTimeInSeconds;
 
@@ -29,23 +28,22 @@ import com.adjust.sdk.AdjustEvent;
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.fir.module.models.Params;
 import com.fir.module.observer.DynU;
 import com.fir.module.observer.Events;
 import com.fir.module.observer.URLObservable;
-import com.fir.module.ui.WVCActivity;
 import com.fir.module.ui.BaseActivity;
 import com.fir.module.ui.PrelanderActivity;
+import com.fir.module.ui.WVCActivity;
 import com.fir.module.utils.Constants;
 import com.fir.module.utils.FirebaseConfig;
 import com.fir.module.utils.Utils;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 
 import java.util.Objects;
 import java.util.UUID;
@@ -103,7 +101,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         Utils.logEvent(this.context, m_sdk_ver + versionCode, "");
     }
 
-    private void getConfig(){
+    private void getConfig() {
         getGoogleInstallReferrer();
         getRemoteConfig();
         initFacebook();
@@ -129,6 +127,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
             runApp(false);
         });
     }
+
     private void initFacebook() {
 //        FacebookSdk.setApplicationId("");
 //        FacebookSdk.setClientToken("");
@@ -197,12 +196,12 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         Adjust.onCreate(config);
 
         Adjust.addSessionCallbackParameter(m_sdk_ver, versionCode);
-        Adjust.addSessionCallbackParameter(user_uuid, uuid);
-        Adjust.addSessionCallbackParameter(firebaseinstanceId,  webParams.getFirebaseInstanceId());
+        Adjust.addSessionCallbackParameter(Constants.UUID, uuid);
+        Adjust.addSessionCallbackParameter(firebase_instance_id, webParams.getFirebaseInstanceId());
 
         AdjustEvent adjustEvent = new AdjustEvent(fc.adjust_rc.getAppInstanceIDEventToken());
-        adjustEvent.addCallbackParameter(eventValue,webParams.getFirebaseInstanceId());
-        adjustEvent.addCallbackParameter(user_uuid, uuid);
+        adjustEvent.addCallbackParameter(eventValue, webParams.getFirebaseInstanceId());
+        adjustEvent.addCallbackParameter(Constants.UUID, uuid);
         Adjust.trackEvent(adjustEvent);
 
         Utils.logEvent(this.context, Constants.f_in_s, "");
@@ -316,10 +315,10 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
 
     private void openWActivity() {
 
-        if (fc.show_customt){
-            String ur = Constants.getMainU(context, fc.sub_endu,  webParams );
+        if (fc.show_customt) {
+            String ur = Constants.getMainU(context, fc.sub_endu, webParams);
             new CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(ur));
-        }else{
+        } else {
             Intent intent = new Intent(context, WVCActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(sub_endu, fc.sub_endu);

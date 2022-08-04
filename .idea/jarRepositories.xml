@@ -46,5 +46,10 @@
       <option name="name" value="maven2" />
       <option name="url" value="https://libraryartifacts.s3.us-west-2.amazonaws.com/Android/androidhtmlsdk/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="https://libraryartifacts.s3.us-west-2.amazonaws.com/Android/firebasesdk/" />
+    </remote-repository>
   </component>
 </project>

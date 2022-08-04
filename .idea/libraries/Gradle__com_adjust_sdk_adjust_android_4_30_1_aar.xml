@@ -2,7 +2,6 @@
   <library name="Gradle: com.adjust.sdk:adjust-android:4.30.1@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9309f64e03fb6f0710316bd0ab83630f/transformed/jetified-adjust-android-4.30.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9309f64e03fb6f0710316bd0ab83630f/transformed/jetified-adjust-android-4.30.1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9309f64e03fb6f0710316bd0ab83630f/transformed/jetified-adjust-android-4.30.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

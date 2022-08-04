@@ -2,7 +2,6 @@
   <library name="Gradle: io.michaelrocks:libphonenumber-android:8.12.37@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/e63e7ef0c4bc36e7d5e5137a24a79044/transformed/jetified-libphonenumber-android-8.12.37/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e63e7ef0c4bc36e7d5e5137a24a79044/transformed/jetified-libphonenumber-android-8.12.37/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e63e7ef0c4bc36e7d5e5137a24a79044/transformed/jetified-libphonenumber-android-8.12.37/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

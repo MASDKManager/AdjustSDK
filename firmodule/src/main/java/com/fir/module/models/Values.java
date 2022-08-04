@@ -2,12 +2,12 @@ package com.fir.module.models;
 
 public class Values {
 
-    public String getUuid() {
-        return uuid;
+    public String getClick_id() {
+        return click_id;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setClick_id(String click_id) {
+        this.click_id = click_id;
     }
 
     public String getPackage_id() {
@@ -50,7 +50,7 @@ public class Values {
         this.google_attribution = google_attribution;
     }
 
-    String uuid = "";
+    String click_id = "";
     String package_id = "";
     String firebase_instance_id = "";
     String adjust_attribution = "";

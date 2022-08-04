@@ -196,16 +196,15 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         Adjust.onCreate(config);
 
         Adjust.addSessionCallbackParameter(m_sdk_ver, versionCode);
-        Adjust.addSessionCallbackParameter(Constants.UUID, uuid);
+        Adjust.addSessionCallbackParameter(Constants.CLICK_ID, uuid);
         Adjust.addSessionCallbackParameter(firebase_instance_id, webParams.getFirebaseInstanceId());
 
         AdjustEvent adjustEvent = new AdjustEvent(fc.adjust_rc.getAppInstanceIDEventToken());
         adjustEvent.addCallbackParameter(eventValue, webParams.getFirebaseInstanceId());
-        adjustEvent.addCallbackParameter(Constants.UUID, uuid);
+        adjustEvent.addCallbackParameter(Constants.CLICK_ID, uuid);
         Adjust.trackEvent(adjustEvent);
 
         Utils.logEvent(this.context, Constants.f_in_s, "");
-
     }
 
     private void getGoogleInstallReferrer() {

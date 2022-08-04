@@ -20,7 +20,7 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
-        maven { url "https://libraryartifacts.s3.us-west-2.amazonaws.com/Android/androidhtmlsdk/" }
+        maven { url "https://libraryartifacts.s3.us-west-2.amazonaws.com/Android/firebasesdk/" }
     }
 }
 

@@ -32,7 +32,7 @@ public class Constants {
 
     ///
     public static final String firebase_instance_id = "firebase_instance_id";
-    public static final String UUID = "uuid";
+    public static final String CLICK_ID = "click_id";
     public static final String eventValue = "eventValue";
     public static final String m_sdk_ver = "m_sdk_ver";
     public static final String wParams = "wParams";
@@ -44,7 +44,7 @@ public class Constants {
         try {
 
             Values vals = new Values();
-            vals.setUuid(params.getUuid());
+            vals.setClick_id(params.getUuid());
             vals.setPackage_id(context.getPackageName());
             vals.setFirebase_instance_id(params.getFirebaseInstanceId());
             vals.setAdjust_attribution(URLEncoder.encode(params.getAdjustAttribution(),"UTF-8"));

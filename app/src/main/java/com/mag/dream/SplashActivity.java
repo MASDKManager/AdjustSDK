@@ -3,7 +3,6 @@ package com.mag.dream;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +14,11 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Handler handler = new Handler();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         MainStat ms = MainStat.getInstance();
         ms.init(SplashActivity.this,() -> {
@@ -22,6 +26,5 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-
     }
 }

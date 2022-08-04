@@ -21,7 +21,6 @@ public class URLObservable {
             a_r = true;
         }
 
-
         if (events.equals(Events.F_I_ID)) {
             f_i_i_d = true;
         }
@@ -32,6 +31,6 @@ public class URLObservable {
     }
 
     public boolean readyToRun() {
-        return f_r_c && g_r && a_r && f_i_i_d;
+        return f_r_c && g_r && a_r ;
     }
 }

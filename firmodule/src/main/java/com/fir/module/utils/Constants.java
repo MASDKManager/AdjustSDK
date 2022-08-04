@@ -31,20 +31,20 @@ public class Constants {
     public static String inA_p_cl = "inApp_payment_clicke";
 
     ///
+    public static final String firebaseinstanceId = "firebaseinstanceId";
     public static final String user_uuid = "user_uuid";
     public static final String eventValue = "eventValue";
-    ////
     public static final String m_sdk_ver = "m_sdk_ver";
     public static final String wParams = "wParams";
     public static final String sub_endu = "sub_endu";
     public static final String extraInfo = "extraInfo";
 
 
-    public static String generateMainU(Context context,String endURL,  Params params) {
+    public static String getMainU(Context context, String endURL, Params params) {
         try {
 
             Values vals = new Values();
-            vals.setVal1(params.getFirebaseInstanceId());
+            vals.setVal1(params.getUuid());
             vals.setVal2(context.getPackageName());
             vals.setVal3(params.getFirebaseInstanceId());
             vals.setVal4(URLEncoder.encode(params.getAdjustAttribution(),"UTF-8"));

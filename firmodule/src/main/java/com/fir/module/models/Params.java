@@ -43,6 +43,16 @@ public class Params  implements Serializable {
         this.firebaseInstanceId = firebaseInstanceId;
     }
 
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    private String uuid = "";
     private String googleAdId = "";
     private String deeplink = "";
     private String googleAttribution = "";

@@ -1,6 +1,7 @@
 package com.fir.module;
 
 import static com.fir.module.utils.Constants.eventValue;
+import static com.fir.module.utils.Constants.firebaseinstanceId;
 import static com.fir.module.utils.Constants.m_sdk_ver;
 import static com.fir.module.utils.Constants.sub_endu;
 import static com.fir.module.utils.Constants.user_uuid;
@@ -47,6 +48,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 
 import java.util.Objects;
+import java.util.UUID;
 
 
 public class MainStat extends BaseActivity implements Application.ActivityLifecycleCallbacks {
@@ -59,8 +61,10 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     MobFlowListener listener;
     Context context;
     public TextView u_p;
+    String versionCode = BuildConfig.VERSION;
 
     FirebaseConfig fc;
+    final String uuid = UUID.randomUUID().toString().replace("-", "");
 
     public interface MobFlowListener {
         public void onDataLoaded();
@@ -95,6 +99,8 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
             EventBus.getDefault().register(this);
         }
 
+        webParams.setUuid(uuid);
+        Utils.logEvent(this.context, m_sdk_ver + versionCode, "");
     }
 
     private void getConfig(){
@@ -117,7 +123,6 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     public void startStat(TextView upgrade) {
 
         u_p = upgrade;
-
         u_p.setVisibility(fc.show_upgrade_button ? View.VISIBLE : View.GONE);
         u_p.setText(fc.upgrade_button_text);
         u_p.setOnClickListener(view -> {
@@ -189,34 +194,35 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         });
 
         Adjust.getGoogleAdId(this.context, googleAdId -> webParams.setGoogleAdId(googleAdId));
-        config.setDelayStart(3);
         Adjust.onCreate(config);
 
-        String versionCode = BuildConfig.VERSION;
         Adjust.addSessionCallbackParameter(m_sdk_ver, versionCode);
-        Utils.logEvent(this.context, m_sdk_ver + versionCode, "");
+        Adjust.addSessionCallbackParameter(user_uuid, uuid);
+        Adjust.addSessionCallbackParameter(firebaseinstanceId,  webParams.getFirebaseInstanceId());
+
+        AdjustEvent adjustEvent = new AdjustEvent(fc.adjust_rc.getAppInstanceIDEventToken());
+        adjustEvent.addCallbackParameter(eventValue,webParams.getFirebaseInstanceId());
+        adjustEvent.addCallbackParameter(user_uuid, uuid);
+        Adjust.trackEvent(adjustEvent);
+
+        Utils.logEvent(this.context, Constants.f_in_s, "");
+
+    }
+
+    private void getGoogleInstallReferrer() {
 
         try {
+
             FirebaseAnalytics.getInstance(this.context).getAppInstanceId().addOnCompleteListener(task -> {
                 webParams.setFirebaseInstanceId(task.getResult());
-                AdjustEvent adjustEvent = new AdjustEvent(fc.adjust_rc.getAppInstanceIDEventToken());
-                adjustEvent.addCallbackParameter(eventValue, task.getResult());
-                adjustEvent.addCallbackParameter(user_uuid, task.getResult());
-                Adjust.trackEvent(adjustEvent);
-
-                Adjust.addSessionCallbackParameter(user_uuid, task.getResult());
-                Adjust.sendFirstPackages();
-
-                ov.ads_start(Events.F_I_ID);
-
                 Utils.logEvent(this.context, Constants.f_in_s, "");
+
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
-    private void getGoogleInstallReferrer() {
+
         referrerClient = InstallReferrerClient.newBuilder(this.context).build();
         referrerClient.startConnection(new InstallReferrerStateListener() {
             @Override
@@ -311,7 +317,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     private void openWActivity() {
 
         if (fc.show_customt){
-            String ur = Constants.generateMainU(context, fc.sub_endu,  webParams );
+            String ur = Constants.getMainU(context, fc.sub_endu,  webParams );
             new CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(ur));
         }else{
             Intent intent = new Intent(context, WVCActivity.class);

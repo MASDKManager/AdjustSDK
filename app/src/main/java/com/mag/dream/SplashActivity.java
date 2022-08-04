@@ -15,15 +15,12 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Handler handler = new Handler();
-        Log.d("MagDream", "start");
 
-        MainStat mobFlow = MainStat.getInstance();
-        mobFlow.init(SplashActivity.this,() -> {
+        MainStat ms = MainStat.getInstance();
+        ms.init(SplashActivity.this,() -> {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
-            Log.d("MagDream", "finish");
             finish();
-
         });
 
     }

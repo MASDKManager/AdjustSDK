@@ -1,8 +1,8 @@
 package com.fir.module.observer;
 
 public enum Events {
-    INIT,
-    FIREBASE_REMOTE_CONFIG,
-    GOOGLE_REFERRER,
-    ADJUST_REFERRER,
+    F_I_ID,
+    F_R_C,
+    G_R,
+    A_R,
 }

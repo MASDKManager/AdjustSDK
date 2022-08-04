@@ -1,5 +1,7 @@
 package com.fir.module.ui;
 
+import static com.fir.module.utils.Constants.wParams;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
@@ -88,8 +90,8 @@ public class WVCActivity extends BaseActivity {
 
     protected void callWebview() {
         if (Constants.isConnected(this)) {
-            Params params = (Params) getIntent().getSerializableExtra("webParams");
-            String sub_endu = getIntent().getStringExtra("sub_endu");
+            Params params = (Params) getIntent().getSerializableExtra(wParams);
+            String sub_endu = getIntent().getStringExtra(Constants.sub_endu);
             webView.loadUrl(Constants.generateMainU(WVCActivity.this, sub_endu, params));
         } else {
             manageInternetCoon();

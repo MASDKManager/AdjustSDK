@@ -34,7 +34,7 @@ public class PrelanderActivity extends BaseActivity implements PListAdapter.Item
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_action_1);
 
-        webParams = (Params) getIntent().getSerializableExtra("webParams");
+        webParams = (Params) getIntent().getSerializableExtra(Constants.wParams);
 
         ImageView close = findViewById(R.id.close);
         close.setOnClickListener(view -> {
@@ -108,14 +108,14 @@ public class PrelanderActivity extends BaseActivity implements PListAdapter.Item
                 Utils.logEvent(getBaseContext(), Constants.we_pa_cl, "");
 
                 if (fc.show_customt){
-                    Params params = (Params) getIntent().getSerializableExtra("webParams");
+                    Params params = (Params) getIntent().getSerializableExtra(Constants.wParams);
                     String ur = Constants.generateMainU(PrelanderActivity.this,fc.sub_endu, params);
                     new CustomTabsIntent.Builder().build().launchUrl(this, Uri.parse(ur));
                 }else{
                     showLoader();
                     Intent intent = new Intent(PrelanderActivity.this, WVCActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("webParams", webParams);
+                    intent.putExtra(Constants.wParams, webParams);
                     startActivity(intent);
                     hideLoader();
                 }
@@ -129,7 +129,6 @@ public class PrelanderActivity extends BaseActivity implements PListAdapter.Item
             case 1002:
 
                 Utils.logEvent(getBaseContext(), Constants.inA_p_cl, "");
-                Toast.makeText(PrelanderActivity.this, "Coming soon", Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;

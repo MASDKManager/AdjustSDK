@@ -21,6 +21,8 @@ import com.fir.module.utils.FirebaseConfig;
 import com.fir.module.utils.Utils;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.UUID;
+
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
@@ -85,7 +87,7 @@ public class SdkPForm extends BaseActivity {
 
             showLoader();
 
-            String random = Utils.generateCI(context);
+            String random = UUID.randomUUID().toString();
 
             CheckoutLoad cl = new CheckoutLoad();
             cl.setToken(token);

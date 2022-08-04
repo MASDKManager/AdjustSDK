@@ -14,10 +14,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView upgrade_premium = findViewById(R.id.upgrade_premium);
-
-        MainStat mobFlow = MainStat.getInstance();
-        mobFlow.addUpgradeToPremiumButton(upgrade_premium);
+        TextView up = findViewById(R.id.u_p);
+        MainStat ms = MainStat.getInstance();
+        ms.startStat(up);
 
         //show_ads_label.setText("Show Ads: " + AutoSDK.SHOW_ADS);
 

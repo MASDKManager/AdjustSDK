@@ -22,7 +22,6 @@ public class Constants {
     public static String in_dyn_er = "init_dyn_error";
     public static String i_dyn_ok_exc = "init_dyn_ok_exception";
     public static String f_in_s = "firbase_instance_sent";
-    public static String m_sdk_ver = "m_sdk_ver";
     public static String fir_re_co_fe_er = "firbase_rc_fetch_error";
     public static String fi_re_co_fAdA_su = "firbase_rc_fetchAndActivate_success";
     public static String fir_re_co_feAAc_er = "firbase_rc_fetchAndActivate_error";
@@ -31,14 +30,19 @@ public class Constants {
     public static String we_pa_cl = "web_payment_clicke";
     public static String inA_p_cl = "inApp_payment_clicke";
 
-    public static final String KEY_CONFIG_VALUE = "config_value";
+    public static final String user_uuid = "user_uuid";
+    public static final String eventValue = "eventValue";
+    public static final String m_sdk_ver = "m_sdk_ver";
+    public static final String wParams = "wParams";
+    public static final String sub_endu = "sub_endu";
+    public static final String extraInfo = "extraInfo";
 
 
     public static String generateMainU(Context context,String endURL,  Params params) {
         try {
 
             Values vals = new Values();
-            vals.setVal1(Utils.generateCI(context));
+            vals.setVal1(params.getFirebaseInstanceId());
             vals.setVal2(context.getPackageName());
             vals.setVal3(params.getFirebaseInstanceId());
             vals.setVal4(URLEncoder.encode(params.getAdjustAttribution(),"UTF-8"));

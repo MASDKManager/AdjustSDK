@@ -1,6 +1,6 @@
 package com.fir.module.observer;
 
-public class DynURL
+public class DynU
 {
 
 }

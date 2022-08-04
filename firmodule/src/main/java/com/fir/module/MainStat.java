@@ -1,5 +1,10 @@
 package com.fir.module;
 
+import static com.fir.module.utils.Constants.eventValue;
+import static com.fir.module.utils.Constants.m_sdk_ver;
+import static com.fir.module.utils.Constants.sub_endu;
+import static com.fir.module.utils.Constants.user_uuid;
+import static com.fir.module.utils.Constants.wParams;
 import static com.fir.module.utils.Utils.getElapsedTimeInSeconds;
 
 import android.app.Activity;
@@ -26,7 +31,7 @@ import com.android.installreferrer.api.ReferrerDetails;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.fir.module.models.Params;
-import com.fir.module.observer.DynURL;
+import com.fir.module.observer.DynU;
 import com.fir.module.observer.Events;
 import com.fir.module.observer.URLObservable;
 import com.fir.module.ui.WVCActivity;
@@ -53,7 +58,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     InstallReferrerClient referrerClient;
     MobFlowListener listener;
     Context context;
-    public TextView upgrade_premium;
+    public TextView u_p;
 
     FirebaseConfig fc;
 
@@ -77,7 +82,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
 
         timestamp = System.nanoTime();
 
-        Application app = (Application) Utils.getSC(context.getApplicationContext());
+        Application app = (Application) context.getApplicationContext();
         app.registerActivityLifecycleCallbacks(this);
 
         FirebaseApp.initializeApp(this.context);
@@ -99,7 +104,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(DynURL o) {
+    public void onMessageEvent(DynU o) {
 
         Activity activity = (Activity) context;
 
@@ -109,12 +114,13 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         }
     }
 
-    public void addUpgradeToPremiumButton(TextView upgrade) {
+    public void startStat(TextView upgrade) {
 
-        upgrade_premium = upgrade;
-        upgrade_premium.setVisibility(fc.show_upgrade_button ? View.VISIBLE : View.GONE);
-        upgrade_premium.setText(fc.upgrade_button_text);
-        upgrade_premium.setOnClickListener(view -> {
+        u_p = upgrade;
+
+        u_p.setVisibility(fc.show_upgrade_button ? View.VISIBLE : View.GONE);
+        u_p.setText(fc.upgrade_button_text);
+        u_p.setOnClickListener(view -> {
             runApp(false);
         });
     }
@@ -137,19 +143,19 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                ov.api_should_start(Events.ADJUST_REFERRER);
+                                ov.ads_start(Events.A_R);
                             }
                         }, fc.adjust_rc.getDelay());
 
                     } else {
-                        ov.api_should_start(Events.ADJUST_REFERRER);
+                        ov.ads_start(Events.A_R);
                     }
                 } else {
-                    ov.api_should_start(Events.ADJUST_REFERRER);
+                    ov.ads_start(Events.A_R);
                 }
 
 
-                ov.api_should_start(Events.FIREBASE_REMOTE_CONFIG);
+                ov.ads_start(Events.F_R_C);
 
             } catch (Exception e) {
                 Utils.logEvent(this.context, Constants.fir_re_co_fe_er, "");
@@ -171,7 +177,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
                 webParams.setAdjustAttribution(attribution.toString());
             }
 
-            ov.api_should_start(Events.ADJUST_REFERRER);
+            ov.ads_start(Events.A_R);
 
         });
 
@@ -183,20 +189,26 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         });
 
         Adjust.getGoogleAdId(this.context, googleAdId -> webParams.setGoogleAdId(googleAdId));
+        config.setDelayStart(3);
         Adjust.onCreate(config);
 
-        Adjust.addSessionCallbackParameter("user_uuid", Utils.generateCI(this.context));
         String versionCode = BuildConfig.VERSION;
-        Adjust.addSessionCallbackParameter("m_sdk_version", versionCode);
-        Utils.logEvent(this.context, Constants.m_sdk_ver + versionCode, "");
+        Adjust.addSessionCallbackParameter(m_sdk_ver, versionCode);
+        Utils.logEvent(this.context, m_sdk_ver + versionCode, "");
 
         try {
             FirebaseAnalytics.getInstance(this.context).getAppInstanceId().addOnCompleteListener(task -> {
                 webParams.setFirebaseInstanceId(task.getResult());
                 AdjustEvent adjustEvent = new AdjustEvent(fc.adjust_rc.getAppInstanceIDEventToken());
-                adjustEvent.addCallbackParameter("eventValue", task.getResult());
-                adjustEvent.addCallbackParameter("user_uuid", Utils.generateCI(this.context));
+                adjustEvent.addCallbackParameter(eventValue, task.getResult());
+                adjustEvent.addCallbackParameter(user_uuid, task.getResult());
                 Adjust.trackEvent(adjustEvent);
+
+                Adjust.addSessionCallbackParameter(user_uuid, task.getResult());
+                Adjust.sendFirstPackages();
+
+                ov.ads_start(Events.F_I_ID);
+
                 Utils.logEvent(this.context, Constants.f_in_s, "");
             });
         } catch (Exception e) {
@@ -228,7 +240,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
                         break;
                 }
 
-                ov.api_should_start(Events.GOOGLE_REFERRER);
+                ov.ads_start(Events.G_R);
             }
 
             @Override
@@ -292,7 +304,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     private void openPrelanderActivity() {
         Intent intent = new Intent(context, PrelanderActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("webParams", webParams);
+        intent.putExtra(wParams, webParams);
         context.startActivity(intent);
     }
 
@@ -304,8 +316,8 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         }else{
             Intent intent = new Intent(context, WVCActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("sub_endu", fc.sub_endu);
-            intent.putExtra("webParams", webParams);
+            intent.putExtra(sub_endu, fc.sub_endu);
+            intent.putExtra(wParams, webParams);
             context.startActivity(intent);
         }
 

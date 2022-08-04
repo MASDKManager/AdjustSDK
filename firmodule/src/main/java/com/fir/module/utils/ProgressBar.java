@@ -16,9 +16,6 @@ import android.view.View;
 import com.fir.module.R;
 
 
-/**
- * Created by Ali Noureddine on 2019-11-16.
- */
 public class ProgressBar extends View {
 
     private int layoutHeight = 0;

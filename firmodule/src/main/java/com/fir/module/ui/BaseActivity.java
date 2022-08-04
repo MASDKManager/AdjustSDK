@@ -1,6 +1,5 @@
 package com.fir.module.ui;
 
-
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Window;

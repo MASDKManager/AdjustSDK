@@ -30,8 +30,10 @@ public class Constants {
     public static String we_pa_cl = "web_payment_clicke";
     public static String inA_p_cl = "inApp_payment_clicke";
 
+    ///
     public static final String user_uuid = "user_uuid";
     public static final String eventValue = "eventValue";
+    ////
     public static final String m_sdk_ver = "m_sdk_ver";
     public static final String wParams = "wParams";
     public static final String sub_endu = "sub_endu";

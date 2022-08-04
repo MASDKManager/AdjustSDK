@@ -7,6 +7,7 @@ import static com.fir.module.utils.Constants.sub_endu;
 import static com.fir.module.utils.Constants.wParams;
 import static com.fir.module.utils.Utils.getElapsedTimeInSeconds;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -48,9 +49,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Objects;
 import java.util.UUID;
 
-
 public class MainStat extends BaseActivity implements Application.ActivityLifecycleCallbacks {
 
+    @SuppressLint("StaticFieldLeak")
     private static MainStat instance;
     Params webParams = new Params();
     Long timestamp;
@@ -338,7 +339,6 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     @Override
     public void onActivityResumed(@NonNull Activity activity) {
         Adjust.onResume();
-
     }
 
     @Override

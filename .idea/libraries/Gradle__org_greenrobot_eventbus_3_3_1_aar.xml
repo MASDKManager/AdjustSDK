@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/ca53140d24bab8cc15570f1985bede01/transformed/jetified-eventbus-3.3.1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ca53140d24bab8cc15570f1985bede01/transformed/jetified-eventbus-3.3.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ca53140d24bab8cc15570f1985bede01/transformed/jetified-eventbus-3.3.1/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

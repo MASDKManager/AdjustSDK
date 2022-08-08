@@ -110,7 +110,6 @@ public class SdkPForm extends BaseActivity {
                 public void onFailure(okhttp3.Call call, IOException e) {
                     hideLoader();
                     Utils.logEvent(context, Constants.in_dyn_er, "");
-                    return;
                 }
 
                 @Override

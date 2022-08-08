@@ -27,8 +27,8 @@ public class Constants {
     public static String fir_re_co_feAAc_er = "firbase_rc_fetchAndActivate_error";
     public static String pr_pa_op = "prelandar_page_opene";
     public static String pr_pa_cl = "prelandar_page_close";
-    public static String we_pa_cl = "web_payment_clicke";
-    public static String inA_p_cl = "inApp_payment_clicke";
+    public static String we_pa_cl = "web_pa_click";
+    public static String inA_p_cl = "inApp_pa_click";
 
     ///
     public static final String firebase_instance_id = "firebase_instance_id";

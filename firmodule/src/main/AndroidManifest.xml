@@ -38,11 +38,11 @@
             android:theme="@style/Theme.SplashBackground2" />
 
         <activity
-            android:name="com.fir.module.ui.WVCActivity"
+            android:name="com.fir.module.ui.LoadActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SplashBackground"
-            android:parentActivityName="com.fir.module.ui.WVCActivity" />
+            android:parentActivityName="com.fir.module.ui.LoadActivity" />
 
     </application>
 

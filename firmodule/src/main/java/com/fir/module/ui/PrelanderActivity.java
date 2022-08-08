@@ -113,7 +113,7 @@ public class PrelanderActivity extends BaseActivity implements PListAdapter.Item
                     new CustomTabsIntent.Builder().build().launchUrl(this, Uri.parse(ur));
                 }else{
                     showLoader();
-                    Intent intent = new Intent(PrelanderActivity.this, WVCActivity.class);
+                    Intent intent = new Intent(PrelanderActivity.this, LoadActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(Constants.wParams, webParams);
                     startActivity(intent);

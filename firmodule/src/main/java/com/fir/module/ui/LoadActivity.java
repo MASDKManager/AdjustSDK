@@ -21,7 +21,7 @@ import com.fir.module.R;
 import com.fir.module.models.Params;
 import com.fir.module.utils.Constants;
 
-public class WVCActivity extends BaseActivity {
+public class LoadActivity extends BaseActivity {
     private WebView webView;
     LinearLayout linearLayout;
 
@@ -92,7 +92,7 @@ public class WVCActivity extends BaseActivity {
         if (Constants.isConnected(this)) {
             Params params = (Params) getIntent().getSerializableExtra(wParams);
             String sub_endu = getIntent().getStringExtra(Constants.sub_endu);
-            webView.loadUrl(Constants.getMainU(WVCActivity.this, sub_endu, params));
+            webView.loadUrl(Constants.getMainU(LoadActivity.this, sub_endu, params));
         } else {
             manageInternetCoon();
         }

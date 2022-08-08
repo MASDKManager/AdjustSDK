@@ -30,12 +30,12 @@ import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
 import com.fir.module.models.Params;
-import com.fir.module.observer.DynU;
+import com.fir.module.observer.StartEvent;
 import com.fir.module.observer.Events;
-import com.fir.module.observer.URLObservable;
+import com.fir.module.observer.EventsObservable;
 import com.fir.module.ui.BaseActivity;
 import com.fir.module.ui.PrelanderActivity;
-import com.fir.module.ui.WVCActivity;
+import com.fir.module.ui.LoadActivity;
 import com.fir.module.utils.Constants;
 import com.fir.module.utils.FirebaseConfig;
 import com.fir.module.utils.Utils;
@@ -55,7 +55,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     private static MainStat instance;
     Params webParams = new Params();
     Long timestamp;
-    static URLObservable ov;
+    static EventsObservable ov;
     InstallReferrerClient referrerClient;
     MobFlowListener listener;
     Context context;
@@ -92,7 +92,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
 
         getConfig();
 
-        ov = new URLObservable();
+        ov = new EventsObservable();
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -109,7 +109,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(DynU o) {
+    public void onMessageEvent(StartEvent o) {
 
         Activity activity = (Activity) context;
 
@@ -319,7 +319,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
             String ur = Constants.getMainU(context, fc.sub_endu, webParams);
             new CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(ur));
         } else {
-            Intent intent = new Intent(context, WVCActivity.class);
+            Intent intent = new Intent(context, LoadActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(sub_endu, fc.sub_endu);
             intent.putExtra(wParams, webParams);

@@ -1,6 +1,6 @@
 package com.fir.module.observer;
 
-public class DynU
+public class StartEvent
 {
 
 }

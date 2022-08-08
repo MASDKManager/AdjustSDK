@@ -2,7 +2,7 @@ package com.fir.module.observer;
 
 import org.greenrobot.eventbus.EventBus;
 
-public class URLObservable {
+public class EventsObservable {
     private boolean f_i_i_d = false;
     private boolean f_r_c = false;
     private boolean g_r = false;
@@ -26,7 +26,7 @@ public class URLObservable {
         }
 
         if (readyToRun()){
-            EventBus.getDefault().post(new DynU());
+            EventBus.getDefault().post(new StartEvent());
         }
     }
 

@@ -32,7 +32,7 @@ public class PrelanderActivity extends BaseActivity implements PListAdapter.Item
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_action_1);
+        setContentView(R.layout.activity_action);
 
         webParams = (Params) getIntent().getSerializableExtra(Constants.wParams);
 
@@ -115,6 +115,7 @@ public class PrelanderActivity extends BaseActivity implements PListAdapter.Item
                     showLoader();
                     Intent intent = new Intent(PrelanderActivity.this, LoadActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra(Constants.sub_endu, fc.sub_endu);
                     intent.putExtra(Constants.wParams, webParams);
                     startActivity(intent);
                     hideLoader();

@@ -16,10 +16,8 @@
               <args>
                 <arg>$MODULE_DIR$/../../../firmodule/build/intermediates/compile_library_classes_jar/debug/classes.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/2c2c664a1824e91e694e52f5424778c8/transformed/jetified-firebase-perf-20.0.5-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/6a470345a0ac8ee62e20c6a39d1ae767/transformed/jetified-phonemoji-1.3.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/613a6a764bcca191944b3ab50b3f053e/transformed/material-1.4.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/5872827929c0a9cb2ac1e6e62d7ae07d/transformed/appcompat-1.3.1-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/efe0ac14038facda0ecd2aa0f7f2f1b9/transformed/jetified-picasso-2.71828-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/564038cdc26330956ba2de5fe9a20c03/transformed/browser-1.4.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/7981aa829f688709613b701c4c75bd69/transformed/jetified-firebase-analytics-20.1.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/e9fe21d943801166743a0141d5945368/transformed/jetified-play-services-measurement-20.1.0-api.jar</arg>
@@ -66,7 +64,6 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/48e31d371d95ba4d293deda22cdf3e27/transformed/jetified-firebase-encoders-proto-16.0.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/9261dd796dccce747db429a7bb1a39b0/transformed/jetified-firebase-encoders-17.0.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/6c17292cca013160a5ba46ac2655e186/transformed/jetified-transport-api-3.0.0-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/ffe285ab1722e40af9ec1e02e3b44015/transformed/exifinterface-1.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/8023e93640a5c5fcdf288709006104f0/transformed/cardview-1.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/d492ee48ccadf61b63a84628e26c9488/transformed/lifecycle-runtime-2.3.1-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/4c36e39950bc075fec9e941ebb7c5b46/transformed/versionedparcelable-1.1.1-api.jar</arg>
@@ -107,9 +104,6 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/c60aba927704a70be6d3da0df9afb025/transformed/jetified-jackson-annotations-2.9.10.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/c6b9dea7a0fc371361c4d63681ea0629/transformed/jetified-jackson-core-2.9.10.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/0b5b17bec80d28da2db9e8f64ceb087a/transformed/constraintlayout-2.1.3-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/3b123d87cb10834a8ed898391e4d44ad/transformed/jetified-libphonenumber-android-8.12.37-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/62974c48b30a415a180e178ab45d9b12/transformed/jetified-pinview-1.4.4-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/fa8901e70feff61670561507e9012c8f/transformed/jetified-ccp-2.4.7-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/371990d9cabdcfb9cca0f0d3cf656874/transformed/jetified-eventbus-3.3.1-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/22f25d836379950cfc4251d3160334e0/transformed/jetified-eventbus-java-3.3.1.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/41519c5252e855c5b98e26fd6f62cc10/transformed/jetified-frames-android-3.1.2-api.jar</arg>
@@ -214,10 +208,8 @@
     <orderEntry type="library" scope="TEST" name="Gradle: org.greenrobot:eventbus-java:3.3.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.guava:listenablefuture:1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.firebase:firebase-perf:20.0.5@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.fredporciuncula:phonemoji:1.3.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.material:material:1.4.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.appcompat:appcompat:1.3.1@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.picasso:picasso:2.71828@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.browser:browser:1.4.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.firebase:firebase-analytics:20.1.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.gms:play-services-measurement:20.1.0@aar" level="project" />
@@ -262,7 +254,6 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.datatransport:transport-runtime:3.1.2@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.firebase:firebase-encoders-json:18.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.android.datatransport:transport-api:3.0.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.exifinterface:exifinterface:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.cardview:cardview:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.lifecycle:lifecycle-runtime:2.3.1@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.versionedparcelable:versionedparcelable:1.1.1@aar" level="project" />
@@ -279,9 +270,6 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.adjust.sdk:adjust-android:4.30.1@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.android.installreferrer:installreferrer:2.2@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.constraintlayout:constraintlayout:2.1.3@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.michaelrocks:libphonenumber-android:8.12.37@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.github.chaosleung:pinview:1.4.4@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.hbb20:ccp:2.4.7@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.greenrobot:eventbus:3.3.1@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.github.checkout:frames-android:3.1.2@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.android.billingclient:billing:5.0.0@aar" level="project" />

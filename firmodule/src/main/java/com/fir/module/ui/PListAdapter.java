@@ -26,7 +26,7 @@ public class PListAdapter extends RecyclerView.Adapter<PListAdapter.ViewHolder>{
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View listItem= layoutInflater.inflate(R.layout.payment_item, parent, false);
+            View listItem= layoutInflater.inflate(R.layout.pa_item, parent, false);
             return new ViewHolder(listItem);
         }
 

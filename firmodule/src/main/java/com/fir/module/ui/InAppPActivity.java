@@ -9,7 +9,7 @@ public class InAppPActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_in_app_payment);
+        setContentView(R.layout.activity_in_app_pa);
 
     }
 }

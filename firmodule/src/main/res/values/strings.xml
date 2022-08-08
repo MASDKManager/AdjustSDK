@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="close">close</string>
-    <string name="adjust_token" />
+    <string name="please_check_your_n_internet_connection">Please check your \n internet connection.</string>
+    <string name="retry">Retry</string>
 </resources>

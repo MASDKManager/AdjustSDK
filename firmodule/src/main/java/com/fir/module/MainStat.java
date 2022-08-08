@@ -159,7 +159,6 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
                     ov.ads_start(Events.A_R);
                 }
 
-
                 ov.ads_start(Events.F_R_C);
 
             } catch (Exception e) {

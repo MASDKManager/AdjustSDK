@@ -36,7 +36,7 @@ public class SdkPForm extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sdk_payment_form);
+        setContentView(R.layout.sdk_pa_form);
 
         fc = FirebaseConfig.getInstance();
         // initialise the payment from

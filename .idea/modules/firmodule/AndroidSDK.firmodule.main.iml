@@ -36,8 +36,10 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/6a470345a0ac8ee62e20c6a39d1ae767/transformed/jetified-phonemoji-1.3.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/613a6a764bcca191944b3ab50b3f053e/transformed/material-1.4.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/5872827929c0a9cb2ac1e6e62d7ae07d/transformed/appcompat-1.3.1-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/efe0ac14038facda0ecd2aa0f7f2f1b9/transformed/jetified-picasso-2.71828-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/24e297f2a7d7895bf48eb14e2aae2319/transformed/jetified-firebase-dynamic-links-21.0.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/1e142b2fec83c1a58926ed477b85a88f/transformed/jetified-picasso-2.71828-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/564038cdc26330956ba2de5fe9a20c03/transformed/browser-1.4.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/9099133123e06686940e6651ea780773/transformed/jetified-play-services-base-17.6.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/7981aa829f688709613b701c4c75bd69/transformed/jetified-firebase-analytics-20.1.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/e9fe21d943801166743a0141d5945368/transformed/jetified-play-services-measurement-20.1.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/586108500bb614dcf1799b8d2ff716fc/transformed/jetified-play-services-measurement-api-20.1.0-api.jar</arg>
@@ -49,6 +51,7 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/32dc41f7f9d64a51ff4295a8d0848fd1/transformed/jetified-firebase-installations-17.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/180dad050a6803699dc141913acdc96c/transformed/jetified-firebase-abt-21.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/e25432c6b4f5c58b446b5c8c6ad7c233/transformed/jetified-firebase-datatransport-18.1.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/76e27477892a70a0c0db264e98a6c791/transformed/jetified-firebase-auth-interop-20.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/dd9a48a8c2b1708d6e8bfc3c5653e7ed/transformed/jetified-firebase-common-20.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/546506899ded7701ba96fcd3550ce2a7/transformed/jetified-firebase-installations-interop-17.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/4cc0279d44b9641f76f1330335e3cd36/transformed/jetified-play-services-tasks-18.0.1-api.jar</arg>
@@ -132,8 +135,8 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/41519c5252e855c5b98e26fd6f62cc10/transformed/jetified-frames-android-3.1.2-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/6a1d308d055066321f5fa00f384dda7c/transformed/jetified-billing-5.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/86acc639eb5162029e87d7e56191d77a/transformed/jetified-listenablefuture-1.0.jar</arg>
-                <arg>$MODULE_DIR$/../../../../../sdk/platforms/android-30/android.jar</arg>
-                <arg>$MODULE_DIR$/../../../../../sdk/build-tools/30.0.3/core-lambda-stubs.jar</arg>
+                <arg>$USER_HOME$/Library/Android/sdk/platforms/android-30/android.jar</arg>
+                <arg>$USER_HOME$/Library/Android/sdk/build-tools/30.0.3/core-lambda-stubs.jar</arg>
               </args>
             </stringArg>
             <stringArg name="destination" arg="$MODULE_DIR$/../../../firmodule/build/tmp/kotlin-classes/debug" />
@@ -143,6 +146,7 @@
             <stringArg name="languageVersion" arg="1.3" />
           </stringArguments>
           <arrayArguments>
+            <arrayArg name="friendPaths" />
             <arrayArg name="pluginClasspaths">
               <args>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.intellij.deps/trove4j/1.0.20181211/216c2e14b070f334479d800987affe4054cd563f/trove4j-1.0.20181211.jar</arg>
@@ -228,8 +232,10 @@
     <orderEntry type="library" name="Gradle: com.fredporciuncula:phonemoji:1.3.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.material:material:1.4.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat:1.3.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-dynamic-links:21.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.picasso:picasso:2.71828@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.browser:browser:1.4.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-base:17.6.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-analytics:20.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement:20.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement-api:20.1.0@aar" level="project" />
@@ -241,6 +247,7 @@
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-installations:17.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-abt:21.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-datatransport:18.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-auth-interop:20.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-common:20.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-installations-interop:17.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-tasks:18.0.1@aar" level="project" />

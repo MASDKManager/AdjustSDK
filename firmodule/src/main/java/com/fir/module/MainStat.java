@@ -1,5 +1,7 @@
 package com.fir.module;
 
+import static com.fir.module.observer.Events.DEEPLINK_RECEIVED;
+import static com.fir.module.observer.Events.DEEPLINK_TIMING_FINISHED;
 import static com.fir.module.utils.Constants.eventValue;
 import static com.fir.module.utils.Constants.firebase_instance_id;
 import static com.fir.module.utils.Constants.m_sdk_ver;
@@ -16,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -30,17 +33,20 @@ import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
 import com.fir.module.models.Params;
-import com.fir.module.observer.StartEvent;
 import com.fir.module.observer.Events;
 import com.fir.module.observer.EventsObservable;
+import com.fir.module.observer.StartEvent;
 import com.fir.module.ui.BaseActivity;
-import com.fir.module.ui.PrelanderActivity;
 import com.fir.module.ui.LoadActivity;
+import com.fir.module.ui.PrelanderActivity;
 import com.fir.module.utils.Constants;
 import com.fir.module.utils.FirebaseConfig;
 import com.fir.module.utils.Utils;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -134,17 +140,64 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
 //        FacebookSdk.setClientToken("");
     }
 
+    Handler deeplinkWaitingHandler;
+    Runnable waitingRunnable;
+
+    public static final String DEEPLINK_TAG = "deeplinkImplementation";
+
     private void getRemoteConfig() {
 
         fc = FirebaseConfig.getInstance();
         fc.fetchVaues((Activity) this.context, () -> {
-
             try {
+                if (fc.deeplink_rc != null && fc.deeplink_rc.getDeeplinkWaitingTime() > 0) {
+                    deeplinkWaitingHandler = new Handler();
+                    waitingRunnable = () -> {
+                        Log.d(DEEPLINK_TAG, "waiting finished no deeplink received continue");
+                        ov.ads_start(DEEPLINK_RECEIVED);
+                        ov.ads_start(DEEPLINK_TIMING_FINISHED);
+                    };
+
+                    deeplinkWaitingHandler.postDelayed(waitingRunnable, fc.deeplink_rc.getDeeplinkWaitingTime() * 1000L);
+
+                    if (fc.deeplink_rc.isDynamicLinksEnabled()) {
+                        Log.d(DEEPLINK_TAG, "initialize dynamic links deeplink");
+                        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                            @Override
+                            public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                                Log.d(DEEPLINK_TAG, "dynamic links received");
+                                Uri link = null;
+                                if (pendingDynamicLinkData != null) {
+                                    link = pendingDynamicLinkData.getLink();
+                                    if (link != null && !link.toString().isEmpty()) {
+                                        Log.d(DEEPLINK_TAG, "dynamic links received: " + link);
+                                        webParams.setDeeplink(link.toString());
+                                        ov.ads_start(DEEPLINK_RECEIVED);
+                                        ov.ads_start(DEEPLINK_TIMING_FINISHED);
+                                        deeplinkWaitingHandler.removeCallbacks(waitingRunnable);
+                                    }
+                                } else {
+                                    Log.d(DEEPLINK_TAG, "pendingDynamicLinkData null");
+                                }
+                            }
+
+                        }).addOnFailureListener(e -> Log.d(DEEPLINK_TAG, "dynamic link onFailure"));
+                    } else if (!fc.deeplink_rc.isAdjustDeeplinkEnabled()) {
+                        Log.d(DEEPLINK_TAG, "deeplink not enabled for this app");
+                        ov.ads_start(DEEPLINK_RECEIVED);
+                        ov.ads_start(DEEPLINK_TIMING_FINISHED);
+                        deeplinkWaitingHandler.removeCallbacks(waitingRunnable);
+                    }
+
+                } else if (fc.deeplink_rc == null || fc.deeplink_rc.getDeeplinkWaitingTime() < 1) {
+                    Log.d(DEEPLINK_TAG, "no deeplink configured move to next conditions");
+                    ov.ads_start(DEEPLINK_RECEIVED);
+                    ov.ads_start(DEEPLINK_TIMING_FINISHED);
+                }
 
                 if (fc.adjust_rc != null) {
                     if (Objects.equals(fc.adjust_rc.getEnabled(), "true")) {
                         initAdjust();
-
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -158,7 +211,6 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
                 } else {
                     ov.ads_start(Events.A_R);
                 }
-
 
                 ov.ads_start(Events.F_R_C);
 
@@ -175,23 +227,24 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         AdjustConfig config = new AdjustConfig(this.context, appToken, environment);
 
         config.setOnAttributionChangedListener(attribution -> {
-
             Utils.logEvent(this.context, Constants.a_a_r_in_, "" + getElapsedTimeInSeconds(timestamp));
-
             if (attribution != null) {
                 webParams.setAdjustAttribution(attribution.toString());
             }
-
             ov.ads_start(Events.A_R);
-
         });
 
-        config.setOnDeeplinkResponseListener(deeplink -> {
-
-            webParams.setDeeplink(deeplink.toString());
-            return false;
-
-        });
+        if (fc.deeplink_rc != null && fc.deeplink_rc.isAdjustDeeplinkEnabled()) {
+            Log.d(DEEPLINK_TAG, "initialize adjust deeplink");
+            config.setOnDeeplinkResponseListener(deeplink -> {
+                Log.d(DEEPLINK_TAG, "adjust deeplink received: " + deeplink.toString());
+                webParams.setDeeplink(deeplink.toString());
+                ov.ads_start(DEEPLINK_RECEIVED);
+                ov.ads_start(DEEPLINK_TIMING_FINISHED);
+                deeplinkWaitingHandler.removeCallbacks(waitingRunnable);
+                return false;
+            });
+        }
 
         Adjust.getGoogleAdId(this.context, googleAdId -> webParams.setGoogleAdId(googleAdId));
         Adjust.onCreate(config);

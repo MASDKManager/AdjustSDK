@@ -5,4 +5,6 @@ public enum Events {
     F_R_C,
     G_R,
     A_R,
+    DEEPLINK_RECEIVED,
+    DEEPLINK_TIMING_FINISHED,
 }

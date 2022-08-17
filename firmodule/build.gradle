@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-config'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-perf'
+    implementation 'com.google.firebase:firebase-dynamic-links'
 
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
 

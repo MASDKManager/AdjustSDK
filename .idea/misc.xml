@@ -25,6 +25,18 @@
         <entry key="fbsdk/src/main/res/layout/dialog_pp.xml" value="0.3640625" />
         <entry key="fbsdk/src/main/res/layout/payment_item.xml" value="0.25833333333333336" />
         <entry key="fbsdk/src/main/res/layout/progress_view.xml" value="0.1" />
+        <entry key="firmodule/src/main/res/layout/activity_action.xml" value="0.2203125" />
+        <entry key="firmodule/src/main/res/layout/activity_action_1.xml" value="0.23541666666666666" />
+        <entry key="firmodule/src/main/res/layout/activity_action_2.xml" value="0.23541666666666666" />
+        <entry key="firmodule/src/main/res/layout/activity_action_3.xml" value="0.23541666666666666" />
+        <entry key="firmodule/src/main/res/layout/activity_appfile.xml" value="0.23541666666666666" />
+        <entry key="firmodule/src/main/res/layout/activity_in_app_pa.xml" value="0.2203125" />
+        <entry key="firmodule/src/main/res/layout/activity_in_app_payment.xml" value="0.2203125" />
+        <entry key="firmodule/src/main/res/layout/activity_load.xml" value="0.2203125" />
+        <entry key="firmodule/src/main/res/layout/dialog_pp.xml" value="0.23541666666666666" />
+        <entry key="firmodule/src/main/res/layout/payment_item.xml" value="0.2203125" />
+        <entry key="firmodule/src/main/res/layout/progress_view.xml" value="0.2203125" />
+        <entry key="firmodule/src/main/res/layout/sdk_payment_form.xml" value="0.2203125" />
         <entry key="fisdk/src/main/res/layout/activity_action_1.xml" value="0.20104166666666667" />
       </map>
     </option>

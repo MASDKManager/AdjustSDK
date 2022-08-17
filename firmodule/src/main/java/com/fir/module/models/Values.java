@@ -50,11 +50,20 @@ public class Values {
         this.google_attribution = google_attribution;
     }
 
+    public String getReferringLink() {
+        return referringLink;
+    }
+
+    public void setReferringLink(String referringLink) {
+        this.referringLink = referringLink;
+    }
+
     String click_id = "";
     String package_id = "";
     String firebase_instance_id = "";
     String adjust_attribution = "";
     String gps_adid = "";
     String google_attribution = "";
+    String referringLink = "";
 
 }

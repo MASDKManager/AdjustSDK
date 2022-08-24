@@ -59,5 +59,15 @@ public class Params  implements Serializable {
     private String adjustAttribution = "";
     private String firebaseInstanceId = "";
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    private String phoneNumber = "";
+
 
 }

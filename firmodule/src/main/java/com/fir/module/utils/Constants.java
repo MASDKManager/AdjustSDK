@@ -29,14 +29,15 @@ public class Constants {
     public static String pr_pa_cl = "prelandar_page_close";
     public static String we_pa_cl = "web_pa_click";
     public static String inA_p_cl = "inApp_pa_click";
+    public static String ch_cl_se = "checkout_close";
 
     ///
     public static final String firebase_instance_id = "firebase_instance_id";
     public static final String CLICK_ID = "click_id";
     public static final String eventValue = "eventValue";
     public static final String m_sdk_ver = "m_sdk_ver";
-    public static final String wParams = "wParams";
     public static final String sub_endu = "sub_endu";
+    public static final String checkout_portal_endpoint = "checkout_portal_endpoint";
     public static final String extraInfo = "extraInfo";
 
 

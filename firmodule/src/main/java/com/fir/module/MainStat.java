@@ -4,7 +4,6 @@ import static com.fir.module.utils.Constants.eventValue;
 import static com.fir.module.utils.Constants.firebase_instance_id;
 import static com.fir.module.utils.Constants.m_sdk_ver;
 import static com.fir.module.utils.Constants.sub_endu;
-import static com.fir.module.utils.Constants.wParams;
 import static com.fir.module.utils.Utils.getElapsedTimeInSeconds;
 
 import android.annotation.SuppressLint;
@@ -159,6 +158,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
                     ov.ads_start(Events.A_R);
                 }
 
+
                 ov.ads_start(Events.F_R_C);
 
             } catch (Exception e) {
@@ -169,6 +169,9 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     }
 
     private void initAdjust() {
+
+        timestamp = System.nanoTime();
+
         String appToken = fc.adjust_rc.getAppToken();
         String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
         AdjustConfig config = new AdjustConfig(this.context, appToken, environment);
@@ -216,6 +219,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
                 Utils.logEvent(this.context, Constants.f_in_s, "");
 
             });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -270,6 +274,8 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
 
     private void runApp(Boolean auto) {
 
+        fc.webParams = webParams;
+
         if (!fc.auto_open_sub_page && auto) {
             return;
         }
@@ -308,7 +314,6 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     private void openPrelanderActivity() {
         Intent intent = new Intent(context, PrelanderActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(wParams, webParams);
         context.startActivity(intent);
     }
 
@@ -321,7 +326,6 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
             Intent intent = new Intent(context, LoadActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(sub_endu, fc.sub_endu);
-            intent.putExtra(wParams, webParams);
             context.startActivity(intent);
         }
 

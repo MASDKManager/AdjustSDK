@@ -1,13 +1,5 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <style name="Theme.SplashBackground" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash</item>
-        <item name="android:statusBarColor">@color/black</item>
-    </style>
-
-    <style name="Theme.SplashBackground2" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/black</item>
-    </style>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
 
     <style name="Theme.payTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -16,7 +8,6 @@
         <item name="colorControlHighlight">@color/pay_back_color</item>
         <item name="android:textColorPrimary">@color/pay_card_selected_text_color</item>
         <item name="android:color">@color/pay_card_btn_color</item>
+        <item name="android:drawableTint">@color/pay_card_btn_color</item>
     </style>
-
 </resources>
-

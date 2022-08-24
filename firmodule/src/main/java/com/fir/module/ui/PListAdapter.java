@@ -60,6 +60,7 @@ public class PListAdapter extends RecyclerView.Adapter<PListAdapter.ViewHolder>{
                 default: break;
 
             }
+
             holder.arrowImageView.setColorFilter(pay_card_selected_text_color, android.graphics.PorterDuff.Mode.SRC_IN);
             holder.imageView.setColorFilter(pay_card_selected_text_color, android.graphics.PorterDuff.Mode.SRC_IN);
 

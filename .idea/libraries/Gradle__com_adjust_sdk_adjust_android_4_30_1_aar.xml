@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.adjust.sdk:adjust-android:4.30.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9309f64e03fb6f0710316bd0ab83630f/transformed/jetified-adjust-android-4.30.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9309f64e03fb6f0710316bd0ab83630f/transformed/jetified-adjust-android-4.30.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9309f64e03fb6f0710316bd0ab83630f/transformed/jetified-adjust-android-4.30.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/54ce06746c7733424ad7864c8f992c45/transformed/jetified-adjust-android-4.30.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/54ce06746c7733424ad7864c8f992c45/transformed/jetified-adjust-android-4.30.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/54ce06746c7733424ad7864c8f992c45/transformed/jetified-adjust-android-4.30.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.adjust.sdk/adjust-android/4.30.1/804833d6ae869a511331dc99cc180978489fb5e3/adjust-android-4.30.1-javadoc.jar!/" />

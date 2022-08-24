@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.yandex.android:mobmetricalib:5.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/de506cc350414b502a2f9c557cbc4efa/transformed/jetified-mobmetricalib-5.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/de506cc350414b502a2f9c557cbc4efa/transformed/jetified-mobmetricalib-5.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/de506cc350414b502a2f9c557cbc4efa/transformed/jetified-mobmetricalib-5.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/61773636d7a67ed5744dde3f3df91ba2/transformed/jetified-mobmetricalib-5.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/61773636d7a67ed5744dde3f3df91ba2/transformed/jetified-mobmetricalib-5.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/61773636d7a67ed5744dde3f3df91ba2/transformed/jetified-mobmetricalib-5.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.yandex.android/mobmetricalib/5.0.0/f1aff8ac830f6a4ea8af326494554e885de6aebf/mobmetricalib-5.0.0-javadoc.jar!/" />

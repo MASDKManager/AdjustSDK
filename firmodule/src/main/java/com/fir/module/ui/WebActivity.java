@@ -1,15 +1,12 @@
 package com.fir.module.ui;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -17,9 +14,8 @@ import android.widget.LinearLayout;
 
 import com.fir.module.R;
 import com.fir.module.utils.Constants;
-import com.fir.module.utils.FirebaseConfig;
 
-public class LoadActivity extends BaseActivity {
+public class WebActivity extends BaseActivity {
     private WebView webView;
     LinearLayout linearLayout;
 
@@ -29,7 +25,6 @@ public class LoadActivity extends BaseActivity {
         setContentView(R.layout.activity_load);
 
         hideLoader();
-
         setupView();
     }
 
@@ -42,7 +37,6 @@ public class LoadActivity extends BaseActivity {
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setPluginState(WebSettings.PluginState.ON);
         webView.setWebChromeClient(new WebChromeClient());
         webView.setVisibility(View.VISIBLE);
         webView.setWebViewClient(new WebViewClient() {
@@ -53,24 +47,11 @@ public class LoadActivity extends BaseActivity {
 
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                String url = request.getUrl().toString();
-                if (!url.startsWith("http")) {
-                    try {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse(url));
-                        startActivity(intent);
-                        return;
-                    } catch (Exception ignored) {
-                        finish();
-                        return;
-                    }
-                }
                 super.onReceivedError(view, request, error);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
                 return super.shouldOverrideUrlLoading(view, url);
             }
         });
@@ -88,9 +69,8 @@ public class LoadActivity extends BaseActivity {
 
     protected void callWebview() {
         if (Constants.isConnected(this)) {
-            FirebaseConfig fc  = FirebaseConfig.getInstance();
             String sub_endu = getIntent().getStringExtra(Constants.sub_endu);
-            webView.loadUrl(Constants.getMainU(LoadActivity.this, sub_endu, fc.webParams));
+            webView.loadUrl( sub_endu );
         } else {
             manageInternetCoon();
         }

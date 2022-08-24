@@ -30,7 +30,9 @@
         <activity
             android:name="com.fir.module.ui.SdkPForm"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.payTheme" />
+
         <activity
             android:name="com.fir.module.ui.PrelanderActivity"
             android:launchMode="singleTask"
@@ -39,6 +41,13 @@
 
         <activity
             android:name="com.fir.module.ui.LoadActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.SplashBackground"
+            android:parentActivityName="com.fir.module.ui.LoadActivity" />
+
+        <activity
+            android:name="com.fir.module.ui.WebActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SplashBackground"

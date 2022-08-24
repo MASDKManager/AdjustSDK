@@ -26,15 +26,12 @@ import com.fir.module.utils.Utils;
 public class PrelanderActivity extends BaseActivity implements PListAdapter.ItemClickListener {
 
     FirebaseConfig fc;
-    Params webParams; 
     ActivityResultLauncher<Intent> mStartForResult;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_action);
-
-        webParams = (Params) getIntent().getSerializableExtra(Constants.wParams);
 
         ImageView close = findViewById(R.id.close);
         close.setOnClickListener(view -> {
@@ -62,7 +59,12 @@ public class PrelanderActivity extends BaseActivity implements PListAdapter.Item
                     boolean dataIsNotNull = data.hasExtra("status");
 
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        Toast.makeText(getBaseContext(), "Checkout has been made successfully!", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(PrelanderActivity.this, WebActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        String server = fc.checkout_portal_endpoint + "?firebase_instance_id=" + fc.webParams.getFirebaseInstanceId() + "&phone_number=" + fc.webParams.getPhoneNumber();
+                        intent.putExtra(Constants.checkout_portal_endpoint, server);
+                        startActivity(intent);
                         finish();
 
                     } else if (dataIsNotNull && result.getResultCode() == Activity.RESULT_FIRST_USER) {
@@ -108,15 +110,13 @@ public class PrelanderActivity extends BaseActivity implements PListAdapter.Item
                 Utils.logEvent(getBaseContext(), Constants.we_pa_cl, "");
 
                 if (fc.show_customt){
-                    Params params = (Params) getIntent().getSerializableExtra(Constants.wParams);
-                    String ur = Constants.getMainU(PrelanderActivity.this,fc.sub_endu, params);
+                    String ur = Constants.getMainU(PrelanderActivity.this,fc.sub_endu, fc.webParams);
                     new CustomTabsIntent.Builder().build().launchUrl(this, Uri.parse(ur));
                 }else{
                     showLoader();
                     Intent intent = new Intent(PrelanderActivity.this, LoadActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(Constants.sub_endu, fc.sub_endu);
-                    intent.putExtra(Constants.wParams, webParams);
                     startActivity(intent);
                     hideLoader();
                 }
@@ -124,7 +124,8 @@ public class PrelanderActivity extends BaseActivity implements PListAdapter.Item
                 break;
             case 1001:
 
-                mStartForResult.launch(new Intent(this, SdkPForm.class));
+                Intent intent = new Intent(this, SdkPForm.class);
+                mStartForResult.launch(intent);
 
                 break;
             case 1002:

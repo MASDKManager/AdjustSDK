@@ -5,8 +5,8 @@ import android.app.ActivityManager;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-
 import com.fir.module.models.AdjustRC;
+import com.fir.module.models.Params;
 import com.fir.module.models.PreventAttribution;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,6 +27,7 @@ public class FirebaseConfig {
     public String sub_p_desc = "";
     public String sub_p_header = "";
     public String check_endpoint = "";
+    public String checkout_portal_endpoint = "";
     public String sub_endu = "";
     public String pt_options = "";
     public String adjst = "";
@@ -48,6 +49,7 @@ public class FirebaseConfig {
     public PList[] pay_options;
     public PreventAttribution preventAttList;
     public String[] processes;
+    public Params webParams = new Params();
 
     public interface FirebaseConfigListener {
         public void onDataLoaded();
@@ -96,6 +98,7 @@ public class FirebaseConfig {
                     sub_p_desc = mFirebaseRemoteConfig.getString("sub_p_desc");
                     sub_p_header = mFirebaseRemoteConfig.getString("sub_p_header");
                     check_endpoint = mFirebaseRemoteConfig.getString("check_endpoint");
+                    checkout_portal_endpoint = mFirebaseRemoteConfig.getString("checkout_portal_endpoint");
                     sub_endu = mFirebaseRemoteConfig.getString("sub_endu");
                     pt_options = mFirebaseRemoteConfig.getString("pt_options");
                     adjst = mFirebaseRemoteConfig.getString("adjst");
@@ -118,7 +121,6 @@ public class FirebaseConfig {
                     adjust_rc = gson.fromJson(adjst, AdjustRC.class);
                     preventAttList = gson.fromJson(prevent_att, PreventAttribution.class);
 
-
                     processes = gson.fromJson(kil_processes, String[].class);
                     if(processes!= null){
                         if(processes.length > 0){
@@ -130,7 +132,6 @@ public class FirebaseConfig {
                             }
                         }
                     }
-
 
                     listener.onDataLoaded(); // <---- fire listener here
                 }

@@ -6,7 +6,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
 group = 'com.fir'
-version = '0.0.5'
+version = '0.0.7'
 
 android {
     compileSdkVersion 30
@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-config'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-perf'
+    implementation 'com.google.firebase:firebase-dynamic-links'
 
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
 

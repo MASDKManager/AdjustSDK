@@ -43,7 +43,6 @@ public class Constants {
 
     public static String getMainU(Context context, String endURL, Params params) {
         try {
-
             Values vals = new Values();
             vals.setClick_id(params.getUuid());
             vals.setPackage_id(context.getPackageName());
@@ -51,6 +50,7 @@ public class Constants {
             vals.setAdjust_attribution(URLEncoder.encode(params.getAdjustAttribution(),"UTF-8"));
             vals.setGps_adid(params.getGoogleAdId());
             vals.setGoogle_attribution(URLEncoder.encode(params.getGoogleAttribution(),"UTF-8"));
+            vals.setReferringLink(URLEncoder.encode(params.getDeeplink(),"UTF-8"));
 
             ObjectMapper mapper = new ObjectMapper();
             UriFormat valsParams = mapper.convertValue(vals, UriFormat.class);

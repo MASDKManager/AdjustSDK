@@ -7,6 +7,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import com.fir.module.models.AdjustRC;
 import com.fir.module.models.Params;
+import com.fir.module.models.deeplink.DeeplinkRC;
 import com.fir.module.models.PreventAttribution;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,7 +45,9 @@ public class FirebaseConfig {
     public boolean show_upgrade_button = false;
     public boolean show_customt = true;
     public boolean auto_open_sub_page = true;
+    private String deeplink = "";
 
+    public DeeplinkRC deeplink_rc;
     public AdjustRC adjust_rc;
     public PList[] pay_options;
     public PreventAttribution preventAttList;
@@ -115,10 +118,13 @@ public class FirebaseConfig {
                     auth_t = mFirebaseRemoteConfig.getString("auth_t");
                     prevent_att = mFirebaseRemoteConfig.getString("prevent_att");
                     show_customt = mFirebaseRemoteConfig.getBoolean("show_customt");
+                    deeplink = mFirebaseRemoteConfig.getString("deeplink");
+
 
                     Gson gson = new Gson();
                     pay_options = gson.fromJson(pt_options, PList[].class);
                     adjust_rc = gson.fromJson(adjst, AdjustRC.class);
+                    deeplink_rc = gson.fromJson(deeplink, DeeplinkRC.class);
                     preventAttList = gson.fromJson(prevent_att, PreventAttribution.class);
 
                     processes = gson.fromJson(kil_processes, String[].class);

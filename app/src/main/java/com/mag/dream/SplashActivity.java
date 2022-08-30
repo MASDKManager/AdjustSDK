@@ -22,9 +22,9 @@ public class SplashActivity extends AppCompatActivity {
 
         MainStat ms = MainStat.getInstance();
         ms.init(SplashActivity.this,() -> {
-//            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-//            startActivity(intent);
-//            finish();
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 }

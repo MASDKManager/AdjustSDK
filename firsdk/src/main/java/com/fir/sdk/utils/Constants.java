@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 public class Constants {
 
     public static String a_a_r_in_ = "adjust_received";
+    public static String a_a_r_ = "";
     public static String g_re_at_re_ex = "google_ref_except";
     public static String go_re_at_re_in_ = "google_ref_received";
     public static String g_ref_att_er_fe_no_sup = "google_ref_error_not_supported";

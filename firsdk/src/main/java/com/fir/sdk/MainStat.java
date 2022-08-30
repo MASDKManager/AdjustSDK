@@ -229,8 +229,11 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
         AdjustConfig config = new AdjustConfig(this.context, appToken, environment);
 
+        Adjust.getGoogleAdId(this.context, googleAdId -> webParams.setGoogleAdId(googleAdId));
+
         config.setOnAttributionChangedListener(attribution -> {
             Utils.logEvent(this.context, Constants.a_a_r_in_, "" + getElapsedTimeInSeconds(timestamp));
+            Utils.logEvent(this.context, Constants.a_a_r_ + "gps_adid: " + webParams.getGoogleAdId() + " start: " + timestamp + " end: " +  System.nanoTime()  , "" + getElapsedTimeInSeconds(timestamp));
             if (attribution != null) {
                 webParams.setAdjustAttribution(attribution.toString());
             }

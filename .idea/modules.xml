@@ -7,10 +7,10 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.unitTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.firmodule.iml" filepath="$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.firmodule.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/firmodule/AndroidSDK.firmodule.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/firmodule/AndroidSDK.firmodule.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/firmodule/AndroidSDK.firmodule.main.iml" filepath="$PROJECT_DIR$/.idea/modules/firmodule/AndroidSDK.firmodule.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/firmodule/AndroidSDK.firmodule.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/firmodule/AndroidSDK.firmodule.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.firsdk.iml" filepath="$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.firsdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/firsdk/AndroidSDK.firsdk.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/firsdk/AndroidSDK.firsdk.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/firsdk/AndroidSDK.firsdk.main.iml" filepath="$PROJECT_DIR$/.idea/modules/firsdk/AndroidSDK.firsdk.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/firsdk/AndroidSDK.firsdk.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/firsdk/AndroidSDK.firsdk.unitTest.iml" />
     </modules>
   </component>
 </project>

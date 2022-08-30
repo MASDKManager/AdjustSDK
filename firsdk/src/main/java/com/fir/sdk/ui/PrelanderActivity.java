@@ -80,6 +80,11 @@ public class PrelanderActivity extends BaseActivity implements PListAdapter.Item
                 }
             });
 
+        if(getIntent().getBooleanExtra(Constants.openCO,false)){
+            Intent intent = new Intent(this, SdkPForm.class);
+            mStartForResult.launch(intent);
+        }
+
         Utils.logEvent(getBaseContext(), Constants.pr_pa_op, "");
     }
 

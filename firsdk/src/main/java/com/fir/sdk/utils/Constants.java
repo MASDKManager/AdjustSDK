@@ -39,6 +39,7 @@ public class Constants {
     public static final String sub_endu = "sub_endu";
     public static final String checkout_portal_endpoint = "checkout_portal_endpoint";
     public static final String extraInfo = "extraInfo";
+    public static final String openCO = "openCO";
 
 
     public static String getMainU(Context context, String endURL, Params params) {

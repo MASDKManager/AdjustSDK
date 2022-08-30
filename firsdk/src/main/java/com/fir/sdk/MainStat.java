@@ -38,6 +38,7 @@ import com.fir.sdk.observer.StartEvent;
 import com.fir.sdk.ui.BaseActivity;
 import com.fir.sdk.ui.LoadActivity;
 import com.fir.sdk.ui.PrelanderActivity;
+import com.fir.sdk.ui.SdkPForm;
 import com.fir.sdk.utils.Constants;
 import com.fir.sdk.utils.FirebaseConfig;
 import com.fir.sdk.utils.Utils;
@@ -329,6 +330,16 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
 
         fc.webParams = webParams;
 
+        if (webParams.getDeeplink() != null && !webParams.getDeeplink().isEmpty()) {
+            if (webParams.getDeeplink().contains("co=true")) {
+                openCOActivity();
+            }else{
+                openWActivity();
+            }
+
+            return;
+        }
+
         if (!fc.auto_open_sub_page && auto) {
             return;
         }
@@ -381,6 +392,15 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
             intent.putExtra(sub_endu, fc.sub_endu);
             context.startActivity(intent);
         }
+
+    }
+
+    private void openCOActivity() {
+
+        Intent intent = new Intent(context, PrelanderActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(Constants.openCO , true);
+        context.startActivity(intent);
 
     }
 

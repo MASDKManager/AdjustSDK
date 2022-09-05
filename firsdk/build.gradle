@@ -6,10 +6,10 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
 group = 'com.fir'
-version = '0.1.2'
+version = '0.0.2'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
 
     defaultConfig {
         minSdkVersion 21

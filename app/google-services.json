@@ -32,10 +32,11 @@
               "client_type": 3
             },
             {
-              "client_id": "545756253288-t1bsp84s0c7pt5rue8b0nb8nvk28rvt8.apps.googleusercontent.com",
+              "client_id": "545756253288-52i3v6dvp7ppllqq8mb53ql0l9f9g2vt.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.mag.dream.ios"
+                "bundle_id": "com.mag.dream.ios",
+                "app_store_id": "1641068123"
               }
             }
           ]
@@ -68,10 +69,48 @@
               "client_type": 3
             },
             {
-              "client_id": "545756253288-t1bsp84s0c7pt5rue8b0nb8nvk28rvt8.apps.googleusercontent.com",
+              "client_id": "545756253288-52i3v6dvp7ppllqq8mb53ql0l9f9g2vt.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.mag.dream.ios"
+                "bundle_id": "com.mag.dream.ios",
+                "app_store_id": "1641068123"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:545756253288:android:38e8a485e2e06c2d82ffdd",
+        "android_client_info": {
+          "package_name": "com.recover.myphotos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "545756253288-0dhfb2hhgn1dj03s6de3a5s96ghu64jm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGzotG070UT5KlXIsZIXfF0KsZRB-aeG4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "545756253288-0dhfb2hhgn1dj03s6de3a5s96ghu64jm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "545756253288-52i3v6dvp7ppllqq8mb53ql0l9f9g2vt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mag.dream.ios",
+                "app_store_id": "1641068123"
               }
             }
           ]
@@ -104,10 +143,11 @@
               "client_type": 3
             },
             {
-              "client_id": "545756253288-t1bsp84s0c7pt5rue8b0nb8nvk28rvt8.apps.googleusercontent.com",
+              "client_id": "545756253288-52i3v6dvp7ppllqq8mb53ql0l9f9g2vt.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.mag.dream.ios"
+                "bundle_id": "com.mag.dream.ios",
+                "app_store_id": "1641068123"
               }
             }
           ]
@@ -140,10 +180,11 @@
               "client_type": 3
             },
             {
-              "client_id": "545756253288-t1bsp84s0c7pt5rue8b0nb8nvk28rvt8.apps.googleusercontent.com",
+              "client_id": "545756253288-52i3v6dvp7ppllqq8mb53ql0l9f9g2vt.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.mag.dream.ios"
+                "bundle_id": "com.mag.dream.ios",
+                "app_store_id": "1641068123"
               }
             }
           ]

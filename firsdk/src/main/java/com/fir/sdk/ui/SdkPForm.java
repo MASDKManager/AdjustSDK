@@ -65,7 +65,7 @@ public class SdkPForm extends BaseActivity {
         mCheckoutAPIClient = new CheckoutAPIClient(
                 this,                // context
                 fc.check_token,          // your public key
-                Environment.SANDBOX  // the environment
+                Environment.LIVE  // the environment
         );
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -145,6 +145,7 @@ public class SdkPForm extends BaseActivity {
         cl.setAmount(String.valueOf(fc.check_amount));
         cl.setCurrency(fc.check_currency);
         cl.setReference(random);
+        cl.setTest(false);
         Gson gson = new Gson();
         String json = gson.toJson(cl);
 

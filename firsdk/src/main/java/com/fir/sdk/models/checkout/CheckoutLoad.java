@@ -6,6 +6,16 @@ public class CheckoutLoad {
     private String currency;
     private String reference;
 
+    public Boolean getTest() {
+        return test;
+    }
+
+    public void setTest(Boolean test) {
+        this.test = test;
+    }
+
+    private Boolean test;
+
     public String getToken() { return token; }
     public void setToken(String value) { this.token = value; }
 

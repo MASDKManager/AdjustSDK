@@ -31,7 +31,6 @@
           <stringArguments>
             <stringArg name="classpath">
               <args>
-                <arg>$MODULE_DIR$/../../../firsdk/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debugUnitTest/R.jar</arg>
                 <arg>$MODULE_DIR$/../../../firsdk/build/intermediates/compile_library_classes_jar/debug/classes.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/30050cab9c50dcbb1ff9da21d59ab0f8/transformed/jetified-firebase-perf-20.0.5-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/fa41e3669c979f5594c8c2ad9bcaf6e0/transformed/material-1.4.0-api.jar</arg>
@@ -132,7 +131,7 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/f11170f5c9c0cf606af69b586d30ccfe/transformed/jetified-billing-5.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/389e8580f4fb94cba57865fc14e4af89/transformed/jetified-listenablefuture-1.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/e01a2efd272165308b2a42c2e029b369/transformed/jetified-card-form-5.4.0-api.jar</arg>
-                <arg>$MODULE_DIR$/../../../../../sdk/platforms/android-30/android.jar</arg>
+                <arg>$MODULE_DIR$/../../../../../sdk/platforms/android-32/android.jar</arg>
                 <arg>$MODULE_DIR$/../../../../../sdk/build-tools/30.0.3/core-lambda-stubs.jar</arg>
               </args>
             </stringArg>
@@ -175,7 +174,7 @@
     <content url="file://$MODULE_DIR$/../../../firsdk/build/generated/ap_generated_sources/debugUnitTest/out" />
     <content url="file://$MODULE_DIR$/../../../firsdk/src/test" />
     <content url="file://$MODULE_DIR$/../../../firsdk/src/testDebug" />
-    <orderEntry type="jdk" jdkName="Android API 30 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 32 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="AndroidSDK.firsdk.main" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.firebase:firebase-encoders-proto:16.0.0" level="project" />

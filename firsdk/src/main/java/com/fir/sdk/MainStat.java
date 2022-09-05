@@ -332,7 +332,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
 
     private void runApp(Boolean auto) {
 
-        if(fc.run){
+        if(!fc.run){
             return;
         }
 

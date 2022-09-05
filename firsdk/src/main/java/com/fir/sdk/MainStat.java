@@ -349,7 +349,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
 
         String attribution = "";
 
-        if (fc.preventAttList.getUseAdjustAttribution()) {
+        if (fc.preventAttList.getUseAdjustAttribution() ) {
             try {
                 attribution = Adjust.getAttribution().toString();
             } catch (Exception e) {
@@ -359,12 +359,12 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
             attribution = webParams.getGoogleAttribution();
         }
 
-        if (fc.preventAttList.getUseAdjustAttribution() || fc.preventAttList.getUseGoogleAttribution()) {
+        if ((fc.preventAttList.getUseAdjustAttribution() || fc.preventAttList.getUseGoogleAttribution()) && auto) {
             if (attribution != null && !attribution.isEmpty()) {
                 for (String preventAttribution : fc.preventAttList.getAttBlackList()) {
                     if (attribution.contains(preventAttribution)) {
                         fc.direct_cb_user = false;
-                        break;
+                        return;
                     }
                 }
             }

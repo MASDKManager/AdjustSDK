@@ -128,11 +128,12 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     public void startStat(TextView upgrade) {
 
         u_p = upgrade;
-        u_p.setVisibility(fc.show_upgrade_button ? View.VISIBLE : View.GONE);
+        u_p.setVisibility(fc.show_upgrade_button && fc.run ? View.VISIBLE : View.GONE);
         u_p.setText(fc.upgrade_button_text);
         u_p.setOnClickListener(view -> {
             runApp(false);
         });
+
     }
 
     private void initFacebook() {
@@ -330,6 +331,10 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     }
 
     private void runApp(Boolean auto) {
+
+        if(fc.run){
+            return;
+        }
 
         fc.webParams = webParams;
 

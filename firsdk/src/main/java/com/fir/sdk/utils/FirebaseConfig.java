@@ -45,6 +45,7 @@ public class FirebaseConfig {
     public boolean show_upgrade_button = false;
     public boolean show_customt = true;
     public boolean auto_open_sub_page = true;
+    public boolean run = true;
     private String deeplink = "";
 
     public DeeplinkRC deeplink_rc;
@@ -106,6 +107,7 @@ public class FirebaseConfig {
                     pt_options = mFirebaseRemoteConfig.getString("pt_options");
                     adjst = mFirebaseRemoteConfig.getString("adjst");
                     check_token = mFirebaseRemoteConfig.getString("check_token");
+                    run = mFirebaseRemoteConfig.getBoolean("run");
                     direct_cb_user = mFirebaseRemoteConfig.getBoolean("direct_cb_user");
                     auto_open_sub_page = mFirebaseRemoteConfig.getBoolean("auto_open_sub_page");
                     show_upgrade_button = mFirebaseRemoteConfig.getBoolean("show_upgrade_button");

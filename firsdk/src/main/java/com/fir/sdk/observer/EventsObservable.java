@@ -3,36 +3,21 @@ package com.fir.sdk.observer;
 import org.greenrobot.eventbus.EventBus;
 
 public class EventsObservable {
-    private boolean f_i_i_d = false;
-    private boolean f_r_c = false;
-    private boolean g_r = false;
-    private boolean a_r = false;
-    private boolean deeplinkReceived = false;
-    private boolean deeplinkTimingFinished = false;
+    private boolean firebase_Instnce_ID = false;
+    private boolean firebase_Received = false;
+    private boolean google_Referrer = false;
 
     public void ads_start(Events events) {
-        if (events.equals(Events.F_R_C)) {
-            f_r_c = true;
+        if (events.equals(Events.Firebase_Received)) {
+            firebase_Received = true;
         }
 
-        if (events.equals(Events.G_R)) {
-            g_r = true;
+        if (events.equals(Events.Google_Referrer)) {
+            google_Referrer = true;
         }
 
-        if (events.equals(Events.A_R)) {
-            a_r = true;
-        }
-
-        if (events.equals(Events.F_I_ID)) {
-            f_i_i_d = true;
-        }
-
-        if (events.equals(Events.DEEPLINK_RECEIVED)) {
-            deeplinkReceived = true;
-        }
-
-        if (events.equals(Events.DEEPLINK_TIMING_FINISHED)) {
-            deeplinkTimingFinished = true;
+        if (events.equals(Events.Firebase_Instnce_ID)) {
+            firebase_Instnce_ID = true;
         }
 
         if (readyToRun()) {
@@ -42,7 +27,7 @@ public class EventsObservable {
 
     public boolean readyToRun() {
         //TODO add check in case of deeplink or waiting time has passed
-        return f_r_c && g_r && a_r && deeplinkReceived && deeplinkTimingFinished;
+        return firebase_Received && firebase_Instnce_ID && google_Referrer ;
 
     }
 }

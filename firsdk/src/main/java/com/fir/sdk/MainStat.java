@@ -1,7 +1,5 @@
 package com.fir.sdk;
 
-import static com.fir.sdk.observer.Events.DEEPLINK_RECEIVED;
-import static com.fir.sdk.observer.Events.DEEPLINK_TIMING_FINISHED;
 import static com.fir.sdk.utils.Constants.eventValue;
 import static com.fir.sdk.utils.Constants.firebase_instance_id;
 import static com.fir.sdk.utils.Constants.m_sdk_ver;
@@ -28,6 +26,7 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import com.adjust.sdk.Adjust;
 import com.adjust.sdk.AdjustConfig;
 import com.adjust.sdk.AdjustEvent;
+import com.adjust.sdk.LogLevel;
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
@@ -38,15 +37,12 @@ import com.fir.sdk.observer.StartEvent;
 import com.fir.sdk.ui.BaseActivity;
 import com.fir.sdk.ui.LoadActivity;
 import com.fir.sdk.ui.PrelanderActivity;
-import com.fir.sdk.ui.SdkPForm;
 import com.fir.sdk.utils.Constants;
 import com.fir.sdk.utils.FirebaseConfig;
 import com.fir.sdk.utils.Utils;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -58,6 +54,7 @@ import java.util.UUID;
 public class MainStat extends BaseActivity implements Application.ActivityLifecycleCallbacks {
 
     @SuppressLint("StaticFieldLeak")
+    private static final String DEEPLINK_TAG = "deepLink";
     private static MainStat instance;
     Params webParams = new Params();
     Long timestamp;
@@ -66,6 +63,8 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     MobFlowListener listener;
     Context context;
     public TextView u_p;
+    String dynamicDeepLink = "";
+    String djustDeepLink = "";
     String versionCode = BuildConfig.VERSION;
 
     FirebaseConfig fc;
@@ -111,7 +110,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     private void getConfig() {
         getGoogleInstallReferrer();
         getRemoteConfig();
-        initFacebook();
+        getDeepLinks();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -121,7 +120,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
 
         if (!activity.isFinishing() && !activity.isDestroyed()) {
             listener.onDataLoaded();
-            runApp(true);
+            runAppwithDelay(true);
         }
     }
 
@@ -131,89 +130,37 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         u_p.setVisibility(fc.show_upgrade_button && fc.run ? View.VISIBLE : View.GONE);
         u_p.setText(fc.upgrade_button_text);
         u_p.setOnClickListener(view -> {
-            runApp(false);
+            runAppwithDelay(false);
         });
 
     }
 
-    private void initFacebook() {
-//        FacebookSdk.setApplicationId("");
-//        FacebookSdk.setClientToken("");
+    private void getDeepLinks(){
+
+        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(this, pendingDynamicLinkData -> {
+
+            Uri link = null;
+            if (pendingDynamicLinkData != null) {
+                link = pendingDynamicLinkData.getLink();
+                if (link != null && !link.toString().isEmpty()) {
+                    dynamicDeepLink = link.toString();
+                }
+            }
+        }).addOnFailureListener(e -> Log.d(DEEPLINK_TAG, "dynamic link onFailure"));
+
     }
-
-    Handler deeplinkWaitingHandler;
-    Runnable waitingRunnable;
-
-    public static final String DEEPLINK_TAG = "deeplinkImplementation";
 
     private void getRemoteConfig() {
 
         fc = FirebaseConfig.getInstance();
         fc.fetchVaues((Activity) this.context, () -> {
             try {
-                if (fc.deeplink_rc != null && fc.deeplink_rc.getDeeplinkWaitingTime() > 0) {
-                    deeplinkWaitingHandler = new Handler();
-                    waitingRunnable = () -> {
-                        Log.d(DEEPLINK_TAG, "waiting finished no deeplink received continue");
-                        ov.ads_start(DEEPLINK_RECEIVED);
-                        ov.ads_start(DEEPLINK_TIMING_FINISHED);
-                    };
 
-                    deeplinkWaitingHandler.postDelayed(waitingRunnable, fc.deeplink_rc.getDeeplinkWaitingTime() * 1000L);
-
-                    if (fc.deeplink_rc.isDynamicLinksEnabled()) {
-                        Log.d(DEEPLINK_TAG, "initialize dynamic links deeplink");
-                        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
-                            @Override
-                            public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-                                Log.d(DEEPLINK_TAG, "dynamic links received");
-                                Uri link = null;
-                                if (pendingDynamicLinkData != null) {
-                                    link = pendingDynamicLinkData.getLink();
-                                    if (link != null && !link.toString().isEmpty()) {
-                                        Log.d(DEEPLINK_TAG, "dynamic links received: " + link);
-                                        webParams.setDeeplink(link.toString());
-                                        ov.ads_start(DEEPLINK_RECEIVED);
-                                        ov.ads_start(DEEPLINK_TIMING_FINISHED);
-                                        deeplinkWaitingHandler.removeCallbacks(waitingRunnable);
-                                    }
-                                } else {
-                                    Log.d(DEEPLINK_TAG, "pendingDynamicLinkData null");
-                                }
-                            }
-
-                        }).addOnFailureListener(e -> Log.d(DEEPLINK_TAG, "dynamic link onFailure"));
-                    } else if (!fc.deeplink_rc.isAdjustDeeplinkEnabled()) {
-                        Log.d(DEEPLINK_TAG, "deeplink not enabled for this app");
-                        ov.ads_start(DEEPLINK_RECEIVED);
-                        ov.ads_start(DEEPLINK_TIMING_FINISHED);
-                        deeplinkWaitingHandler.removeCallbacks(waitingRunnable);
-                    }
-
-                } else if (fc.deeplink_rc == null || fc.deeplink_rc.getDeeplinkWaitingTime() < 1) {
-                    Log.d(DEEPLINK_TAG, "no deeplink configured move to next conditions");
-                    ov.ads_start(DEEPLINK_RECEIVED);
-                    ov.ads_start(DEEPLINK_TIMING_FINISHED);
+                if (Objects.equals(fc.adjust_rc.getEnabled(), "true")) {
+                    initAdjust();
                 }
 
-                if (fc.adjust_rc != null) {
-                    if (Objects.equals(fc.adjust_rc.getEnabled(), "true")) {
-                        initAdjust();
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                ov.ads_start(Events.A_R);
-                            }
-                        }, fc.adjust_rc.getDelay());
-
-                    } else {
-                        ov.ads_start(Events.A_R);
-                    }
-                } else {
-                    ov.ads_start(Events.A_R);
-                }
-
-                ov.ads_start(Events.F_R_C);
+                ov.ads_start(Events.Firebase_Received);
 
             } catch (Exception e) {
                 Utils.logEvent(this.context, Constants.fir_re_co_fe_er, "");
@@ -238,22 +185,21 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
             if (attribution != null) {
                 webParams.setAdjustAttribution(attribution.toString());
             }
-            ov.ads_start(Events.A_R);
         });
 
         if (fc.deeplink_rc != null && fc.deeplink_rc.isAdjustDeeplinkEnabled()) {
-            Log.d(DEEPLINK_TAG, "initialize adjust deeplink");
+
             config.setOnDeeplinkResponseListener(deeplink -> {
-                Log.d(DEEPLINK_TAG, "adjust deeplink received: " + deeplink.toString());
-                webParams.setDeeplink(deeplink.toString());
-                ov.ads_start(DEEPLINK_RECEIVED);
-                ov.ads_start(DEEPLINK_TIMING_FINISHED);
-                deeplinkWaitingHandler.removeCallbacks(waitingRunnable);
+                djustDeepLink = deeplink.toString();
                 return false;
             });
         }
 
         Adjust.getGoogleAdId(this.context, googleAdId -> webParams.setGoogleAdId(googleAdId));
+        config.setLogLevel(LogLevel.VERBOSE);
+       // config.setDelayStart(fc.adjust_rc.getCallbackDelay());
+        config.setDelayStart(0);
+
         Adjust.onCreate(config);
 
         Adjust.addSessionCallbackParameter(m_sdk_ver, versionCode);
@@ -274,6 +220,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
 
             FirebaseAnalytics.getInstance(this.context).getAppInstanceId().addOnCompleteListener(task -> {
                 webParams.setFirebaseInstanceId(task.getResult());
+                ov.ads_start(Events.Firebase_Instnce_ID);
                 Utils.logEvent(this.context, Constants.f_in_s, "");
 
             });
@@ -281,7 +228,6 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         referrerClient = InstallReferrerClient.newBuilder(this.context).build();
         referrerClient.startConnection(new InstallReferrerStateListener() {
@@ -306,7 +252,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
                         break;
                 }
 
-                ov.ads_start(Events.G_R);
+                ov.ads_start(Events.Google_Referrer);
             }
 
             @Override
@@ -330,7 +276,31 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         }
     }
 
-    private void runApp(Boolean auto) {
+    private void runAppwithDelay(Boolean auto) {
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+
+
+                if (fc.deeplink_rc != null) {
+                    if (fc.deeplink_rc.isDynamicLinksEnabled()) {
+                        webParams.setDeeplink(dynamicDeepLink);
+                    }
+
+                    if (fc.deeplink_rc.isAdjustDeeplinkEnabled()) {
+                        webParams.setDeeplink(djustDeepLink);
+                    }
+
+                }
+
+                runApp(auto);
+            }
+        }, fc.deeplink_rc.getDeeplinkWaitingTime() * 1000L);
+
+    }
+
+    private void runApp(Boolean auto)   {
 
         if(!fc.run){
             return;
@@ -344,7 +314,6 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
             }else{
                 openWActivity();
             }
-
             return;
         }
 

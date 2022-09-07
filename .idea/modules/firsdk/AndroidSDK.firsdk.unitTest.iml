@@ -31,6 +31,7 @@
           <stringArguments>
             <stringArg name="classpath">
               <args>
+                <arg>$MODULE_DIR$/../../../firsdk/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debugUnitTest/R.jar</arg>
                 <arg>$MODULE_DIR$/../../../firsdk/build/intermediates/compile_library_classes_jar/debug/classes.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/30050cab9c50dcbb1ff9da21d59ab0f8/transformed/jetified-firebase-perf-20.0.5-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/fa41e3669c979f5594c8c2ad9bcaf6e0/transformed/material-1.4.0-api.jar</arg>

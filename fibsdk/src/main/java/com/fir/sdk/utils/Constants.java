@@ -14,12 +14,12 @@ public class Constants {
 
     public static String a_a_r_in_ = "adjust_received";
     public static String a_a_r_ = "";
-    public static String g_re_at_re_ex = "google_ref_except";
-    public static String go_re_at_re_in_ = "google_ref_received";
-    public static String g_ref_att_er_fe_no_sup = "google_ref_error_not_supported";
-    public static String g_re_at_er_se_un = "google_ref_error_unavailable";
-    public static String g_re_at_er_se_di = "google_ref_error_disconnected";
-    public static String g_ref_att_re_ex = "google_ref_received_exception";
+    public static String g_re_at_re_ex = "go_ref_except";
+    public static String go_re_at_re_in_ = "go_ref_received";
+    public static String g_ref_att_er_fe_no_sup = "go_ref_error_not_supported";
+    public static String g_re_at_er_se_un = "go_ref_error_unavailable";
+    public static String g_re_at_er_se_di = "go_ref_error_disconnected";
+    public static String g_ref_att_re_ex = "go_ref_received_exception";
     public static String in_dyn_er = "init_dyn_error";
     public static String i_dyn_ok_exc = "init_dyn_ok_exception";
     public static String f_in_s = "firbase_instance_sent";

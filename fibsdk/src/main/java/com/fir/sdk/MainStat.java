@@ -104,7 +104,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         }
 
         webParams.setUuid(uuid);
-        Utils.logEvent(this.context, m_sdk_ver + versionCode, "");
+        Utils.logEvent(this.context, m_sdk_ver , versionCode);
     }
 
     private void getConfig() {
@@ -258,7 +258,6 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
             @Override
             public void onInstallReferrerServiceDisconnected() {
                 // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
                 Utils.logEvent(context, Constants.g_re_at_er_se_di, "");
             }
         });

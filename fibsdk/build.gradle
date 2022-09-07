@@ -5,8 +5,8 @@ plugins {
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
-group = 'com.fir'
-version = '1.0.1'
+group = 'com.fdk'
+version = '1.0.2'
 
 android {
     compileSdkVersion 32

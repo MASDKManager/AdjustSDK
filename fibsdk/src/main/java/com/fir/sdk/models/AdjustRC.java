@@ -4,6 +4,16 @@ public class AdjustRC {
     private String enabled;
     private String appToken;
     private String appInstanceIDEventToken;
+
+    public String getAttrLogEventToken() {
+        return attrLogEventToken;
+    }
+
+    public void setAttrLogEventToken(String attrLogEventToken) {
+        this.attrLogEventToken = attrLogEventToken;
+    }
+
+    private String attrLogEventToken;
     private long delay;
     private long callbackDelay;
 
@@ -14,7 +24,6 @@ public class AdjustRC {
     public void setCallbackDelay(long callbackDelay) {
         this.callbackDelay = callbackDelay;
     }
-
 
     public String getEnabled() { return enabled; }
     public void setEnabled(String value) { this.enabled = value; }

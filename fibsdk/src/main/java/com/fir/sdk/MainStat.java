@@ -156,11 +156,13 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         fc.fetchVaues((Activity) this.context, () -> {
             try {
 
-                if (Objects.equals(fc.adjust_rc.getEnabled(), "true")) {
-                    initAdjust();
-                }
-
                 ov.ads_start(Events.Firebase_Received);
+
+                if(fc.adjust_rc != null) {
+                    if (fc.adjust_rc.getEnabled()) {
+                        initAdjust();
+                    }
+                }
 
             } catch (Exception e) {
                 Utils.logEvent(this.context, Constants.fir_re_co_fe_er, "");
@@ -289,26 +291,27 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
 
     private void runAppwithDelay(Boolean auto) {
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
+        if(fc.deeplink_rc != null) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
 
 
-                if (fc.deeplink_rc != null) {
-                    if (fc.deeplink_rc.isDynamicLinksEnabled()) {
-                        webParams.setDeeplink(dynamicDeepLink);
+                    if (fc.deeplink_rc != null) {
+                        if (fc.deeplink_rc.isDynamicLinksEnabled()) {
+                            webParams.setDeeplink(dynamicDeepLink);
+                        }
+
+                        if (fc.deeplink_rc.isAdjustDeeplinkEnabled()) {
+                            webParams.setDeeplink(djustDeepLink);
+                        }
+
                     }
 
-                    if (fc.deeplink_rc.isAdjustDeeplinkEnabled()) {
-                        webParams.setDeeplink(djustDeepLink);
-                    }
-
+                    runApp(auto);
                 }
-
-                runApp(auto);
-            }
-        }, fc.deeplink_rc.getDeeplinkWaitingTime() * 1000L);
-
+            }, fc.deeplink_rc.getDeeplinkWaitingTime() * 1000L);
+        }
     }
 
     private void runApp(Boolean auto)   {

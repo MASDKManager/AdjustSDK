@@ -1,7 +1,7 @@
 package com.fir.sdk.models;
 
 public class AdjustRC {
-    private String enabled;
+    private Boolean enabled;
     private String appToken;
     private String appInstanceIDEventToken;
 
@@ -25,8 +25,8 @@ public class AdjustRC {
         this.callbackDelay = callbackDelay;
     }
 
-    public String getEnabled() { return enabled; }
-    public void setEnabled(String value) { this.enabled = value; }
+    public Boolean getEnabled() { return enabled; }
+    public void setEnabled(Boolean value) { this.enabled = value; }
 
     public String getAppToken() { return appToken; }
     public void setAppToken(String value) { this.appToken = value; }

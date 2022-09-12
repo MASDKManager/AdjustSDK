@@ -3,12 +3,12 @@ package com.fir.sdk.models;
 import java.io.Serializable;
 
 public class Params  implements Serializable {
-    public String getGoogleAdId() {
-        return googleAdId;
+    public String getGps_adid() {
+        return gps_adid;
     }
 
-    public void setGoogleAdId(String googleAdId) {
-        this.googleAdId = googleAdId;
+    public void setGps_adid(String gps_adid) {
+        this.gps_adid = gps_adid;
     }
 
     public String getDeeplink() {
@@ -52,12 +52,24 @@ public class Params  implements Serializable {
         this.uuid = uuid;
     }
 
-    private String uuid = "";
-    private String googleAdId = "";
-    private String deeplink = "";
-    private String googleAttribution = "";
-    private String adjustAttribution = "";
-    private String firebaseInstanceId = "";
+
+
+    public String getNaming() {
+        return naming;
+    }
+
+    public void setNaming(String naming) {
+        this.naming = naming;
+    }
+
+    public String getAdjust_id() {
+        return adjust_id;
+    }
+
+    public void setAdjust_id(String adjust_id) {
+        this.adjust_id = adjust_id;
+    }
+
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -67,7 +79,14 @@ public class Params  implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    private String uuid = "";
+    private String gps_adid = "";
+    private String deeplink = "";
+    private String googleAttribution = "";
+    private String adjustAttribution = "";
+    private String firebaseInstanceId = "";
+    private String naming = "";
+    private String adjust_id = "";
     private String phoneNumber = "";
-
 
 }

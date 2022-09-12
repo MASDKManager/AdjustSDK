@@ -58,11 +58,31 @@ public class Values {
         this.referringLink = referringLink;
     }
 
-    String click_id = "";
+
+
+    public String getAdjust_id() {
+        return adjust_id;
+    }
+
+    public void setAdjust_id(String adjust_id) {
+        this.adjust_id = adjust_id;
+    }
+
+    public String getNaming() {
+        return naming;
+    }
+
+    public void setNaming(String naming) {
+        this.naming = naming;
+    }
+
     String package_id = "";
-    String firebase_instance_id = "";
-    String adjust_attribution = "";
+    String click_id = "";
     String gps_adid = "";
+    String adjust_id = "";
+    String firebase_instance_id = "";
+    String naming = "";
+    String adjust_attribution = "";
     String google_attribution = "";
     String referringLink = "";
 

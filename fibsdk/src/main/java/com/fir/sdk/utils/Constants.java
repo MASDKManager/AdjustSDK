@@ -46,11 +46,13 @@ public class Constants {
     public static String getMainU(Context context, String endURL, Params params) {
         try {
             Values vals = new Values();
-            vals.setClick_id(params.getUuid());
             vals.setPackage_id(context.getPackageName());
+            vals.setClick_id(params.getUuid());
+            vals.setGps_adid(params.getGps_adid());
+            vals.setAdjust_id(params.getAdjust_id());
             vals.setFirebase_instance_id(params.getFirebaseInstanceId());
+            vals.setNaming(params.getNaming());
             vals.setAdjust_attribution(URLEncoder.encode(params.getAdjustAttribution(),"UTF-8"));
-            vals.setGps_adid(params.getGoogleAdId());
             vals.setGoogle_attribution(URLEncoder.encode(params.getGoogleAttribution(),"UTF-8"));
             vals.setReferringLink(URLEncoder.encode(params.getDeeplink(),"UTF-8"));
 

@@ -48,7 +48,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public class MainStat extends BaseActivity implements Application.ActivityLifecycleCallbacks {
@@ -180,7 +179,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         AdjustConfig config = new AdjustConfig(this.context, appToken, environment);
 
         Adjust.getGoogleAdId(this.context, googleAdId ->
-                webParams.setGoogleAdId(googleAdId)
+                webParams.setGps_adid(googleAdId)
         );
 
         config.setOnAttributionChangedListener(attribution -> {
@@ -188,6 +187,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
 
             if (attribution != null) {
                 webParams.setAdjustAttribution(attribution.toString());
+                webParams.setNaming(Adjust.getAttribution().campaign);
             }
 
             AdjustEvent adtEvent = new AdjustEvent(fc.adjust_rc.getAttrLogEventToken());
@@ -207,7 +207,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
             });
         }
 
-        Adjust.getGoogleAdId(this.context, googleAdId -> webParams.setGoogleAdId(googleAdId));
+        Adjust.getGoogleAdId(this.context, googleAdId -> webParams.setGps_adid(googleAdId));
         config.setLogLevel(LogLevel.VERBOSE);
        // config.setDelayStart(fc.adjust_rc.getCallbackDelay());
         config.setDelayStart(0);
@@ -315,6 +315,8 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     }
 
     private void runApp(Boolean auto)   {
+
+        webParams.setAdjust_id(Adjust.getAdid());
 
         if(!fc.run){
             return;

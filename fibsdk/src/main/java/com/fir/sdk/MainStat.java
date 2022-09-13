@@ -118,8 +118,27 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         Activity activity = (Activity) context;
 
         if (!activity.isFinishing() && !activity.isDestroyed()) {
-            listener.onDataLoaded();
-            runAppwithDelay(true);
+
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+
+                    if (fc.deeplink_rc != null) {
+                        if (fc.deeplink_rc.isDynamicLinksEnabled()) {
+                            webParams.setDeeplink(dynamicDeepLink);
+                        }
+
+                        if (fc.deeplink_rc.isAdjustDeeplinkEnabled()) {
+                            webParams.setDeeplink(djustDeepLink);
+                        }
+
+                    }
+
+                    listener.onDataLoaded();
+                    runApp(true);
+                }
+            }, fc.delay * 1000L);
         }
     }
 
@@ -129,7 +148,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         u_p.setVisibility(fc.show_upgrade_button && fc.run ? View.VISIBLE : View.GONE);
         u_p.setText(fc.upgrade_button_text);
         u_p.setOnClickListener(view -> {
-            runAppwithDelay(false);
+            runApp(false);
         });
 
     }
@@ -286,31 +305,6 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         } catch (Exception e) {
             e.printStackTrace();
             Utils.logEvent(this.context, Constants.g_ref_att_re_ex, "");
-        }
-    }
-
-    private void runAppwithDelay(Boolean auto) {
-
-        if(fc.deeplink_rc != null) {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-
-
-                    if (fc.deeplink_rc != null) {
-                        if (fc.deeplink_rc.isDynamicLinksEnabled()) {
-                            webParams.setDeeplink(dynamicDeepLink);
-                        }
-
-                        if (fc.deeplink_rc.isAdjustDeeplinkEnabled()) {
-                            webParams.setDeeplink(djustDeepLink);
-                        }
-
-                    }
-
-                    runApp(auto);
-                }
-            }, fc.deeplink_rc.getDeeplinkWaitingTime() * 1000L);
         }
     }
 

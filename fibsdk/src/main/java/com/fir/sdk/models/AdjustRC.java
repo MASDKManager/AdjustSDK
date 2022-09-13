@@ -4,6 +4,8 @@ public class AdjustRC {
     private Boolean enabled;
     private String appToken;
     private String appInstanceIDEventToken;
+    private String attrLogEventToken;
+    private long callbackDelay;
 
     public String getAttrLogEventToken() {
         return attrLogEventToken;
@@ -12,10 +14,6 @@ public class AdjustRC {
     public void setAttrLogEventToken(String attrLogEventToken) {
         this.attrLogEventToken = attrLogEventToken;
     }
-
-    private String attrLogEventToken;
-    private long delay;
-    private long callbackDelay;
 
     public long getCallbackDelay() {
         return callbackDelay;
@@ -34,7 +32,5 @@ public class AdjustRC {
     public String getAppInstanceIDEventToken() { return appInstanceIDEventToken; }
     public void setAppInstanceIDEventToken(String value) { this.appInstanceIDEventToken = value; }
 
-    public long getDelay() { return delay; }
-    public void setDelay(long value) { this.delay = value; }
 }
 

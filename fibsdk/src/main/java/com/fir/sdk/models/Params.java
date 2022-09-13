@@ -43,7 +43,6 @@ public class Params  implements Serializable {
         this.firebaseInstanceId = firebaseInstanceId;
     }
 
-
     public String getUuid() {
         return uuid;
     }
@@ -51,8 +50,6 @@ public class Params  implements Serializable {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
-
-
 
     public String getNaming() {
         return naming;
@@ -69,7 +66,6 @@ public class Params  implements Serializable {
     public void setAdjust_id(String adjust_id) {
         this.adjust_id = adjust_id;
     }
-
 
     public String getPhoneNumber() {
         return phoneNumber;

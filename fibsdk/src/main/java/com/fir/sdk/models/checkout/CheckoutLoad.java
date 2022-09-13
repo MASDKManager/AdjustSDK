@@ -5,6 +5,7 @@ public class CheckoutLoad {
     private String amount;
     private String currency;
     private String reference;
+    private Boolean test;
 
     public Boolean getTest() {
         return test;
@@ -14,7 +15,6 @@ public class CheckoutLoad {
         this.test = test;
     }
 
-    private Boolean test;
 
     public String getToken() { return token; }
     public void setToken(String value) { this.token = value; }

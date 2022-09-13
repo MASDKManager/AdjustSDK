@@ -40,7 +40,7 @@ public class FirebaseConfig {
     public String upgrade_button_text = "";
     public String prevent_att = "";
     public Integer sub_close_size = 20;
-    public long check_amount = 1;
+    public Double check_amount = 0.0;
     public boolean direct_cb_user = false;
     public boolean show_upgrade_button = false;
     public boolean show_customt = true;
@@ -115,7 +115,7 @@ public class FirebaseConfig {
                     sub_close_size = (int)(mFirebaseRemoteConfig.getDouble("sub_close_size"));
                     kil_processes = mFirebaseRemoteConfig.getString("kil_processes");
                     upgrade_button_text = mFirebaseRemoteConfig.getString("upgrade_button_text");
-                    check_amount =  mFirebaseRemoteConfig.getLong("check_amount");
+                    check_amount =  mFirebaseRemoteConfig.getDouble("check_amount");
                     check_currency = mFirebaseRemoteConfig.getString("check_currency");
                     enc_k = mFirebaseRemoteConfig.getString("enc_k");
                     auth_t = mFirebaseRemoteConfig.getString("auth_t");

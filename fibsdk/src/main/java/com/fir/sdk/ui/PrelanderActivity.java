@@ -118,7 +118,7 @@ public class PrelanderActivity extends BaseActivity implements PListAdapter.Item
                 Utils.logEvent(getBaseContext(), Constants.we_pa_cl, "");
 
                 if (fc.show_customt){
-                    String ur = Constants.getMainU(PrelanderActivity.this,fc.sub_endu, fc.webParams);
+                    String ur = Constants.getMainU(PrelanderActivity.this,fc, fc.webParams);
                     new CustomTabsIntent.Builder().build().launchUrl(this, Uri.parse(ur));
                 }else{
                     showLoader();

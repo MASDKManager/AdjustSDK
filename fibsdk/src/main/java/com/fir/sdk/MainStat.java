@@ -371,7 +371,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     private void openWActivity() {
 
         if (fc.show_customt) {
-            String ur = Constants.getMainU(context, fc.sub_endu, webParams);
+            String ur = Constants.getMainU(context, fc, webParams);
             new CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(ur));
         } else {
             Intent intent = new Intent(context, LoadActivity.class);

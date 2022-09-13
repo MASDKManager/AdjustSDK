@@ -4,9 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fir.sdk.models.Params;
-import com.fir.sdk.models.Values;
 
 import java.net.URLEncoder;
 
@@ -43,30 +41,35 @@ public class Constants {
     public static final String openCO = "openCO";
 
 
-    public static String getMainU(Context context, String endURL, Params params) {
-        try {
-            Values vals = new Values();
-            vals.setPackage_id(context.getPackageName());
-            vals.setClick_id(params.getUuid());
-            vals.setGps_adid(params.getGps_adid());
-            vals.setAdjust_id(params.getAdjust_id());
-            vals.setFirebase_instance_id(params.getFirebaseInstanceId());
-            vals.setNaming(params.getNaming());
-            vals.setAdjust_attribution(URLEncoder.encode(params.getAdjustAttribution(),"UTF-8"));
-            vals.setGoogle_attribution(URLEncoder.encode(params.getGoogleAttribution(),"UTF-8"));
-            vals.setReferringLink(URLEncoder.encode(params.getDeeplink(),"UTF-8"));
+    public static String getMainU(Context context, FirebaseConfig fc, Params params) {
+        String endURL ="";
 
-            ObjectMapper mapper = new ObjectMapper();
-            UriFormat valsParams = mapper.convertValue(vals, UriFormat.class);
+        try {
+
+            endURL = fc.sub_endu;
+            String str = fc.params;
+
+            str =  str.replace("$adjust_campaign_name", params.getNaming());
+            str =  str.replace("$gps_adid", params.getGps_adid());
+            str =  str.replace("$adjust_id", params.getAdjust_id());
+            str =  str.replace("$package_id", context.getPackageName());
+            str =  str.replace("$deeplink", URLEncoder.encode(params.getDeeplink(),"UTF-8"));
+            str =  str.replace("$click_id", params.getUuid());
+            str =  str.replace("$firebase_instance_id", params.getFirebaseInstanceId());
+            str =  str.replace("$google_attribution", URLEncoder.encode(params.getGoogleAttribution(),"UTF-8"));
+            str =  str.replace("$adjust_attribution", URLEncoder.encode(params.getAdjustAttribution(),"UTF-8"));
+
 
             if (endURL != null && !endURL.equals("") && !endURL.startsWith("http")) {
                 endURL =  "https://" + endURL;
             }
 
-            endURL = endURL+"?"+valsParams;
+            endURL = endURL+"?"+ str;
 
         }catch (Exception ignored){
+
         }
+
         return endURL;
     }
 

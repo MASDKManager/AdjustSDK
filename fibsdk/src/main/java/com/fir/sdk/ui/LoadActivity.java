@@ -90,7 +90,7 @@ public class LoadActivity extends BaseActivity {
         if (Constants.isConnected(this)) {
             FirebaseConfig fc  = FirebaseConfig.getInstance();
             String sub_endu = getIntent().getStringExtra(Constants.sub_endu);
-            webView.loadUrl(Constants.getMainU(LoadActivity.this, sub_endu, fc.webParams));
+            webView.loadUrl(Constants.getMainU(LoadActivity.this, fc, fc.webParams));
         } else {
             manageInternetCoon();
         }

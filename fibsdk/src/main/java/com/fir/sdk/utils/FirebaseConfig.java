@@ -47,7 +47,8 @@ public class FirebaseConfig {
     public boolean auto_open_sub_page = true;
     public boolean run = true;
     public Long delay;
-    private String deeplink = "";
+    public String deeplink = "";
+    public String params = "";
 
     public DeeplinkRC deeplink_rc;
     public AdjustRC adjust_rc;
@@ -123,7 +124,7 @@ public class FirebaseConfig {
                     show_customt = mFirebaseRemoteConfig.getBoolean("show_customt");
                     deeplink = mFirebaseRemoteConfig.getString("deeplink");
                     delay = mFirebaseRemoteConfig.getLong("delay");
-
+                    params = mFirebaseRemoteConfig.getString("params");
 
                     Gson gson = new Gson();
                     pay_options = gson.fromJson(pt_options, PList[].class);

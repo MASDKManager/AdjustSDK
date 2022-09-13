@@ -59,7 +59,6 @@ public class Constants {
             str =  str.replace("$google_attribution", URLEncoder.encode(params.getGoogleAttribution(),"UTF-8"));
             str =  str.replace("$adjust_attribution", URLEncoder.encode(params.getAdjustAttribution(),"UTF-8"));
 
-
             if (endURL != null && !endURL.equals("") && !endURL.startsWith("http")) {
                 endURL =  "https://" + endURL;
             }

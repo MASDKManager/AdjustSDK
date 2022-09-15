@@ -88,6 +88,8 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         this.context = activity;
 
         timestamp = System.nanoTime();
+        ov = new EventsObservable();
+
 
         Application app = (Application) context.getApplicationContext();
         app.registerActivityLifecycleCallbacks(this);
@@ -96,7 +98,6 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
 
         getConfig();
 
-        ov = new EventsObservable();
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -182,11 +183,22 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
                     }
                 }
 
+                if(fc.adjust_rc != null) {
+                    if (fc.adjust_rc.getEnabled()) {
+                        initAdjust();
+                    }
+                }
+
             } catch (Exception e) {
                 Utils.logEvent(this.context, Constants.fir_re_co_fe_er, "");
                 e.printStackTrace();
             }
         });
+    }
+
+    private void initFacebook() {
+
+
     }
 
     private void initAdjust() {

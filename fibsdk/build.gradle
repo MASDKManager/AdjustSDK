@@ -70,7 +70,7 @@ dependencies {
     implementation "androidx.browser:browser:1.4.0"
     implementation 'com.braintreepayments:card-form:5.4.0'
 
-    // implementation 'com.facebook.android:facebook-android-sdk:14.1.0'
+    implementation 'com.facebook.android:facebook-android-sdk:14.1.0'
 
 }
 

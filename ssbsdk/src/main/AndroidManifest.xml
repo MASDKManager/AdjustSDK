@@ -10,9 +10,7 @@
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
 
 
-    <application
-
-        android:usesCleartextTraffic="true">
+    <application  android:usesCleartextTraffic="true">
 
         <receiver
             android:name="com.adjust.sdk.AdjustReferrerReceiver"
@@ -26,6 +24,8 @@
         <activity
             android:name="com.ssb.sdk.ui.InAppPActivity"
             android:exported="false" />
+        <meta-data android:name="com.facebook.sdk.AutoInitEnabled"
+            android:value="false"/>
         <!-- <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/> -->
         <!-- <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/> -->
         <activity

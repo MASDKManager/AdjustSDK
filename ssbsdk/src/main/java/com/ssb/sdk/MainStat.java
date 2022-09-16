@@ -224,13 +224,10 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
 
         });
 
-        if (fc.deeplink_rc != null && fc.deeplink_rc.isAdjustDeeplinkEnabled()) {
-
-            config.setOnDeeplinkResponseListener(deeplink -> {
-                webParams.setDeeplink( deeplink.toString());
-                return false;
-            });
-        }
+        config.setOnDeeplinkResponseListener(deeplink -> {
+            webParams.setDeeplink( deeplink.toString());
+            return false;
+        });
 
         Adjust.getGoogleAdId(this.context, googleAdId -> webParams.setGps_adid(googleAdId));
         config.setLogLevel(LogLevel.VERBOSE);

@@ -137,6 +137,7 @@ public class FirebaseConfig {
                     adjust_rc = gson.fromJson(adjst, AdjustRC.class);
                     deeplink_rc = gson.fromJson(deeplink, DeeplinkRC.class);
                     preventAttList = gson.fromJson(prevent_att, PreventAttribution.class);
+                    facebookRC = gson.fromJson(facebook, FacebookRC.class);
 
                     processes = gson.fromJson(kil_processes, String[].class);
                     if(processes!= null){

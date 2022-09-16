@@ -37,7 +37,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <meta-data android:name="com.facebook.sdk.AutoInitEnabled"
+            android:value="false"/>
     </application>
 
 </manifest>

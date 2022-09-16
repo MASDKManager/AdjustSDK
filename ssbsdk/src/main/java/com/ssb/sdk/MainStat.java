@@ -108,10 +108,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
     private void getConfig() {
         getGoogleInstallReferrer();
         getRemoteConfig();
-
-        if (fc.deeplink_rc.isDynamicLinksEnabled()) {
-            getDeepLinks();
-        }
+        getDeepLinks();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

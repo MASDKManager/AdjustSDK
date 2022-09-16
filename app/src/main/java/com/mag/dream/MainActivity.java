@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fir.sdk.MainStat;
+import com.ssb.sdk.MainStat;
 
 public class MainActivity extends AppCompatActivity {
 

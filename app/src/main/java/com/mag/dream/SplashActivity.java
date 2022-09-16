@@ -6,7 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fir.sdk.MainStat;
+import com.ssb.sdk.MainStat;
 
 public class SplashActivity extends AppCompatActivity {
     @Override

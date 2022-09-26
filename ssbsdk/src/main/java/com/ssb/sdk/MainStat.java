@@ -123,7 +123,12 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
                 public void run() {
                     listener.onDataLoaded();
 
-                    webParams.setAdjust_id(Adjust.getAdid());
+                    if(Adjust.getAdid() != null){
+                        webParams.setAdjust_id(Adjust.getAdid());
+                    }else{
+                        webParams.setAdjust_id("");
+                    }
+
                     fc.webParams = webParams;
 
                     runApp(true);
@@ -235,6 +240,7 @@ public class MainStat extends BaseActivity implements Application.ActivityLifecy
         config.setDelayStart(0);
 
         Adjust.onCreate(config);
+        Adjust.onResume();
 
         Adjust.addSessionCallbackParameter(m_sdk_ver, versionCode);
         Adjust.addSessionCallbackParameter(Constants.CLICK_ID, uuid);

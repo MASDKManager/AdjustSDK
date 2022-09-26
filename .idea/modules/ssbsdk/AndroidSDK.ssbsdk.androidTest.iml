@@ -111,6 +111,7 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/7bf564f5e2202b864764ed6db7ca359f/transformed/jetified-logging-interceptor-4.9.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/0adf2c30a1e59efa9fe7aaaf2c9787c5/transformed/jetified-okhttp-jvm-5.0.0-alpha.7.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/00665497369390c7f7b52dbb9dd152bd/transformed/jetified-okio-jvm-3.1.0.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/e50558b2335378c3165aaab88dd8a59a/transformed/jetified-af-android-sdk-6.9.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/657de441db1e99c7b8247a618617a577/transformed/jetified-kotlin-stdlib-jdk8-1.6.20.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/868577a2d533cd60c80fde8fae8fce31/transformed/jetified-kotlin-stdlib-jdk7-1.6.20.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/63b6b5e49685e651c7b78bff2aaab51e/transformed/jetified-kotlin-stdlib-1.6.21.jar</arg>
@@ -309,6 +310,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.print:print:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.annotation:annotation-experimental:1.1.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.firebase:protolite-well-known-types:18.0.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.appsflyer:af-android-sdk:6.9.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.adjust.sdk:adjust-android:4.30.1@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.android.installreferrer:installreferrer:2.2@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.constraintlayout:constraintlayout:2.1.3@aar" level="project" />

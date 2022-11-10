@@ -1,0 +1,118 @@
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+
+group = 'com.fdk'
+version = '1.0.0'
+
+android {
+    compileSdkVersion 33
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 33
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            buildConfigField "String", "VERSION", "\"" + version + "\""
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            buildConfigField "String", "VERSION", "\"" + version + "\""
+            debuggable true
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'com.google.android.material:material:1.4.0'
+
+
+
+}
+
+
+// Add sources as an artifact
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "source"
+}
+
+// Loop over all variants
+android.libraryVariants.all { variant ->
+    variant.outputs.all { output ->
+        // This creates a publication for each variant
+        publishing.publications.create(variant.name, MavenPublication) {
+            // The sources artifact from earlier
+            artifact sourceJar
+
+            // Variant dependent artifact, e.g. release, debug
+            artifact source: output.outputFile, classifier: output.name
+
+            // Go through all the dependencies for each variant and add them to the POM
+            // file as dependencies
+           /* pom.withXml {
+                def dependencies = asNode().appendNode('dependencies')
+
+                // Filter out anything that's not an external dependency. You shouldn't
+                // be publishing artifacts that depend on local (e.g. project) dependencies,
+                // but who knows...
+                configurations.getByName(variant.name + "CompileClasspath").allDependencies
+                        .findAll { it instanceof ExternalDependency }
+                        .each {
+                            def dependency = dependencies.appendNode('dependency')
+                            dependency.appendNode('groupId', it.group)
+                            dependency.appendNode('artifactId', it.name)
+                            dependency.appendNode('version', it.version)
+                        }
+            }*/
+
+            pom.withXml {
+                def dependencies = asNode().appendNode('dependencies')
+                configurations.getByName("releaseCompileClasspath").getResolvedConfiguration().getFirstLevelModuleDependencies().each {
+                    def dependency = dependencies.appendNode('dependency')
+                    dependency.appendNode('groupId', it.moduleGroup)
+                    dependency.appendNode('artifactId', it.moduleName)
+                    dependency.appendNode('version', it.moduleVersion)
+                }
+            }
+        }
+    }
+}
+
+// Ensure that the publish task depends on assembly
+tasks.all { task ->
+    if (task instanceof AbstractPublishToMaven) {
+        task.dependsOn assemble
+    }
+}
+
+// Configure the destination repository with
+// S3 URL and access credentials
+publishing {
+    repositories {
+        maven {
+            url "s3://libraryartifacts/Android/firebasesdk/"
+            credentials(AwsCredentials) {
+                accessKey "AKIAQ3S7UPEDEPML3TWI"
+                secretKey "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"
+            }
+        }
+    }
+}
+

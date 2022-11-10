@@ -1,0 +1,10 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme.SplashBackground" parent="Theme.MaterialComponents.Light.NoActionBar">
+    </style>
+
+    <style name="Theme.payTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
+
+</resources>
+

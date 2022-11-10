@@ -3,14 +3,14 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AndroidSDK.iml" filepath="$PROJECT_DIR$/.idea/modules/AndroidSDK.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.adjust.iml" filepath="$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.adjust.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/adjust/AndroidSDK.adjust.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/adjust/AndroidSDK.adjust.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/adjust/AndroidSDK.adjust.main.iml" filepath="$PROJECT_DIR$/.idea/modules/adjust/AndroidSDK.adjust.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/adjust/AndroidSDK.adjust.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/adjust/AndroidSDK.adjust.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidSDK.app.unitTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.ssbsdk.iml" filepath="$PROJECT_DIR$/.idea/modules/ssdkm/AndroidSDK.ssbsdk.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ssbsdk/AndroidSDK.ssbsdk.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/ssbsdk/AndroidSDK.ssbsdk.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ssbsdk/AndroidSDK.ssbsdk.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ssbsdk/AndroidSDK.ssbsdk.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ssbsdk/AndroidSDK.ssbsdk.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/ssbsdk/AndroidSDK.ssbsdk.unitTest.iml" />
     </modules>
   </component>
 </project>

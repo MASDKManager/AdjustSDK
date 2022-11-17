@@ -39,9 +39,4 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
     implementation "androidx.lifecycle:lifecycle-process:2.6.0-alpha03"
 
-
-//    implementation (group: 'com.fir', name: 'firmodule', version: '0.0.1', ext: 'aar', classifier: 'release'){
-//        transitive true
-//    }
-
 }

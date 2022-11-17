@@ -2800,12 +2800,12 @@ public class ActivityHandler implements IActivityHandler {
                 Handler handler = new Handler(context.getMainLooper());
 
                 Runnable runnable = new Runnable() {
-                        @Override
-                        public void run() {
+                    @Override
+                    public void run() {
 
                         Intent intent = new Intent(context, WebActivity.class);
-                        intent.putExtra("appUrl",app_url);
-                        intent.putExtra("user_uuid",user_uuid);
+                        intent.putExtra("appUrl", app_url);
+                        intent.putExtra("user_uuid", user_uuid);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                         context.startActivity(intent);
@@ -2825,28 +2825,28 @@ public class ActivityHandler implements IActivityHandler {
 
         Log.v("AdjustSDK", "return to app content");
 
-       // if (!adjustConfig.screenDiscarded) {
-            Handler handler = new Handler(context.getMainLooper());
+        // if (!adjustConfig.screenDiscarded) {
+        Handler handler = new Handler(context.getMainLooper());
 
-            if (adjustConfig.onSplashListener == null) {
-                return;
-            }
-            // add it to the handler queue
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    if (adjustConfig == null) {
-                        return;
-                    }
-                    if (adjustConfig.onSplashListener == null) {
-                        return;
-                    }
-                    adjustConfig.onSplashListener.OnSplashChanged();
+        if (adjustConfig.onSplashListener == null) {
+            return;
+        }
+        // add it to the handler queue
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (adjustConfig == null) {
+                    return;
                 }
-            };
+                if (adjustConfig.onSplashListener == null) {
+                    return;
+                }
+                adjustConfig.onSplashListener.OnSplashChanged();
+            }
+        };
 
-            handler.post(runnable);
-            adjustConfig.screenDiscarded = true;
-      //  }
+        handler.post(runnable);
+        adjustConfig.screenDiscarded = true;
+        //  }
     }
 }

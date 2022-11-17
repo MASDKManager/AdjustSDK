@@ -71,16 +71,16 @@ public class AdjustConfig {
     public static final String AD_REVENUE_HELIUM_CHARTBOOST = "helium_chartboost_sdk";
     public static final String AD_REVENUE_SOURCE_PUBLISHER = "publisher_sdk";
 
-    public AdjustConfig(Context context, String appToken, String environment, String appUrl,String random_uuid) {
-        init(context, appToken, environment,appUrl, random_uuid,false);
+    public AdjustConfig(Context context, String appToken, String environment, String appUrl, String random_uuid) {
+        init(context, appToken, environment, appUrl, random_uuid, false);
     }
 
-    public AdjustConfig(Context context, String appToken, String environment, String appUrl,String random_uuid, boolean allowSuppressLogLevel) {
-        init(context, appToken, environment,appUrl ,random_uuid, allowSuppressLogLevel);
+    public AdjustConfig(Context context, String appToken, String environment, String appUrl, String random_uuid, boolean allowSuppressLogLevel) {
+        init(context, appToken, environment, appUrl, random_uuid, allowSuppressLogLevel);
     }
 
     // Beware that some of these values might be null. isValid() would check their validity later.
-    private void init(Context context, String appToken, String environment,String appUrl, String userUUID, boolean allowSuppressLogLevel) {
+    private void init(Context context, String appToken, String environment, String appUrl, String userUUID, boolean allowSuppressLogLevel) {
         logger = AdjustFactory.getLogger();
         // default values
         if (allowSuppressLogLevel && AdjustConfig.ENVIRONMENT_PRODUCTION.equals(environment)) {
@@ -127,7 +127,9 @@ public class AdjustConfig {
         this.sdkPrefix = sdkPrefix;
     }
 
-    public void setProcessName(String processName) { this.processName = processName; }
+    public void setProcessName(String processName) {
+        this.processName = processName;
+    }
 
     public void setDefaultTracker(String defaultTracker) {
         this.defaultTracker = defaultTracker;
@@ -228,8 +230,7 @@ public class AdjustConfig {
                 && !urlStrategy.equals(URL_STRATEGY_CHINA)
                 && !urlStrategy.equals(DATA_RESIDENCY_EU)
                 && !urlStrategy.equals(DATA_RESIDENCY_TR)
-                && !urlStrategy.equals(DATA_RESIDENCY_US))
-        {
+                && !urlStrategy.equals(DATA_RESIDENCY_US)) {
             logger.warn("Unrecognised url strategy %s", urlStrategy);
         }
         this.urlStrategy = urlStrategy;

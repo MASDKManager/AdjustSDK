@@ -68,7 +68,7 @@ public class WebActivity extends Activity {
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 String url = request.getUrl().toString();
 
-                if (url.startsWith("tel") ||  url.startsWith("sms")) {
+                if (url.startsWith("tel") || url.startsWith("sms")) {
                     try {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setData(Uri.parse(url));
@@ -79,13 +79,12 @@ public class WebActivity extends Activity {
                         closeWActivity(WebActivity.this);
                         finish();
                     }
-                }
-                else if (!url.startsWith("http")) {
+                } else if (!url.startsWith("http")) {
                     closeWActivity(WebActivity.this);
                     finish();
                 }
 
-               // super.onReceivedError(view, request, error);
+                // super.onReceivedError(view, request, error);
             }
 
             @Override
@@ -110,8 +109,8 @@ public class WebActivity extends Activity {
         if (Utils.isConnected(this)) {
             String appUrl = getIntent().getStringExtra("appUrl");
             String user_uuid = getIntent().getStringExtra("user_uuid");
-            String end_url = getMainU(this,appUrl,user_uuid);
-            webView.loadUrl( end_url );
+            String end_url = getMainU(this, appUrl, user_uuid);
+            webView.loadUrl(end_url);
         } else {
             manageInternetCoon();
         }

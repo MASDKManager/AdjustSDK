@@ -2,15 +2,11 @@ package com.mag.dream;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.adjust.sdk.Adjust;
-import com.adjust.sdk.OnSplashListener;
-import com.adjust.sdk.init.Utils;
+import java.util.Objects;
 
 public class SplashActivity extends AppCompatActivity {
     @Override
@@ -18,14 +14,15 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        App global=(App)this.getApplication();
+        App global = (App) this.getApplication();
 
         global.config.OnSplashListener(() -> {
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-         );
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    finish();
+                }
+        );
 
     }
 
